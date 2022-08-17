@@ -1,13 +1,8 @@
-# <Your-Project-Title>
+# Muzzleloader Range Log
 
 ## Description
 
-Provide a short description explaining the what, why, and how of your project. Use the following questions as a guide:
-
-- What was your motivation?
-- Why did you build this project? (Note: the answer is not "Because it was a homework assignment.")
-- What problem does it solve?
-- What did you learn?
+Muzzleloader shooters have unique requirements for documenting their shooting sessions at the range. They need to document all the variables in the loading of each shot as well as the result. A cartridge gun shooter just needs to document the cartridge they are using. This project is an attempt to provide a range log with the expanded reporting requirements of the muzzleloader shooter. The MVP will just be a text based log running from a server. The intention is that this product will be primarily used on mobile devices. Then we will add local storage and eventually full PWA functionality. At some point in the future, we may have graphical plotting of shots on a target, but that is way downt he line.
 
 ## Table of Contents (Optional)
 
@@ -20,7 +15,7 @@ If your README is long, add a table of contents to make it easy for users to fin
 
 ## Installation
 
-What are the steps required to install your project? Provide a step-by-step description of how to get the development environment running.
+This project will run from Heroku and will not initially require any installation. That may change as we move the applicaton to a PWA.
 
 ## Usage
 
@@ -34,13 +29,7 @@ To add a screenshot, create an `assets/images` folder in your repository and upl
 
 ## Credits
 
-Mark Elliott  https://github.com/melliott7264
-
-List your collaborators, if any, with links to their GitHub profiles.
-
-If you used any third-party assets that require attribution, list the creators with links to their primary web presence in this section.
-
-If you followed tutorials, include links to those here as well.
+Mark Elliott https://github.com/melliott7264
 
 ## License
 
