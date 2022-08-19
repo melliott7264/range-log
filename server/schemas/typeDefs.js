@@ -5,19 +5,23 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql`
   type Query {
     users: [User]
-    firearmsByUser(userId: ID!): [Firearm]
-    firearm(userId: ID!, firearmId: ID!): Firearm
-    logsByUser(userId: ID!): [Log]
-    logsByDate(userId: ID!, date: String!): [Log]
-    logsByTarget(userId: ID!, date: String!, target: Int!): [Log]
-    logByShot(userId: ID!, data: String!, target: Int!, shot: Int!): Log
+    firearmsByUser: [Firearm]
+    firearm(firearmId: ID!): Firearm
+    logsByUser: [Log]
+    logsByDate(date: String!): [Log]
+    logsByTarget(date: String!, target: Int!): [Log]
+    logByShot(data: String!, target: Int!, shot: Int!): Log
   }
 
   type Mutation {
     login(email: String!, password: String!): Auth
-    addUser(username: String!, email: String!, password: String!): Auth
+    addUser(
+      firstName: String!
+      lastName: String!
+      email: String!
+      password: String!
+    ): Auth
     addFirearm(
-      userID: ID!
       name: String!
       measureSystem: Boolean
       barrelLength: Int
@@ -29,9 +33,8 @@ const typeDefs = gql`
       heightRearSight: Float
       heightFrontSight: Float
       sightRadius: Float
-      ): Firearm
+    ): Firearm
     addLogEntry(
-      userId: ID!
       date: String!
       target: Int!
       shot: Int!
@@ -46,7 +49,7 @@ const typeDefs = gql`
       scoreOrientation: Int
       projectileType: Boolean
       projectileDiameter: Float
-      projectile Weight: Float
+      projectileWeight: Float
       patchMaterial: String
       patchThickness: Float
       patchLube: String
@@ -68,7 +71,7 @@ const typeDefs = gql`
       heightReadSight: Float
       heightFrontSight: Float
       sightRadius: Float
-      ): Firearm
+    ): Firearm
     editLogEntry(
       _id: ID!
       firearm: ID
@@ -82,7 +85,7 @@ const typeDefs = gql`
       scoreOrientation: Int
       projectileType: Boolean
       projectileDiameter: Float
-      projectile Weight: Float
+      projectileWeight: Float
       patchMaterial: String
       patchThickness: Float
       patchLube: String
@@ -90,9 +93,9 @@ const typeDefs = gql`
       powderGrade: String
       powderLot: String
       powderCharge: Int
-      ): Log
-      removeFirearm(_id: ID!)
-      removeLogEntry(_id: ID!)
+    ): Log
+    removeFirearm(_id: ID!): Firearm
+    removeLogEntry(_id: ID!): Log
   }
 
   type User {
