@@ -7,22 +7,33 @@ const firearmSchema = new Schema({
     required: true,
     trim: true,
   },
+  // measurement system true: English or false: Metric
+  measureSystem: {
+    type: Boolean,
+    default: true,
+  },
+  // barrel length is to be an integer in inches or cm
   barrelLength: {
     type: Number,
   },
+  // a decimal in inches or mm
   caliber: {
     type: Number,
   },
   ignitionType: {
     type: String,
   },
+  // a decimal in inches or mm
   diaTouchHole: {
     type: Number,
   },
   // The following information is for a future front sight height calculation
+  // measurements are decimal in inches or mm
+  // diameter of the barrel at the rear sight
   diaRearSight: {
     type: Number,
   },
+  // diameter of the barrel at the front sight
   diaFrontSight: {
     type: Number,
   },
@@ -32,6 +43,7 @@ const firearmSchema = new Schema({
   heightFrontSight: {
     type: Number,
   },
+  // The decimal distance in inches or cm from the top of the front sight to the top of the rear sight
   sightRadius: {
     type: Number,
   },

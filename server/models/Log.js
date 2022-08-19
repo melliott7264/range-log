@@ -9,6 +9,7 @@ const logSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  // target and shot are integers
   target: {
     type: Number,
   },
@@ -18,26 +19,23 @@ const logSchema = new Schema({
   firearmId: {
     type: Schema.Types.ObjectId,
   },
+  // The measure system is either true: English or false: Metric
+  measureSystem: {
+    type: Boolean,
+    default: true,
+  },
   // Start log entries for date
+  // temperature is an integer in Fahrenheit or Celsius
   temperature: {
     type: Number,
   },
-  // temperatureScale will be either true:Fahrenheit or false: Celsius Boolean
-  temperatureScale: {
-    type: Boolean,
-    default: true,
-  },
-  // humidity in percent
+  // humidity is an integer in percent
   humidity: {
     type: Number,
   },
+  // windspeed in an integer in MPH or KPH
   windSpeed: {
     type: Number,
-  },
-  // windSpeedScale will be Boolean either true:MPH or false:KPH
-  windSpeedScale: {
-    type: Boolean,
-    default: true,
   },
   // North, NorthEast, East, SouthEast, South, SouthWest, West, or NorthWest
   windDirection: {
@@ -58,10 +56,6 @@ const logSchema = new Schema({
   },
   // End Score info
   // Start Shot information
-  // shot measurements will either be inch or mm selected by measureSystem Boolean true:inch, false: mm
-  measureSystem: {
-    type: Boolean,
-  },
   // projectile type is a Boolean true:round or false:conical
   projectileType: {
     type: Boolean,
@@ -71,7 +65,7 @@ const logSchema = new Schema({
   projectileDiameter: {
     type: Number,
   },
-  // projectileWeight is in grains
+  // projectileWeight is in grains or grams
   projectileWeight: {
     type: Number,
   },
@@ -100,7 +94,7 @@ const logSchema = new Schema({
     type: String,
     trim: true,
   },
-  // charge is in grains
+  // charge is an integer in grains
   powderCharge: {
     type: Number,
   },
