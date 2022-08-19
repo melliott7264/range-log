@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User } = require('../models');
+const { User, Firearm, Log } = require('../models');
 
 const { signToken } = require('../utils/auth');
 
@@ -10,22 +10,17 @@ const resolvers = {
       const userData = await User.find({});
       return userData;
     },
-    // return all the user information for the current logged in user
-    me: async (parent, args, context) => {
+    firearmsByUser: async (parent, args, context) => {
       if (context.user) {
-        const userData = await User.findOne({ _id: context.user._id }).select(
-          '-__v'
-        );
-
-        return userData;
+        const firearms = await Firearm.find({ userId: context.user._id });
+        return firearms;
       }
-      throw new AuthenticationError('Not logged in');
+      throw new AuthenticationError('Not Logged In');
     },
   },
 
   Mutation: {
     login: async (parent, { email, password }) => {
-      console.log(email, password);
       const user = await User.findOne({ email });
 
       if (!user) {
@@ -47,6 +42,43 @@ const resolvers = {
       const token = signToken(user);
 
       return { token, user };
+    },
+
+    addFirearm: async (
+      parent,
+      {
+        name,
+        measureSystem,
+        barrelLength,
+        caliber,
+        ignitionType,
+        diaTouchHole,
+        diaRearSight,
+        diaFrontSight,
+        heightRearSight,
+        heightFrontSight,
+        sightRadius,
+      },
+      context
+    ) => {
+      if (context.user) {
+        const firearm = await Firearm.create({
+          userId: context.user._id,
+          name: name,
+          measureSystem: measureSystem,
+          barrelLength: barrelLength,
+          caliber: caliber,
+          ignitionType: ignitionType,
+          diaTouchHole: diaTouchHole,
+          diaRearSight: diaRearSight,
+          diaFrontSight: diaFrontSight,
+          heightRearSight: heightRearSight,
+          heightFrontSight: heightFrontSight,
+          sightRadius: sightRadius,
+        });
+        return firearm;
+      }
+      throw new AuthenticationError('Not Logged In');
     },
   },
 };

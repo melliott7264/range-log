@@ -26,7 +26,7 @@ const typeDefs = gql`
       diaTouchHole: Float
       diaRearSight: Float
       diaFrontSight: Float
-      heightReadSight: Float
+      heightRearSight: Float
       heightFrontSight: Float
       sightRadius: Float
       ): Firearm
