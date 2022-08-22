@@ -4,20 +4,25 @@ const { Schema, model } = require('mongoose');
 const logSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
+    required: true,
   },
   date: {
     type: Date,
     default: Date.now,
+    required: true,
   },
   // target and shot are integers
   target: {
     type: Number,
+    required: true,
   },
   shot: {
     type: Number,
+    required: true,
   },
   firearmId: {
     type: Schema.Types.ObjectId,
+    required: true,
   },
   // The measure system is either true: English or false: Metric
   measureSystem: {

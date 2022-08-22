@@ -85,3 +85,77 @@ export const ADD_FIREARM = gql`
     }
   }
 `;
+
+export const ADD_LOG_ENTRY = gql`
+  mutation addLogEntry(
+    $target: Int!
+    $shot: Int!
+    $firearmId: ID!
+    $measureSystem: Boolean
+    $temperature: Int
+    $humidity: Int
+    $windSpeed: Int
+    $windDirection: String
+    $scoreRing: Int
+    $scoreX: Boolean
+    $scoreOrientation: Int
+    $projectileType: Boolean
+    $rojectileDiameter: Float
+    $projectileWeight: Float
+    $patchMaterial: String
+    $patchThickness: Float
+    $patchLube: String
+    $powderBrand: String
+    $powderGrade: String
+    $powderLot: String
+    $powderCharge: Int
+  ) {
+    addLogEntry(
+      target: $target
+      shot: $shot
+      firearmId: $firearmId
+      measureSystem: $measureSystem
+      temperature: $temperature
+      humidity: $humidity
+      windSpeed: $windSpeed
+      windDirection: $windDirection
+      scoreRing: $scoreRing
+      scoreX: $scoreX
+      scoreOrientation: $scoreOrientation
+      projectileType: $projectileType
+      projectileDiameter: $rojectileDiameter
+      projectileWeight: $projectileWeight
+      patchMaterial: $patchMaterial
+      patchThickness: $patchThickness
+      patchLube: $patchLube
+      powderBrand: $powderBrand
+      powderGrade: $powderGrade
+      powderLot: $powderLot
+      powderCharge: $powderCharge
+    ) {
+      _id
+      userId
+      target
+      shot
+      firearmID
+      measureSystem
+      temperature
+      humidity
+      windSpeed
+      windDirection
+      scoreRing
+      scoreX
+      scoreOrientation
+      projectileType
+      projectileDiameter
+      projectileWeight
+      patchMaterial
+      patchThickness
+      patchLube
+      powderBrand
+      powderGrade
+      powderLot
+      powderCharge
+    }
+  }
+`;

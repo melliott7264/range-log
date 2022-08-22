@@ -19,6 +19,47 @@ const resolvers = {
       }
       throw new AuthenticationError('Not Logged In');
     },
+    logsByUser: async (parent, args, context) => {
+      if (context.user) {
+        const logEntry = await Log.find({ userId: context.user_id });
+        return logEntry;
+      }
+      throw new AuthenticationError('Not Logged In');
+    },
+    logsByDate: async (parent, { date }, context) => {
+      if (context.user) {
+        const logEntry = await Log.find(
+          $and[({ userId: context.user_id }, { date: date })]
+        );
+        return logEntry;
+      }
+      throw new AuthenticationError('Not Logged In');
+    },
+    logsbyTarget: async (parent, { date, target }, context) => {
+      if (context.user) {
+        const logEntry = await Log.find(
+          $and[
+            ({ userId: context.user_id }, { date: date }, { target: target })
+          ]
+        );
+        return logEntry;
+      }
+      throw new AuthenticationError('Not Logged In');
+    },
+    logsbyShot: async (parent, { date, target, shot }, context) => {
+      if (context.user) {
+        const logEntry = await Log.find(
+          $and[
+            ({ userId: context.user_id },
+            { date: date },
+            { target: target },
+            { shot: shot })
+          ]
+        );
+        return logEntry;
+      }
+      throw new AuthenticationError('Not Logged In');
+    },
   },
 
   Mutation: {
@@ -81,6 +122,62 @@ const resolvers = {
         return firearm;
       }
       throw new AuthenticationError('Not Logged In');
+    },
+    addLogEntry: async (
+      parent,
+      {
+        target,
+        shot,
+        firearmId,
+        measureSystem,
+        temperature,
+        humidity,
+        windSpeed,
+        windDirection,
+        scoreRign,
+        scoreX,
+        scoreOrientation,
+        projectileType,
+        projectileDiameter,
+        projectileWeight,
+        patchMaterial,
+        patchThickness,
+        patchLube,
+        powderBrand,
+        powderGrade,
+        powderLot,
+        powderCharge,
+      },
+      context
+    ) => {
+      if (context.user) {
+        const logEntry = await Log.create({
+          userId: context.user_id,
+          date: new Date(),
+          target: target,
+          shot: shot,
+          firearmId: firearmId,
+          measureSystem: measureSystem,
+          temperature: temperature,
+          humidity: humidity,
+          windSpeed: windSpeed,
+          windDirection: windDirection,
+          scoreRing: scoreRing,
+          scoreX: scoreX,
+          scoreOrientation: scoreOrientation,
+          projectileType: projectileType,
+          projectileDiameter: projectileDiameter,
+          projectileWeight: projectileWeight,
+          patchmaterial: patchMaterial,
+          patchThickness: patchThickness,
+          patchLube: patchLube,
+          powderBrand: powderBrand,
+          powderGrade: powderGrade,
+          powderLot: powderLot,
+          powderCharge: powderCharge,
+        });
+      }
+      throw new AuthenticationErrow('Not Logged In');
     },
   },
 };
