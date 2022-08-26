@@ -21,41 +21,43 @@ const resolvers = {
     },
     logsByUser: async (parent, args, context) => {
       if (context.user) {
-        const logEntry = await Log.find({ userId: context.user_id });
+        const logEntry = await Log.find({ userId: context.user._id });
         return logEntry;
       }
       throw new AuthenticationError('Not Logged In');
     },
     logsByDate: async (parent, { date }, context) => {
       if (context.user) {
-        const logEntry = await Log.find(
-          $and[({ userId: context.user_id }, { date: date })]
-        );
+        const logEntry = await Log.find({
+          $and: [{ userId: context.user_id }, { date: date }],
+        });
         return logEntry;
       }
       throw new AuthenticationError('Not Logged In');
     },
-    logsbyTarget: async (parent, { date, target }, context) => {
+    logsByTarget: async (parent, { date, target }, context) => {
       if (context.user) {
-        const logEntry = await Log.find(
-          $and[
-            ({ userId: context.user_id }, { date: date }, { target: target })
-          ]
-        );
-        return logEntry;
-      }
-      throw new AuthenticationError('Not Logged In');
-    },
-    logsbyShot: async (parent, { date, target, shot }, context) => {
-      if (context.user) {
-        const logEntry = await Log.find(
-          $and[
-            ({ userId: context.user_id },
+        const logEntry = await Log.find({
+          $and: [
+            { userId: context.user_id },
             { date: date },
             { target: target },
-            { shot: shot })
-          ]
-        );
+          ],
+        });
+        return logEntry;
+      }
+      throw new AuthenticationError('Not Logged In');
+    },
+    logsByShot: async (parent, { date, target, shot }, context) => {
+      if (context.user) {
+        const logEntry = await Log.find({
+          $and: [
+            { userId: context.user_id },
+            { date: date },
+            { target: target },
+            { shot: shot },
+          ],
+        });
         return logEntry;
       }
       throw new AuthenticationError('Not Logged In');
@@ -123,6 +125,48 @@ const resolvers = {
       }
       throw new AuthenticationError('Not Logged In');
     },
+
+    editFirearm: async (
+      parent,
+      {
+        _id,
+        name,
+        measureSystem,
+        barrelLength,
+        caliber,
+        ignitionType,
+        diaTouchHole,
+        diaRearSight,
+        diaFrontSight,
+        heightRearSight,
+        heightFrontSight,
+        sightRadius,
+      },
+      context
+    ) => {
+      if (context.user) {
+        const firearm = Firearm.findOneAndUpdate(
+          { _id: _id },
+          {
+            name: name,
+            measureSystem: measureSystem,
+            barrelLength: barrelLength,
+            caliber: caliber,
+            ignitionType: ignitionType,
+            diaTouchHole: diaTouchHole,
+            diaRearSight: diaRearSight,
+            diaFrontSight: diaFrontSight,
+            heightRearSight: heightRearSight,
+            heightFrontSight: heightFrontSight,
+            sightRadius: sightRadius,
+          },
+          { new: true }
+        );
+        return firearm;
+      }
+      throw new AuthenticationError('Not Logged In');
+    },
+
     addLogEntry: async (
       parent,
       {
@@ -134,7 +178,7 @@ const resolvers = {
         humidity,
         windSpeed,
         windDirection,
-        scoreRign,
+        scoreRing,
         scoreX,
         scoreOrientation,
         projectileType,
@@ -152,7 +196,7 @@ const resolvers = {
     ) => {
       if (context.user) {
         const logEntry = await Log.create({
-          userId: context.user_id,
+          userId: context.user._id,
           date: new Date(),
           target: target,
           shot: shot,
@@ -168,7 +212,7 @@ const resolvers = {
           projectileType: projectileType,
           projectileDiameter: projectileDiameter,
           projectileWeight: projectileWeight,
-          patchmaterial: patchMaterial,
+          patchMaterial: patchMaterial,
           patchThickness: patchThickness,
           patchLube: patchLube,
           powderBrand: powderBrand,
@@ -176,8 +220,72 @@ const resolvers = {
           powderLot: powderLot,
           powderCharge: powderCharge,
         });
+        return logEntry;
       }
-      throw new AuthenticationErrow('Not Logged In');
+      throw new AuthenticationError('Not Logged In');
+    },
+    editLogEntry: async (
+      parent,
+      {
+        _id,
+        firearmId,
+        measureSystem,
+        temperature,
+        humidity,
+        windSpeed,
+        windDirection,
+        scoreRing,
+        scoreX,
+        scoreOrientation,
+        projectileType,
+        projectileDiameter,
+        projectileWeight,
+        patchMaterial,
+        patchThickness,
+        patchLube,
+        powderBrand,
+        powderGrade,
+        powderLot,
+        powderCharge,
+      },
+      context
+    ) => {
+      if (context.user) {
+        const logEntry = await Log.findOneAndUpdate(
+          { _id: _id },
+          {
+            firearmId: firearmId,
+            measureSystem: measureSystem,
+            temperature: temperature,
+            humidity: humidity,
+            windSpeed: windSpeed,
+            windDirection: windDirection,
+            scoreRing: scoreRing,
+            scoreX: scoreX,
+            scoreOrientation: scoreOrientation,
+            projectileType: projectileType,
+            projectileDiameter: projectileDiameter,
+            ProjectileWeight: projectileWeight,
+            patchMaterial: patchMaterial,
+            patchThickness: patchThickness,
+            patchLube: patchLube,
+            powderBrand: powderBrand,
+            powderGrade: powderGrade,
+            powderLot: powderLot,
+            powderCharge: powderCharge,
+          },
+          { new: true }
+        );
+        return logEntry;
+      }
+      throw new AuthenticationError('Not Logged In');
+    },
+    removeLogEntry: async (parent, { _id }, context) => {
+      if (context.user) {
+        const logEntry = await Log.findOneAndDelete({ _id: _id });
+        return logEntry;
+      }
+      throw new AuthenticationError('Not Logged In');
     },
   },
 };

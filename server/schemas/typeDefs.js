@@ -10,7 +10,7 @@ const typeDefs = gql`
     logsByUser: [Log]
     logsByDate(date: String!): [Log]
     logsByTarget(date: String!, target: Int!): [Log]
-    logByShot(date: String!, target: Int!, shot: Int!): Log
+    logsByShot(date: String!, target: Int!, shot: Int!): Log
   }
 
   type Mutation {
@@ -67,13 +67,13 @@ const typeDefs = gql`
       diaTouchHole: Float
       diaRearSight: Float
       diaFrontSight: Float
-      heightReadSight: Float
+      heightRearSight: Float
       heightFrontSight: Float
       sightRadius: Float
     ): Firearm
     editLogEntry(
       _id: ID!
-      firearm: ID
+      firearmId: ID
       measureSystem: Boolean
       temperature: Int
       humidity: Int
@@ -126,7 +126,7 @@ const typeDefs = gql`
     date: String
     target: Int
     shot: Int
-    firearmID: ID
+    firearmId: ID
     measureSystem: Boolean
     temperature: Int
     humidity: Int
