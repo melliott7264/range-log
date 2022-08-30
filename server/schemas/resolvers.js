@@ -12,6 +12,7 @@ const resolvers = {
       const userData = await User.find({});
       return userData;
     },
+
     firearmsByUser: async (parent, args, context) => {
       if (context.user) {
         const firearms = await Firearm.find({ userId: context.user._id });
@@ -19,6 +20,7 @@ const resolvers = {
       }
       throw new AuthenticationError('Not Logged In');
     },
+
     logsByUser: async (parent, args, context) => {
       if (context.user) {
         const logEntry = await Log.find({ userId: context.user._id });
@@ -26,20 +28,23 @@ const resolvers = {
       }
       throw new AuthenticationError('Not Logged In');
     },
+
     logsByDate: async (parent, { date }, context) => {
       if (context.user) {
-        const logEntry = await Log.find({
-          $and: [{ userId: context.user_id }, { date: date }],
-        });
+        const logEntry = await Log.find().and([
+          { userId: context.user._id },
+          { date: date },
+        ]);
         return logEntry;
       }
       throw new AuthenticationError('Not Logged In');
     },
+
     logsByTarget: async (parent, { date, target }, context) => {
       if (context.user) {
         const logEntry = await Log.find({
           $and: [
-            { userId: context.user_id },
+            { userId: context.user._id },
             { date: date },
             { target: target },
           ],
@@ -48,11 +53,12 @@ const resolvers = {
       }
       throw new AuthenticationError('Not Logged In');
     },
+
     logsByShot: async (parent, { date, target, shot }, context) => {
       if (context.user) {
         const logEntry = await Log.find({
           $and: [
-            { userId: context.user_id },
+            { userId: context.user._id },
             { date: date },
             { target: target },
             { shot: shot },
@@ -170,6 +176,7 @@ const resolvers = {
     addLogEntry: async (
       parent,
       {
+        date,
         target,
         shot,
         firearmId,
@@ -197,7 +204,7 @@ const resolvers = {
       if (context.user) {
         const logEntry = await Log.create({
           userId: context.user._id,
-          date: new Date(),
+          date: date,
           target: target,
           shot: shot,
           firearmId: firearmId,
@@ -224,10 +231,14 @@ const resolvers = {
       }
       throw new AuthenticationError('Not Logged In');
     },
+
     editLogEntry: async (
       parent,
       {
         _id,
+        date,
+        target,
+        shot,
         firearmId,
         measureSystem,
         temperature,
@@ -254,6 +265,9 @@ const resolvers = {
         const logEntry = await Log.findOneAndUpdate(
           { _id: _id },
           {
+            date: date,
+            target: target,
+            shot: shot,
             firearmId: firearmId,
             measureSystem: measureSystem,
             temperature: temperature,
@@ -280,6 +294,15 @@ const resolvers = {
       }
       throw new AuthenticationError('Not Logged In');
     },
+
+    removeFirearm: async (parrent, { _id }, context) => {
+      if (context.user) {
+        const firearm = await Firearm.findOneAndDelete({ _id: _id });
+        return firearm;
+      }
+      throw new AuthenticationError('Not Logged In');
+    },
+
     removeLogEntry: async (parent, { _id }, context) => {
       if (context.user) {
         const logEntry = await Log.findOneAndDelete({ _id: _id });

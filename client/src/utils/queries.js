@@ -39,6 +39,7 @@ export const GET_ALL_LOG_ENTRIES = gql`
     logsByUser {
       _id
       userId
+      date
       target
       shot
       firearmId
@@ -70,6 +71,7 @@ export const GET_LOG_ENTRIES_BY_DATE = gql`
     logsByDate(date: $date) {
       _id
       userId
+      date
       target
       shot
       firearmId
@@ -101,6 +103,7 @@ export const GET_LOG_ENTRIES_BY_TARGET = gql`
     logsByTarget(date: $date, target: $target) {
       _id
       userId
+      date
       target
       shot
       firearmId
@@ -128,10 +131,11 @@ export const GET_LOG_ENTRIES_BY_TARGET = gql`
 
 // Query all log entries for the logged in user and a specifed date
 export const GET_LOG_ENTRIES_BY_SHOT = gql`
-  query logsByTarget($date: String!, $target: Int!, $shot: Int!) {
-    logsByTarget(date: $date, target: $target, shot: $shot) {
+  query logsByShot($date: String!, $target: Int!, $shot: Int!) {
+    logsByShot(date: $date, target: $target, shot: $shot) {
       _id
       userId
+      date
       target
       shot
       firearmId

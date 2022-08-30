@@ -134,6 +134,7 @@ export const EDIT_FIREARM = gql`
 
 export const ADD_LOG_ENTRY = gql`
   mutation addLogEntry(
+    $date: String!
     $target: Int!
     $shot: Int!
     $firearmId: ID!
@@ -157,6 +158,7 @@ export const ADD_LOG_ENTRY = gql`
     $powderCharge: Int
   ) {
     addLogEntry(
+      date: $date
       target: $target
       shot: $shot
       firearmId: $firearmId
@@ -210,6 +212,9 @@ export const ADD_LOG_ENTRY = gql`
 export const EDIT_LOG_ENTRY = gql`
   mutation editLogEntry(
     $_id: ID!
+    $date: String
+    $target: Int
+    $shot: Int
     $firearmId: ID
     $measureSystem: Boolean
     $temperature: Int
@@ -232,6 +237,9 @@ export const EDIT_LOG_ENTRY = gql`
   ) {
     editLogEntry(
       _id: $_id
+      date: $date
+      target: $target
+      shot: $shot
       firearmId: $firearmId
       measureSystem: $measureSystem
       temperature: $temperature
@@ -276,6 +284,26 @@ export const EDIT_LOG_ENTRY = gql`
       powderGrade
       powderLot
       powderCharge
+    }
+  }
+`;
+
+export const REMOVE_FIREARM = gql`
+  mutation removeFirearm($_id: ID!) {
+    removeFirearm(_id: $_id) {
+      _id
+      name
+      measureSystem
+      barrelLength
+      caliber
+      ignitionType
+      diaTouchHole
+      diaRearSight
+      diaFrontSight
+      heightRearSight
+      heightFrontSight
+      sightRadius
+      userId
     }
   }
 `;
