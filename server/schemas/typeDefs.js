@@ -11,6 +11,9 @@ const typeDefs = gql`
     logsByDate(date: String!): [Log]
     logsByTarget(date: String!, target: Int!): [Log]
     logsByShot(date: String!, target: Int!, shot: Int!): [Log]
+    logDates: [Log]
+    logTargetsByDate(date: String!): [Log]
+    logShotsbyTargetDate(date: String!, target: Int!): [Logs]
   }
 
   type Mutation {
