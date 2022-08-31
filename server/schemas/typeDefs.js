@@ -2,6 +2,7 @@ const { gql } = require('apollo-server-express');
 
 // Mutation names and arguments (including types) must match contents of mutations file on front-end
 
+// Note that all queries are by logged-in user
 const typeDefs = gql`
   type Query {
     users: [User]
@@ -13,7 +14,7 @@ const typeDefs = gql`
     logsByShot(date: String!, target: Int!, shot: Int!): [Log]
     logDates: [Log]
     logTargetsByDate(date: String!): [Log]
-    logShotsbyTargetDate(date: String!, target: Int!): [Logs]
+    logShotsByTargetDate(date: String!, target: Int!): [Log]
   }
 
   type Mutation {

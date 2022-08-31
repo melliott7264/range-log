@@ -4,6 +4,7 @@ const Firearm = require('../models/Firearm');
 const Log = require('../models/Log');
 
 const { signToken } = require('../utils/auth');
+const { find } = require('../models/User');
 
 const resolvers = {
   Query: {
@@ -64,9 +65,35 @@ const resolvers = {
             { shot: shot },
           ],
         });
+        console.log(logEntry);
         return logEntry;
       }
       throw new AuthenticationError('Not Logged In');
+    },
+    logDates: async (parent, args, context) => {
+      if (context.user) {
+        const logDates = await Log.find().select('date -_id');
+        console.log(logDates);
+        return logDates;
+      }
+      throw new AuthenticationError('Not Logged In');
+    },
+    logTargetsByDate: async (parent, { date }, context) => {
+      if (context.user) {
+        const logTargets = await Log.find({ date: date }).select('target -_id');
+        console.log(logTargets);
+        return logTargets;
+      }
+    },
+    logShotsByTargetDate: async (parent, { date, target }, context) => {
+      if (context.user) {
+        const logShots = await Log.find({
+          $and: [{ date: date }, { target: target }],
+        }).select('shot -_id');
+        console.log(logShots);
+        return logShots;
+      }
+      throw AuthenticationError('Not Logged In');
     },
   },
 

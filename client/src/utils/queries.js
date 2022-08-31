@@ -160,3 +160,27 @@ export const GET_LOG_ENTRIES_BY_SHOT = gql`
     }
   }
 `;
+
+export const LOG_DATES = gql`
+  query logDates {
+    logDates {
+      date
+    }
+  }
+`;
+
+export const LOG_TARGETS = gql`
+  query logTargetsByDate($date: String!) {
+    logTargetsByDate(date: $date) {
+      target
+    }
+  }
+`;
+
+export const LOG_SHOTS = gql`
+  query logShotsByTargetDate($date: String!, $target: Int!) {
+    logShotsByTargetDate(date: $date, target: $target) {
+      shot
+    }
+  }
+`;
