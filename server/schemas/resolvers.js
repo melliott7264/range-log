@@ -10,8 +10,19 @@ const resolvers = {
   Query: {
     // return all the users - for testing only!
     users: async (parent, args, context) => {
-      const userData = await User.find({});
+      const userData = await User.find({}).select('-password -__v');
+      console.log(userData);
       return userData;
+    },
+
+    me: async (parent, args, context) => {
+      if (context.user) {
+        const me = await User.find({ _id: context.user._id }).select(
+          '-password -__v'
+        );
+        return me;
+      }
+      throw new AuthenticationError('Not Logged In');
     },
 
     firearmsByUser: async (parent, args, context) => {

@@ -6,6 +6,7 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql`
   type Query {
     users: [User]
+    me: [User]
     firearmsByUser: [Firearm]
     firearm(firearmId: ID!): Firearm
     logsByUser: [Log]

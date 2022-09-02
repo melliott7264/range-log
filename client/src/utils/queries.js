@@ -12,6 +12,18 @@ export const GET_ALL_USERS = gql`
   }
 `;
 
+// Query logged-in user data
+export const GET_ME = gql`
+  query me {
+    me {
+      _id
+      firstName
+      lastName
+      email
+    }
+  }
+`;
+
 // Query all firearms by logged in user through context
 export const GET_ALL_FIREARMS = gql`
   query firearmsByUser {
