@@ -1,36 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useQuery } from '@apollo/client';
+import { GET_ME } from '../utils/queries';
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import SignUp from './SignUp';
 import Login from './Login';
 
-import Auth from '../utils/auth';
+import AuthService from '../utils/auth';
 
 const AppNavbar = () => {
   const [showModal, setShowModal] = useState(false);
+  const loggedIn = AuthService.loggedIn();
+
+  // Retrieve logged in user information and setup state to update it
+  const [userData, setUserData] = useState({});
+  const { data: userdata } = useQuery(GET_ME, { skip: !loggedIn });
+
+  useEffect(() => {
+    const user = userdata?.me || {};
+    setUserData(user);
+  }, [userdata]);
 
   return (
     <>
-      <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+      <Navbar collapseOnSelect expand="sm" bg="light" variant="light">
         <Container fluid className="justify-content-center">
-          <Navbar.Brand style={{ color: 'black' }} href="/">
-            <img
-              alt=""
-              src="../../assets/images/Rifle19Mask.png"
-              width="350"
-              className="text-center"
-            />
-            <h1 className="text-center">Muzzleloader Range Log</h1>
+          <Navbar.Brand
+            className="text-center"
+            style={{ color: 'black' }}
+            href="/"
+          >
+            <img alt="" src="../../assets/images/Rifle19Mask.png" width="360" />
+            <h1>Muzzleloader Range Log</h1>
+            {loggedIn ? (
+              <h2>
+                {userData[0]?.firstName} {userData[0]?.lastName}
+              </h2>
+            ) : (
+              <h2>Please Log In</h2>
+            )}
+
             <Nav className="justify-content-center">
-              {Auth.loggedIn() ? (
+              {loggedIn ? (
                 <>
-                  <Nav.Link style={{ color: 'black' }} as={Link} to="/firearm">
-                    Firearm
+                  <Nav.Link style={{ color: 'black' }} as={Link} to="/firearms">
+                    Firearms
                   </Nav.Link>
                   <Nav.Link style={{ color: 'black' }} as={Link} to="/logs">
-                    Log
+                    Logs
                   </Nav.Link>
-                  <Nav.Link style={{ color: 'black' }} onClick={Auth.logout}>
+                  <Nav.Link
+                    style={{ color: 'black' }}
+                    onClick={AuthService.logout}
+                  >
                     Logout
                   </Nav.Link>
                 </>

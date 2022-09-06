@@ -28,6 +28,7 @@ const resolvers = {
     firearmsByUser: async (parent, args, context) => {
       if (context.user) {
         const firearms = await Firearm.find({ userId: context.user._id });
+        console.log(firearms);
         return firearms;
       }
       throw new AuthenticationError('Not Logged In');

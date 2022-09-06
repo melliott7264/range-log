@@ -13,7 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer/Footer';
-import Firearm from './pages/Firearm';
+import Firearms from './pages/Firearms';
 import Logs from './pages/Logs';
 
 const PORT = process.env.PORT || 3001;
@@ -50,8 +50,9 @@ function App() {
         <>
           <Navbar />
           <Routes>
-            <Route exact path="/firearm" component={Firearm} />
-            <Route exact path="/logs" component={Logs} />
+            <Route exact path="/firearms" element={<Firearms />} />
+            {/* <Route exact path="/logs" element={<Logs />} /> */}
+            <Route exact path="/" element={<Navbar />} />
           </Routes>
         </>
         <Footer />

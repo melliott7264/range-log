@@ -46,7 +46,8 @@ const Signup = () => {
 
     // empty form fields after submission
     setUserFormData({
-      username: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
     });
@@ -65,11 +66,11 @@ const Signup = () => {
         </Alert>
 
         <Form.Group className="p-1">
-          <Form.Label htmlFor="firstname">Firstname</Form.Label>
+          <Form.Label htmlFor="firstName">Firstname</Form.Label>
           <Form.Control
             type="text"
             placeholder="Firstname"
-            name="firstname"
+            name="firstName"
             onChange={handleInputChange}
             value={userFormData.firstName}
             required
@@ -80,11 +81,11 @@ const Signup = () => {
         </Form.Group>
 
         <Form.Group className="p-1">
-          <Form.Label htmlFor="lastname">Lastname</Form.Label>
+          <Form.Label htmlFor="lastName">Lastname</Form.Label>
           <Form.Control
             type="text"
             placeholder="Lastname"
-            name="lastname"
+            name="lastName"
             onChange={handleInputChange}
             value={userFormData.lastName}
             required
