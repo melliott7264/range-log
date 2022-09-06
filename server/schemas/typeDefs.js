@@ -8,7 +8,7 @@ const typeDefs = gql`
     users: [User]
     me: [User]
     firearmsByUser: [Firearm]
-    firearm(_id: ID!): Firearm
+    firearm(_id: ID!): [Firearm]
     logsByUser: [Log]
     logsByDate(date: String!): [Log]
     logsByTarget(date: String!, target: Int!): [Log]
