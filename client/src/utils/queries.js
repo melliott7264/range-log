@@ -45,7 +45,7 @@ export const GET_ALL_FIREARMS = gql`
   }
 `;
 
-export const GET_FIREARMS = gql`
+export const GET_FIREARM = gql`
   query firearm($_id: ID!) {
     firearm(_id: $_id) {
       _id
