@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_ALL_FIREARMS } from '../utils/queries';
+import { Nav } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const Firearms = () => {
   // state to show listing of user firearms from which to select
@@ -25,7 +27,12 @@ const Firearms = () => {
           <li key={firearm._id} className="list-group-item">
             <div className="row">
               <div className="col-md-12">
-                <a href="<SingleFirearm/>">{firearm.name}</a>
+                <Nav.Link
+                  as={Link}
+                  to={{ pathname: `/firearms/single/${firearm._id}` }}
+                >
+                  <p>{firearm.name}</p>
+                </Nav.Link>
               </div>
             </div>
           </li>

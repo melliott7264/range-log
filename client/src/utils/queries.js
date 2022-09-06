@@ -45,6 +45,26 @@ export const GET_ALL_FIREARMS = gql`
   }
 `;
 
+export const GET_FIREARMS = gql`
+  query firearm($_id: ID!) {
+    firearm(_id: $_id) {
+      _id
+      name
+      measureSystem
+      barrelLength
+      caliber
+      ignitionType
+      diaTouchHole
+      diaRearSight
+      diaFrontSight
+      heightRearSight
+      heightFrontSight
+      sightRadius
+      userId
+    }
+  }
+`;
+
 // Query all log entries for the logged in user
 export const GET_ALL_LOG_ENTRIES = gql`
   query logsByUser {

@@ -34,6 +34,17 @@ const resolvers = {
       throw new AuthenticationError('Not Logged In');
     },
 
+    firearm: async (parent, { _id }, context) => {
+      if (context.user) {
+        const firearm = await Firearm.find().and([
+          { userId: context.user._id },
+          { _id: _id },
+        ]);
+        return firearm;
+      }
+      throw new AuthenticationError('Not Logged In');
+    },
+
     logsByUser: async (parent, args, context) => {
       if (context.user) {
         const logEntry = await Log.find({ userId: context.user._id });
