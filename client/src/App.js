@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import {
   ApolloClient,
   InMemoryCache,
@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer/Footer';
+import Main from './pages/Main';
 import Firearms from './pages/Firearms';
 import SingleFirearm from './components/SingleFirearm';
 import Logs from './pages/Logs';
@@ -50,16 +51,16 @@ function App() {
       <Router forceRefresh={true}>
         <>
           <Navbar />
-          <Routes>
-            <Route exact path="/firearms" element={<Firearms />} />
+          <Switch>
+            <Route exact path="/firearms" component={Firearms} />
             <Route
               exact
-              path="/firearms/single:id"
-              element={<SingleFirearm />}
+              path="/firearms/single/:id"
+              component={SingleFirearm}
             />
-            {/* <Route exact path="/logs" element={<Logs />} /> */}
-            <Route exact path="/" element={<Navbar />} />
-          </Routes>
+            {/* <Route exact path="/logs" component={Logs} /> */}
+            <Route exact path="/" component={Main} />
+          </Switch>
         </>
         <Footer />
       </Router>

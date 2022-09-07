@@ -46,9 +46,11 @@ const AppNavbar = () => {
                   <Nav.Link style={{ color: 'black' }} as={Link} to="/firearms">
                     Firearms
                   </Nav.Link>
+
                   <Nav.Link style={{ color: 'black' }} as={Link} to="/logs">
                     Logs
                   </Nav.Link>
+
                   <Nav.Link
                     style={{ color: 'black' }}
                     onClick={AuthService.logout}
@@ -78,10 +80,10 @@ const AppNavbar = () => {
           <Modal.Header className="border-bottom-0" closeButton>
             <Modal.Title id="signup-modal">
               <Nav fill variant="tabs">
-                <Nav.Item>
+                <Nav.Item componentClass="span">
                   <Nav.Link eventKey="login">Login</Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
+                <Nav.Item componentClass="span">
                   <Nav.Link eventKey="signup">SignUp</Nav.Link>
                 </Nav.Item>
               </Nav>
