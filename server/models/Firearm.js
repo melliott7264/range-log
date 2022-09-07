@@ -7,7 +7,7 @@ const firearmSchema = new Schema({
     required: true,
     trim: true,
   },
-  // measurement system true: English or false: Metric
+  // measurement system true: Metric or false: English
   measureSystem: {
     type: Boolean,
     default: true,

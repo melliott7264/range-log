@@ -17,11 +17,11 @@ const Main = () => {
         </div>
       ) : (
         <div>
-          <p>
+          <p className="text-center">
             If you are new to Muzzleloader Range Log, you will want to start by
             clicking on Firearms to add one or more firearms that you will log.
           </p>
-          <p>
+          <p className="text-center">
             Once your firearm is in the system, you can start logging your
             shots. Click on Logs to get started. You will create a target and
             then log shots on that target.
