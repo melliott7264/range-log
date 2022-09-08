@@ -29,23 +29,30 @@ const SingleFirearm = () => {
   }, [data]);
 
   const handleEditFirearm = async (event) => {
-    // execute mutation editFirearm
     try {
       const response = await editFirearm({
         variables: {
+          _id: id,
           name: firearmData.name,
           ignitionType: firearmData.ignitionType,
           barrelLength: firearmData.barrelLength,
           caliber: firearmData.caliber,
+          measureSystem: firearmData.measureSystem,
         },
       });
+      console.log(response);
     } catch (err) {
       console.log(err);
     }
   };
 
   const handleDataChange = (event) => {
-    setFirearmData(...firearmData, event.target.value);
+    let firearmDataObject = firearmData;
+    firearmDataObject = {
+      ...firearmDataObject,
+      [event.target.name]: event.target.value,
+    };
+    setFirearmData(firearmDataObject);
   };
 
   return (
@@ -60,7 +67,7 @@ const SingleFirearm = () => {
             type="text"
             name="name"
             value={firearmData.name}
-            onchange={handleDataChange}
+            onChange={handleDataChange}
           />
         </Form.Group>
         <Form.Group>
@@ -69,7 +76,7 @@ const SingleFirearm = () => {
             type="text"
             name="ignitionType"
             value={firearmData.ignitionType}
-            onchange={handleDataChange}
+            onChange={handleDataChange}
           />
         </Form.Group>
         <Form.Group>
@@ -78,16 +85,17 @@ const SingleFirearm = () => {
             type="number"
             name="barrelLength"
             value={firearmData.barrelLength}
-            onchange={handleDataChange}
+            onChange={handleDataChange}
           />
         </Form.Group>
         <Form.Group>
           <Form.Label>Caliber(inches/mm):</Form.Label>
           <Form.Control
             type="number"
+            step="0.001"
             name="caliber"
             value={firearmData.caliber}
-            onchange={handleDataChange}
+            onChange={handleDataChange}
           />
         </Form.Group>
         <Form.Group>
@@ -96,7 +104,7 @@ const SingleFirearm = () => {
             type="checkbox"
             name="measureSystem"
             value={firearmData.measureSystem}
-            onchange={handleDataChange}
+            onChange={handleDataChange}
           />
         </Form.Group>
         <Button className="p-1" type="submit" variant="primary">
