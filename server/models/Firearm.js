@@ -10,7 +10,7 @@ const firearmSchema = new Schema({
   // measurement system true: Metric or false: English
   measureSystem: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   // barrel length is to be an integer in inches or cm
   barrelLength: {

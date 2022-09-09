@@ -47,12 +47,11 @@ const SingleFirearm = () => {
   };
 
   const handleDataChange = (event) => {
-    let firearmDataObject = firearmData;
-    firearmDataObject = {
-      ...firearmDataObject,
-      [event.target.name]: event.target.value,
-    };
-    setFirearmData(firearmDataObject);
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    setFirearmData({ ...firearmData, [name]: value });
   };
 
   return (
@@ -66,7 +65,7 @@ const SingleFirearm = () => {
           <Form.Control
             type="text"
             name="name"
-            value={firearmData.name}
+            value={firearmData.name || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -75,7 +74,7 @@ const SingleFirearm = () => {
           <Form.Control
             type="text"
             name="ignitionType"
-            value={firearmData.ignitionType}
+            value={firearmData.ignitionType || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -84,7 +83,7 @@ const SingleFirearm = () => {
           <Form.Control
             type="number"
             name="barrelLength"
-            value={firearmData.barrelLength}
+            value={firearmData.barrelLength || 0}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -94,7 +93,7 @@ const SingleFirearm = () => {
             type="number"
             step="0.001"
             name="caliber"
-            value={firearmData.caliber}
+            value={firearmData.caliber || 0}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -103,7 +102,7 @@ const SingleFirearm = () => {
           <Form.Check
             type="checkbox"
             name="measureSystem"
-            value={firearmData.measureSystem}
+            checked={firearmData.measureSystem || false}
             onChange={handleDataChange}
           />
         </Form.Group>
