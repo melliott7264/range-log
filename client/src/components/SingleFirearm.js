@@ -8,10 +8,12 @@ import AuthService from '../utils/auth';
 import { EDIT_FIREARM, REMOVE_FIREARM } from '../utils/mutations';
 
 const SingleFirearm = () => {
+  // id passed to component through URI parameters from Route in App.js
   const { id } = useParams();
 
   const loggedIn = AuthService.loggedIn();
 
+  // state controlling firearm description data
   const [firearmData, setFirearmData] = useState({});
 
   const { data } = useQuery(
@@ -30,6 +32,7 @@ const SingleFirearm = () => {
     setFirearmData(firearm);
   }, [data]);
 
+  // routine to edit the selected firearm
   const handleEditFirearm = async (event) => {
     try {
       const response = await editFirearm({
@@ -49,10 +52,12 @@ const SingleFirearm = () => {
   };
 
   const handleDataChange = (event) => {
+    // handling multiple input types
     const target = event.target;
     let value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
     // The following code is necessary because Form.Control type=number actually returns a string
+    // parseFloat will also return an integer if an integer is typed as well as returning a float
     if (target.type === 'number') {
       value = parseFloat(value);
     }
@@ -60,6 +65,7 @@ const SingleFirearm = () => {
     console.log(firearmData);
   };
 
+  // routine to delete a firearm
   const handleFirearmDelete = async () => {
     try {
       const response = await deleteFirearm({
@@ -101,6 +107,7 @@ const SingleFirearm = () => {
           <Form.Label>Barrel Length(inches/mm):</Form.Label>
           <Form.Control
             type="number"
+            step="1"
             name="barrelLength"
             value={firearmData.barrelLength || ''}
             onChange={handleDataChange}

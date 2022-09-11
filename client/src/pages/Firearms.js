@@ -19,6 +19,7 @@ const Firearms = () => {
 
   const [addFirearm] = useMutation(ADD_FIREARM);
 
+  // Graphql query for a listing of all firearms - using skip parameter to avoid error when not logged in
   const { data } = useQuery(GET_ALL_FIREARMS, { skip: !loggedIn });
 
   useEffect(() => {
@@ -26,6 +27,7 @@ const Firearms = () => {
     setShowFirearms(firearmsList);
   }, [data]);
 
+  // routine to add a firearm
   const handleAddFirearm = async (event) => {
     try {
       const response = await addFirearm({
@@ -44,10 +46,12 @@ const Firearms = () => {
   };
 
   const handleDataChange = (event) => {
+    // handling multiple input types
     const target = event.target;
     let value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
     // The following code is necessary because Form.Control type=number actually returns a string
+    // parseFloat will also return an integer if an integer is typed as well as returning a float
     if (target.type === 'number') {
       value = parseFloat(value);
     }
@@ -123,6 +127,7 @@ const Firearms = () => {
               <Form.Label>Barrel Length(inches/mm):</Form.Label>
               <Form.Control
                 type="number"
+                step="1"
                 name="barrelLength"
                 value={showFirearm.barrelLength || ''}
                 onChange={handleDataChange}
