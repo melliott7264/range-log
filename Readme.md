@@ -15,11 +15,13 @@ If your README is long, add a table of contents to make it easy for users to fin
 
 ## Installation
 
-This project will run from Heroku and will not initially require any installation. That may change as we move the applicaton to a PWA.
+This project will run from Heroku at https://muzzleloader-range-log.herokuapp.com and will not initially require any installation. That may change as we move the applicaton to a PWA.
 
 ## Usage
 
-Provide instructions and examples for use. Include screenshots as needed.
+Execute the application from the web at https://muzzleloader-range-log.herokuapp.com. The first thing you will need to do is signup; after which you will get an initial screen with Firearms, Logs and Logout options in the navbar. You will want to click on Firearms and add the firearms you will be recording in the log. Clicking on the added firearms in the listing, you will be able to edit or delete them.
+
+The Logs functions have yet to be added.
 
 To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
 
