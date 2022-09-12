@@ -58,7 +58,7 @@ function App() {
               path="/firearms/single/:id"
               component={SingleFirearm}
             />
-            {/* <Route exact path="/logs" component={Logs} /> */}
+            <Route exact path="/logs" component={Logs} />
             <Route exact path="/" component={Main} />
           </Switch>
         </>
