@@ -16,7 +16,7 @@ import Footer from './components/Footer/Footer';
 import Main from './pages/Main';
 import Firearms from './pages/Firearms';
 import SingleFirearm from './components/SingleFirearm';
-import Logs from './pages/Logs';
+// import Logs from './pages/Logs';
 
 const PORT = process.env.PORT || 3001;
 
