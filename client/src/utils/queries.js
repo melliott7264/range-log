@@ -196,6 +196,7 @@ export const GET_LOG_ENTRIES_BY_SHOT = gql`
 export const LOG_DATES = gql`
   query logDates {
     logDates {
+      _id
       date
     }
   }

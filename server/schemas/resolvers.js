@@ -94,7 +94,7 @@ const resolvers = {
     },
     logDates: async (parent, args, context) => {
       if (context.user) {
-        const logDates = await Log.find().select('date -_id');
+        const logDates = await Log.find().select('date');
         console.log(logDates);
         return logDates;
       }
