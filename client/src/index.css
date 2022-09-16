@@ -12,6 +12,6 @@ code {
     monospace;
 }
 
-.delete-btn {
-  float: right;
+.form-control {
+  width: 50%;
 }

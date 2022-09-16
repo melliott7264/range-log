@@ -13,6 +13,8 @@ const SingleFirearm = () => {
 
   const loggedIn = AuthService.loggedIn();
 
+  let measureInches = ' (inches)';
+
   // state controlling firearm description data
   const [firearmData, setFirearmData] = useState({});
 
@@ -79,6 +81,11 @@ const SingleFirearm = () => {
       console.log(err);
     }
   };
+
+  if (firearmData.measureSystem === true) {
+    measureInches = ' (mm)';
+  }
+
   return (
     <div>
       <div className="text-center">
@@ -86,8 +93,10 @@ const SingleFirearm = () => {
       </div>
       <Form onSubmit={handleEditFirearm}>
         <Form.Group>
-          <Form.Label>Name:</Form.Label>
+          <Form.Label className="m-2">Name:</Form.Label>
+
           <Form.Control
+            className="w-50 float-end"
             type="text"
             name="name"
             value={firearmData.name || ''}
@@ -95,8 +104,9 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label>Ignition Type:</Form.Label>
+          <Form.Label className="m-2">Ignition Type:</Form.Label>
           <Form.Control
+            className="w-50 float-end"
             type="text"
             name="ignitionType"
             value={firearmData.ignitionType || ''}
@@ -104,8 +114,10 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label>Barrel Length(inches/mm):</Form.Label>
+          <Form.Label className="m-2">Barrel Length:</Form.Label>
+          <span>{measureInches}</span>
           <Form.Control
+            className="w-50 float-end"
             type="number"
             step="1"
             name="barrelLength"
@@ -114,8 +126,10 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label>Caliber(inches/mm):</Form.Label>
+          <Form.Label className="m-2">Caliber:</Form.Label>
+          <span>{measureInches}</span>
           <Form.Control
+            className="w-50 float-end"
             type="number"
             step="0.001"
             name="caliber"
@@ -124,19 +138,20 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label>Metric:</Form.Label>
+          <Form.Label className="m-2">Metric:</Form.Label>
           <Form.Check
+            className="m-2 p-2 float-end"
             type="checkbox"
             name="measureSystem"
             checked={firearmData.measureSystem || false}
             onChange={handleDataChange}
           />
         </Form.Group>
-        <Button className="p-1" type="submit" variant="primary">
+        <Button className="p-1 m-2" type="submit" variant="primary">
           Submit Edits
         </Button>
         <Button
-          className="delete-btn p-1"
+          className="p-1 m-2"
           type="button"
           variant="danger"
           onClick={handleFirearmDelete}
