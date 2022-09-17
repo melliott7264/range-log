@@ -17,8 +17,8 @@ import Main from './pages/Main';
 import Firearms from './pages/Firearms';
 import SingleFirearm from './components/SingleFirearm';
 import Logs from './pages/Logs';
-import Targets from './components/Targets';
-import Shots from './components/Shots';
+// import Targets from './components/Targets';
+// import Shots from './components/Shots';
 
 const PORT = process.env.PORT || 3001;
 
@@ -61,8 +61,8 @@ function App() {
               component={SingleFirearm}
             />
             <Route exact path="/logs" component={Logs} />
-            <Route exact path="/logs/targets/:id" component={Targets} />
-            <Route exact path="/logs/targets/shots/:id" component={Shots} />
+            {/* <Route exact path="/logs/targets/:id" component={Targets} /> */}
+            {/* <Route exact path="/logs/targets/shots/:id" component={Shots} /> */}
             <Route exact path="/" component={Main} />
           </Switch>
         </>

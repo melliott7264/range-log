@@ -87,14 +87,14 @@ const resolvers = {
             { shot: shot },
           ],
         });
-        console.log(logEntry);
+
         return logEntry;
       }
       throw new AuthenticationError('Not Logged In');
     },
     logDates: async (parent, args, context) => {
       if (context.user) {
-        const logDates = await Log.find().select('date');
+        const logDates = await Log.find().select('date -_id');
         console.log(logDates);
         return logDates;
       }
