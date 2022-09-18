@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { LOG_DATES } from '../utils/queries';
 import { Link } from 'react-router-dom';
-import { dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { unique } from '../utils/utils';
 
 import AuthService from '../utils/auth';
@@ -15,18 +15,25 @@ const Logs = () => {
 
   // Graphql query for listing of all log dates
   const { loading, error, data } = useQuery(LOG_DATES, { skip: !loggedIn });
+  console.log(data);
 
   useEffect(() => {
     const datesList = data?.logDates || [];
     setShowDates(datesList);
   }, [data]);
 
+  // define a date array to be filtered for unique range sessions
   const dateArray = [];
 
-  for (let i = 0; i < showDates.length; i++) {
-    dateArray.push(showDates[i].date);
+  // conditional is required to make sure query data exists in order to proceed
+  if (data) {
+    // creating an array of only dates to list and pass to unique function to remove duplicates
+    for (let i = 0; i < showDates.length; i++) {
+      dateArray.push(showDates[i].date);
+    }
   }
 
+  // function unique returns an array with only unique elements
   const uniqueDates = unique(dateArray);
   console.log(uniqueDates);
 
@@ -40,6 +47,9 @@ const Logs = () => {
 
   return (
     <>
+      <div>
+        <h3 className="text-center">Range Sessions</h3>
+      </div>
       <ul className="list-group">
         {uniqueDates.map((date) => (
           <li key={date.date} className="list-group-item">
@@ -47,7 +57,6 @@ const Logs = () => {
               <div className="col-md-12">
                 <Link to={{ pathname: `/logs/targets/${date}` }}>
                   <h4>{dayjs(date.date).format('YYYY-MM-DD')}</h4>
-                  {/* <h4>{date.date}</h4> */}
                 </Link>
               </div>
             </div>
