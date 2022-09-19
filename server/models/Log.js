@@ -24,6 +24,7 @@ const logSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
   },
+
   // The measure system is either true: English or false: Metric
   measureSystem: {
     type: Boolean,

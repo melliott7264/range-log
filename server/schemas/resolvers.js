@@ -95,7 +95,7 @@ const resolvers = {
     logDates: async (parent, args, context) => {
       if (context.user) {
         const logDates = await Log.find().select('date -_id');
-        console.log(logDates);
+
         return logDates;
       }
       throw new AuthenticationError('Not Logged In');
@@ -103,7 +103,7 @@ const resolvers = {
     logTargetsByDate: async (parent, { date }, context) => {
       if (context.user) {
         const logTargets = await Log.find({ date: date }).select('target -_id');
-        console.log(logTargets);
+
         return logTargets;
       }
     },
@@ -111,11 +111,11 @@ const resolvers = {
       if (context.user) {
         const logShots = await Log.find({
           $and: [{ date: date }, { target: target }],
-        }).select('shot -_id');
-        console.log(logShots);
+        }).select('shot firearmId -_id');
+
         return logShots;
       }
-      throw AuthenticationError('Not Logged In');
+      throw new AuthenticationError('Not Logged In');
     },
   },
 

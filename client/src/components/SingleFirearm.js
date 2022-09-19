@@ -103,7 +103,7 @@ const SingleFirearm = () => {
             onChange={handleDataChange}
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="bg-info">
           <Form.Label className="m-2">Ignition Type:</Form.Label>
           <Form.Control
             className="w-50 float-end"
@@ -125,7 +125,7 @@ const SingleFirearm = () => {
             onChange={handleDataChange}
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="bg-info">
           <Form.Label className="m-2">Caliber:</Form.Label>
           <span>{measureInches}</span>
           <Form.Control

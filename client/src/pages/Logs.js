@@ -15,7 +15,6 @@ const Logs = () => {
 
   // Graphql query for listing of all log dates
   const { loading, error, data } = useQuery(LOG_DATES, { skip: !loggedIn });
-  console.log(data);
 
   useEffect(() => {
     const datesList = data?.logDates || [];
@@ -35,7 +34,6 @@ const Logs = () => {
 
   // function unique returns an array with only unique elements
   const uniqueDates = unique(dateArray);
-  console.log(uniqueDates);
 
   if (loading) {
     return <h4>Loading...</h4>;
@@ -52,11 +50,11 @@ const Logs = () => {
       </div>
       <ul className="list-group">
         {uniqueDates.map((date) => (
-          <li key={date.date} className="list-group-item">
+          <li key={date} className="list-group-item">
             <div className="row">
               <div className="col-md-12">
                 <Link to={{ pathname: `/logs/targets/${date}` }}>
-                  <h4>{dayjs(date.date).format('YYYY-MM-DD')}</h4>
+                  <p className="text-center">{date}</p>
                 </Link>
               </div>
             </div>
