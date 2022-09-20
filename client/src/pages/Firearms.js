@@ -17,6 +17,8 @@ const Firearms = () => {
 
   const loggedIn = AuthService.loggedIn();
 
+  let measureInches = ' (inches)';
+
   const [addFirearm] = useMutation(ADD_FIREARM);
 
   // Graphql query for a listing of all firearms - using skip parameter to avoid error when not logged in
@@ -36,6 +38,12 @@ const Firearms = () => {
           ignitionType: showFirearm.ignitionType,
           barrelLength: showFirearm.barrelLength,
           caliber: showFirearm.caliber,
+          diaTouchHole: showFirearm.diaTouchHole,
+          diaRearSight: showFirearm.diaRearSight,
+          diaFrontSight: showFirearm.diaFrontSight,
+          heightFrontSight: showFirearm.heightFrontSight,
+          heightRearSight: showFirearm.heightRearSight,
+          sightRadius: showFirearm.sightRadius,
           measureSystem: showFirearm.measureSystem,
         },
       });
@@ -58,6 +66,10 @@ const Firearms = () => {
 
     setShowFirearm({ ...showFirearm, [name]: value });
   };
+
+  if (showFirearm.measureSystem === true) {
+    measureInches = ' (mm)';
+  }
 
   return (
     <>
@@ -125,6 +137,7 @@ const Firearms = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label>Barrel Length(inches/mm):</Form.Label>
+              <span>{measureInches}</span>
               <Form.Control
                 type="number"
                 step="1"
@@ -135,11 +148,78 @@ const Firearms = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label>Caliber(inches/mm):</Form.Label>
+              <span>{measureInches}</span>
               <Form.Control
                 type="number"
                 step="0.001"
                 name="caliber"
                 value={showFirearm.caliber || ''}
+                onChange={handleDataChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label className="m-2">Dia. Touch Hole:</Form.Label>
+              <span>{measureInches}</span>
+              <Form.Control
+                type="number"
+                step="0.001"
+                name="diaTouchHole"
+                value={showFirearm.diaTouchHole || ''}
+                onChange={handleDataChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label className="m-2">Dia. @ Rear Sight:</Form.Label>
+              <span>{measureInches}</span>
+              <Form.Control
+                type="number"
+                step="0.001"
+                name="diaRearSight"
+                value={showFirearm.diaRearSight || ''}
+                onChange={handleDataChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label className="m-2">Dia. @ Front Sight:</Form.Label>
+              <span>{measureInches}</span>
+              <Form.Control
+                type="number"
+                step="0.001"
+                name="diaFrontSight"
+                value={showFirearm.diaFrontSight || ''}
+                onChange={handleDataChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label className="m-2">Height Rear Sight:</Form.Label>
+              <span>{measureInches}</span>
+              <Form.Control
+                type="number"
+                step="0.001"
+                name="heightRearSight"
+                value={showFirearm.heightRearSight || ''}
+                onChange={handleDataChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label className="m-2">Height Front Sight:</Form.Label>
+              <span>{measureInches}</span>
+              <Form.Control
+                type="number"
+                step="0.001"
+                name="heightFrontSight"
+                value={showFirearm.heightFrontSight || ''}
+                onChange={handleDataChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label className="m-2">Sight Radius:</Form.Label>
+              <span>{measureInches}</span>
+              <Form.Control
+                type="number"
+                step="0.001"
+                name="sightRadius"
+                value={showFirearm.sightRadius || ''}
                 onChange={handleDataChange}
               />
             </Form.Group>

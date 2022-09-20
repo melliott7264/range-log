@@ -44,6 +44,12 @@ const SingleFirearm = () => {
           ignitionType: firearmData.ignitionType,
           barrelLength: firearmData.barrelLength,
           caliber: firearmData.caliber,
+          diaTouchHole: firearmData.diaTouchHole,
+          diaRearSight: firearmData.diaRearSight,
+          diaFrontSight: firearmData.diaFrontSight,
+          heightFrontSight: firearmData.heightFrontSight,
+          heightRearSight: firearmData.heightRearSight,
+          sightRadius: firearmData.sightRadius,
           measureSystem: firearmData.measureSystem,
         },
       });
@@ -134,6 +140,78 @@ const SingleFirearm = () => {
             step="0.001"
             name="caliber"
             value={firearmData.caliber || ''}
+            onChange={handleDataChange}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label className="m-2">Dia. Touch Hole:</Form.Label>
+          <span>{measureInches}</span>
+          <Form.Control
+            className="w-50 float-end"
+            type="number"
+            step="0.001"
+            name="diaTouchHole"
+            value={firearmData.diaTouchHole || ''}
+            onChange={handleDataChange}
+          />
+        </Form.Group>
+        <Form.Group className="bg-info">
+          <Form.Label className="m-2">Dia. @ Rear Sight:</Form.Label>
+          <span>{measureInches}</span>
+          <Form.Control
+            className="w-50 float-end"
+            type="number"
+            step="0.001"
+            name="diaRearSight"
+            value={firearmData.diaRearSight || ''}
+            onChange={handleDataChange}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label className="m-2">Dia. @ Front Sight:</Form.Label>
+          <span>{measureInches}</span>
+          <Form.Control
+            className="w-50 float-end"
+            type="number"
+            step="0.001"
+            name="diaFrontSight"
+            value={firearmData.diaFrontSight || ''}
+            onChange={handleDataChange}
+          />
+        </Form.Group>
+        <Form.Group className="bg-info">
+          <Form.Label className="m-2">Height Rear Sight:</Form.Label>
+          <span>{measureInches}</span>
+          <Form.Control
+            className="w-50 float-end"
+            type="number"
+            step="0.001"
+            name="heightRearSight"
+            value={firearmData.heightRearSight || ''}
+            onChange={handleDataChange}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label className="m-2">Height Front Sight:</Form.Label>
+          <span>{measureInches}</span>
+          <Form.Control
+            className="w-50 float-end"
+            type="number"
+            step="0.001"
+            name="heightFrontSight"
+            value={firearmData.heightFrontSight || ''}
+            onChange={handleDataChange}
+          />
+        </Form.Group>
+        <Form.Group className="bg-info">
+          <Form.Label className="m-2">Sight Radius:</Form.Label>
+          <span>{measureInches}</span>
+          <Form.Control
+            className="w-50 float-end"
+            type="number"
+            step="0.001"
+            name="sightRadius"
+            value={firearmData.sightRadius || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
