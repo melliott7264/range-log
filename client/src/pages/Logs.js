@@ -14,12 +14,15 @@ const Logs = () => {
   const [showDates, setShowDates] = useState();
   // state controlling modal to add a new session
   const [showModal, setShowModal] = useState(false);
-  // state controlling selected firearms
-  const [showFirearm, setShowFirearm] = useState(' ');
+  // state controlling selected firearm
+  // const [showFirearm, setShowFirearm] = useState();
   // state controlling firearm listing
   const [showFirearms, setShowFirearms] = useState();
 
   const loggedIn = AuthService.loggedIn();
+
+  // define variable for entire component
+  let selectedFirearm = '';
 
   // Graphql query for listing of all log dates
   const { loading, error, data } = useQuery(LOG_DATES, { skip: !loggedIn });
@@ -41,7 +44,7 @@ const Logs = () => {
   const dateArray = [];
 
   // conditional is required to make sure query data exists in order to proceed
-  if (!loading) {
+  if (data && firearms) {
     // creating an array of only dates to list and pass to unique function to remove duplicates
     for (let i = 0; i < showDates.length; i++) {
       dateArray.push(showDates[i].date);
@@ -55,8 +58,8 @@ const Logs = () => {
   const handleAddLogEntry = async (event) => {
     try {
       const response = await addSession({
-        varialbles: {
-          firearmId: showFirearm,
+        variables: {
+          firearmId: selectedFirearm,
           date: dayjs(),
           target: 1,
           shot: 1,
@@ -69,9 +72,10 @@ const Logs = () => {
   };
 
   const handleSelectFirearm = (event) => {
-    console.log(event.target.value);
-    setShowFirearm(event.target.value);
-    console.log(showFirearm);
+    selectedFirearm = event.target.value;
+    console.log(selectedFirearm);
+    // setShowFirearm(event.target.value);
+    // console.log(showFirearm);
   };
 
   if (loading) {
@@ -81,8 +85,6 @@ const Logs = () => {
   if (error) {
     return <h4>There was a loading error... {error.message}</h4>;
   }
-
-  console.log(showFirearms);
 
   return (
     <>
@@ -110,7 +112,9 @@ const Logs = () => {
             <div className="row">
               <div className="col-md-12">
                 <Link to={{ pathname: `/logs/targets/${date}` }}>
-                  <p className="text-center">{date}</p>
+                  <p className="text-center">
+                    {dayjs(parseInt(date)).format('YYYY-MM-DD')}
+                  </p>
                 </Link>
               </div>
             </div>
@@ -130,19 +134,18 @@ const Logs = () => {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleAddLogEntry}>
-            <Form.Control
+            <Form.Select
               aria-label="Select from list of firearms"
-              as="select"
               custom
               onChange={handleSelectFirearm}
             >
               <option>Select the firearm for this session</option>
-              {showFirearms.map((firearm) => (
+              {showFirearms?.map((firearm) => (
                 <option key={firearm._id} value={firearm._id}>
                   {firearm.name}
                 </option>
               ))}
-            </Form.Control>
+            </Form.Select>
             <Button type="submit" variant="primary">
               Submit
             </Button>

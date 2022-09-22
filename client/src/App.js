@@ -65,14 +65,15 @@ function App() {
             <Route exact path="/logs/targets/:date" component={Targets} />
             <Route
               exact
-              path="/logs/targets/shots/:date&:target"
+              path="/logs/targets/shots/:date&:target&:numberTargets"
               component={Shots}
             />
             <Route
               exact
-              path="/logs/targets/shots/shot/:date&:target&:shot&:firearmId"
+              path="/logs/targets/shots/shot/:date&:target&:numberTargets&:shot&:numberShots&:firearmId"
               component={SingleShot}
             />
+            )} />
             <Route exact path="/" component={Main} />
           </Switch>
         </>

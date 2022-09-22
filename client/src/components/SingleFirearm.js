@@ -13,7 +13,7 @@ const SingleFirearm = () => {
 
   const loggedIn = AuthService.loggedIn();
 
-  let measureInches = ' (inches)';
+  let measureInches = '(in)';
 
   // state controlling firearm description data
   const [firearmData, setFirearmData] = useState({});
@@ -89,7 +89,7 @@ const SingleFirearm = () => {
   };
 
   if (firearmData.measureSystem === true) {
-    measureInches = ' (mm)';
+    measureInches = '(mm)';
   }
 
   return (
@@ -144,7 +144,7 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label className="m-2">Dia. Touch Hole:</Form.Label>
+          <Form.Label className="m-2">Dia Touch Hole:</Form.Label>
           <span>{measureInches}</span>
           <Form.Control
             className="w-50 float-end"
@@ -156,7 +156,7 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group className="bg-info">
-          <Form.Label className="m-2">Dia. @ Rear Sight:</Form.Label>
+          <Form.Label className="m-2">Dia@Rear Sight:</Form.Label>
           <span>{measureInches}</span>
           <Form.Control
             className="w-50 float-end"
@@ -168,7 +168,7 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label className="m-2">Dia. @ Front Sight:</Form.Label>
+          <Form.Label className="m-2">Dia@Front Sight:</Form.Label>
           <span>{measureInches}</span>
           <Form.Control
             className="w-50 float-end"

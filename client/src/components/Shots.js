@@ -3,25 +3,36 @@ import { useQuery, useMutation } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { LOG_SHOTS } from '../utils/queries';
 import { ADD_LOG_ENTRY } from '../utils/mutations';
+import { Button, Modal, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import AuthService from '../utils/auth';
 
 const Shots = () => {
-  const { date, target } = useParams();
+  const { date, target, numberTargets } = useParams();
   const targetNumber = parseInt(target);
+  const [currentTarget, setCurrentTarget] = useState(targetNumber);
+  const numberTargetsInt = parseInt(numberTargets);
+
+  // state controlling modal to add a new session
+  const [showModal, setShowModal] = useState(false);
+  // state controlling firearm listing
+  const [showFirearms, setShowFirearms] = useState();
 
   const [showShots, setShowShots] = useState();
 
   const loggedIn = AuthService.loggedIn();
+
+  // define variable for entire compone nt
+  let selectedFirearm = '';
+
+  const [addLogEntry] = useMutation(ADD_LOG_ENTRY);
 
   const { loading, error, data } = useQuery(
     LOG_SHOTS,
     { variables: { date: date, target: targetNumber } },
     { skip: !loggedIn }
   );
-
-  const [addLogEntry] = useMutation(ADD_LOG_ENTRY);
 
   useEffect(() => {
     const shotList = data?.logShotsByTargetDate || [];
@@ -65,6 +76,13 @@ const Shots = () => {
     }
   };
 
+  const handleSelectFirearm = (event) => {
+    selectedFirearm = event.target.value;
+    console.log(selectedFirearm);
+    // setShowFirearm(event.target.value);
+    // console.log(showFirearm);
+  };
+
   if (loading) {
     return <h4>Loading...</h4>;
   }
@@ -78,16 +96,30 @@ const Shots = () => {
       <div>
         <h3 className="text-center">Range Session</h3>
         <Link to={{ pathname: `/logs/targets/${date}` }}>
-          <p className="text-center">{date}</p>
+          <p className="text-center">
+            {dayjs(parseInt(date)).format('YYYY-MM-DD')}
+          </p>
         </Link>
         <div className="text-center">
           <h4 className="d-inline-block">Target</h4>
-          <Link to={{ pathname: `/logs/targets/shots/${date}&${target}` }}>
+          <Link
+            to={{
+              pathname: `/logs/targets/shots/${date}&${currentTarget}&${numberTargets}`,
+            }}
+          >
             <span className="m-2 float-right">{targetNumber}</span>
           </Link>
         </div>
         <h5 className="text-center">Shots</h5>
       </div>
+      <span className="text-center">
+        <Button
+          className="btn p-1 text-white"
+          // onClick={() => setShowModal(true)}
+        >
+          Add Shot
+        </Button>
+      </span>
       <ul className="list-group">
         {showShots.map((shot) => (
           <li key={shot.shot} className="list-group-item">
@@ -95,7 +127,7 @@ const Shots = () => {
               <div className="col-md-12">
                 <Link
                   to={{
-                    pathname: `/logs/targets/shots/shot/${date}&${target}&${shot.shot}&${shot.firearmId}`,
+                    pathname: `/logs/targets/shots/shot/${date}&${target}&${numberTargets}&${shot.shot}&${showShots.length}&${shot.firearmId}`,
                   }}
                 >
                   <p className="text-center">{shot.shot}</p>
@@ -105,6 +137,37 @@ const Shots = () => {
           </li>
         ))}
       </ul>
+      <Modal
+        size="md"
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        aria-labelledby="add-session-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="add-session-modal">
+            <h4>Add New Range Session for Today</h4>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleAddLogEntry}>
+            <Form.Select
+              aria-label="Select from list of firearms"
+              custom
+              onChange={handleSelectFirearm}
+            >
+              <option>Select the firearm for this session</option>
+              {showFirearms?.map((firearm) => (
+                <option key={firearm._id} value={firearm._id}>
+                  {firearm.name}
+                </option>
+              ))}
+            </Form.Select>
+            <Button type="submit" variant="primary">
+              Submit
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

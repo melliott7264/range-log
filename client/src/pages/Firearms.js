@@ -17,7 +17,7 @@ const Firearms = () => {
 
   const loggedIn = AuthService.loggedIn();
 
-  let measureInches = ' (inches)';
+  let measureInches = '(in)';
 
   const [addFirearm] = useMutation(ADD_FIREARM);
 
@@ -68,7 +68,7 @@ const Firearms = () => {
   };
 
   if (showFirearm.measureSystem === true) {
-    measureInches = ' (mm)';
+    measureInches = '(mm)';
   }
 
   return (
@@ -118,7 +118,7 @@ const Firearms = () => {
         <Modal.Body>
           <Form onSubmit={handleAddFirearm}>
             <Form.Group>
-              <Form.Label>Name/Description:</Form.Label>
+              <Form.Label>Name:</Form.Label>
               <Form.Control
                 type="text"
                 name="name"
@@ -136,7 +136,7 @@ const Firearms = () => {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Barrel Length(inches/mm):</Form.Label>
+              <Form.Label>Barrel Length:</Form.Label>
               <span>{measureInches}</span>
               <Form.Control
                 type="number"
@@ -147,7 +147,7 @@ const Firearms = () => {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label>Caliber(inches/mm):</Form.Label>
+              <Form.Label>Caliber:</Form.Label>
               <span>{measureInches}</span>
               <Form.Control
                 type="number"
@@ -158,7 +158,7 @@ const Firearms = () => {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label className="m-2">Dia. Touch Hole:</Form.Label>
+              <Form.Label className="m-2">Dia Touch Hole:</Form.Label>
               <span>{measureInches}</span>
               <Form.Control
                 type="number"
@@ -169,7 +169,7 @@ const Firearms = () => {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label className="m-2">Dia. @ Rear Sight:</Form.Label>
+              <Form.Label className="m-2">Dia@Rear Sight:</Form.Label>
               <span>{measureInches}</span>
               <Form.Control
                 type="number"
@@ -180,7 +180,7 @@ const Firearms = () => {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label className="m-2">Dia. @ Front Sight:</Form.Label>
+              <Form.Label className="m-2">Dia@Front Sight:</Form.Label>
               <span>{measureInches}</span>
               <Form.Control
                 type="number"
