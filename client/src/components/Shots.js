@@ -9,6 +9,7 @@ import {
 import { ADD_LOG_ENTRY } from '../utils/mutations';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import dayjs from 'dayjs';
 import AuthService from '../utils/auth';
 
@@ -47,7 +48,7 @@ const Shots = () => {
   } = useQuery(
     GET_LOG_ENTRIES_BY_TARGET,
     {
-      variables: { date: date, target: targetNumber },
+      variables: { date: date, target: currentTarget },
     },
     { skip: !loggedIn }
   );
@@ -69,9 +70,9 @@ const Shots = () => {
     const firearms = data3?.firearmsByUser || {};
     setShowFirearms(firearms);
     // Find name associated with firearmId
-    if (showFirearms && showShots) {
+    if (showFirearms && showShots[0]?.firearmId) {
       for (let i = 0; i < showFirearms.length; i++) {
-        if (showFirearms[i]._id === showShots[showShots.length - 1].firearmId) {
+        if (showFirearms[i]._id === showShots[0].firearmId) {
           setFirearmName(showFirearms[i].name);
         }
       }
@@ -154,13 +155,17 @@ const Shots = () => {
     }
   };
 
-  // if (loading) {
-  //   return <h4>Loading...</h4>;
-  // }
+  const onNextTarget = () => {
+    if (currentTarget < numberTargetsInt) {
+      setCurrentTarget(currentTarget + 1);
+    }
+  };
 
-  // if (error) {
-  //   return <h4>There was a loading error... {error.message}</h4>;
-  // }
+  const onPreviousTarget = () => {
+    if (currentTarget > 1) {
+      setCurrentTarget(currentTarget - 1);
+    }
+  };
 
   return (
     <>
@@ -172,14 +177,30 @@ const Shots = () => {
           </p>
         </Link>
         <div className="text-center">
+          <button
+            type="button"
+            className="arrowButton left"
+            onClick={onPreviousTarget}
+            disabled={currentTarget === 1 ? true : false}
+          >
+            <ChevronLeftIcon className="button-icon" />
+          </button>
           <h4 className="d-inline-block">Target</h4>
           <Link
             to={{
               pathname: `/logs/targets/shots/${date}&${currentTarget}&${numberTargets}`,
             }}
           >
-            <span className="m-2 float-right">{targetNumber}</span>
+            <span className="m-2 float-right">{currentTarget}</span>
           </Link>
+          <button
+            type="button"
+            className="arrowButton right"
+            onClick={onNextTarget}
+            disabled={currentTarget === numberTargetsInt ? true : false}
+          >
+            <ChevronRightIcon className="button-icon" />
+          </button>
         </div>
         <h5 className="text-center">Shots</h5>
       </div>

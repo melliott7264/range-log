@@ -7,15 +7,8 @@ import AuthService from '../utils/auth';
 import { Form, Button } from 'react-bootstrap';
 
 const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
-  //   const { date, target, numberTargets, shot, numberShots, firearmId } =
-  //     useParams();
-
   const targetNumber = parseInt(target);
-  //   const [currentTarget, setCurrentTarget] = useState(targetNumber);
-  //   const numberTargetsInt = parseInt(numberTargets);
   const shotNumber = parseInt(shot);
-  //   const [currentShot, setCurrentShot] = useState(shotNumber);
-  //   const numberShotsInt = parseInt(numberShots);
 
   const [showShot, setShowShot] = useState();
   const [showFirearm, setShowFirearm] = useState();
@@ -103,9 +96,20 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
         },
       });
       console.log(response);
-      window.location.replace(
-        `/logs/targets/shots/${date}${target}&${numberTargets - 1}`
-      );
+      // must check if deleting target and adjust target and numberTargets
+      // if shot === 1 then deleting shot deletes target
+      let targets = numberTargets;
+      if (shot === 1) {
+        if (target > 1) {
+          target = target - 1;
+          targets = numberTargets - 1;
+          window.location.replace(
+            `/logs/targets/shots/${date}&${target}&${targets}`
+          );
+        } else {
+          window.location.replace(`/logs`);
+        }
+      }
     } catch (err) {
       console.log(err);
     }

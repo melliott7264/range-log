@@ -37,7 +37,7 @@ const Shots = () => {
 
   const { loading, error, data } = useQuery(
     GET_LOG_ENTRIES_BY_SHOT,
-    { variables: { date: date, target: targetNumber, shot: numberShotsInt } },
+    { variables: { date: date, target: currentTarget, shot: numberShotsInt } },
     { skip: !loggedIn }
   );
 

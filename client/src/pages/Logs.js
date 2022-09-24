@@ -73,9 +73,6 @@ const Logs = () => {
 
   const handleSelectFirearm = (event) => {
     selectedFirearm = event.target.value;
-    console.log(selectedFirearm);
-    // setShowFirearm(event.target.value);
-    // console.log(showFirearm);
   };
 
   if (loading) {

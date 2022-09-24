@@ -205,6 +205,7 @@ export const LOG_TARGETS = gql`
   query logTargetsByDate($date: String!) {
     logTargetsByDate(date: $date) {
       target
+      firearmId
     }
   }
 `;

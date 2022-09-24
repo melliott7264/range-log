@@ -104,7 +104,9 @@ const resolvers = {
     },
     logTargetsByDate: async (parent, { date }, context) => {
       if (context.user) {
-        const logTargets = await Log.find({ date: date }).select('target -_id');
+        const logTargets = await Log.find({ date: date }).select(
+          'target firearmId -_id'
+        );
 
         return logTargets;
       }
