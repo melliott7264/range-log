@@ -186,7 +186,7 @@ export const ADD_LOG_ENTRY = gql`
       date
       target
       shot
-      firearmID
+      firearmId
       measureSystem
       temperature
       humidity
@@ -309,14 +309,14 @@ export const REMOVE_FIREARM = gql`
 `;
 
 export const REMOVE_LOG_ENTRY = gql`
-  mutation removeLogEntry($id: ID!) {
-    removeLogEntry(_id: $id) {
+  mutation removeLogEntry($_id: ID!) {
+    removeLogEntry(_id: $_id) {
       _id
       userId
       date
       target
       shot
-      firearmID
+      firearmId
       measureSystem
       temperature
       humidity

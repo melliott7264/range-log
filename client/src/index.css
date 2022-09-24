@@ -12,6 +12,7 @@ code {
     monospace;
 }
 
-.delete-btn {
-  float: right;
+.button-icon {
+  width: 1em;
+  height: 1em;
 }

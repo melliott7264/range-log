@@ -16,7 +16,14 @@ import Footer from './components/Footer/Footer';
 import Main from './pages/Main';
 import Firearms from './pages/Firearms';
 import SingleFirearm from './components/SingleFirearm';
+<<<<<<< HEAD
 // import Logs from './pages/Logs';
+=======
+import Logs from './pages/Logs';
+import Targets from './components/Targets';
+import Shots from './components/Shots';
+import SingleShot from './components/SingleShot';
+>>>>>>> develop
 
 const PORT = process.env.PORT || 3001;
 
@@ -58,7 +65,18 @@ function App() {
               path="/firearms/single/:id"
               component={SingleFirearm}
             />
-            {/* <Route exact path="/logs" component={Logs} /> */}
+            <Route exact path="/logs" component={Logs} />
+            <Route exact path="/logs/targets/:date" component={Targets} />
+            <Route
+              exact
+              path="/logs/targets/shots/:date&:target&:numberTargets"
+              component={Shots}
+            />
+            <Route
+              exact
+              path="/logs/targets/shots/shot/:date&:target&:numberTargets&:shot&:numberShots&:firearmId"
+              component={SingleShot}
+            />
             <Route exact path="/" component={Main} />
           </Switch>
         </>

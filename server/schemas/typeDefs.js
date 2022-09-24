@@ -154,6 +154,7 @@ const typeDefs = gql`
     powderGrade: String
     powderLot: String
     powderCharge: Int
+    firearms: Firearm
   }
 
   type Auth {

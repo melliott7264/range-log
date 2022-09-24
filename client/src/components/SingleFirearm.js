@@ -13,6 +13,8 @@ const SingleFirearm = () => {
 
   const loggedIn = AuthService.loggedIn();
 
+  let measureInches = '(in)';
+
   // state controlling firearm description data
   const [firearmData, setFirearmData] = useState({});
 
@@ -42,6 +44,12 @@ const SingleFirearm = () => {
           ignitionType: firearmData.ignitionType,
           barrelLength: firearmData.barrelLength,
           caliber: firearmData.caliber,
+          diaTouchHole: firearmData.diaTouchHole,
+          diaRearSight: firearmData.diaRearSight,
+          diaFrontSight: firearmData.diaFrontSight,
+          heightFrontSight: firearmData.heightFrontSight,
+          heightRearSight: firearmData.heightRearSight,
+          sightRadius: firearmData.sightRadius,
           measureSystem: firearmData.measureSystem,
         },
       });
@@ -79,6 +87,11 @@ const SingleFirearm = () => {
       console.log(err);
     }
   };
+
+  if (firearmData.measureSystem === true) {
+    measureInches = '(mm)';
+  }
+
   return (
     <div>
       <div className="text-center">
@@ -86,17 +99,20 @@ const SingleFirearm = () => {
       </div>
       <Form onSubmit={handleEditFirearm}>
         <Form.Group>
-          <Form.Label>Name:</Form.Label>
+          <Form.Label className="m-2">Name:</Form.Label>
+
           <Form.Control
+            className="w-50 float-end"
             type="text"
             name="name"
             value={firearmData.name || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
-        <Form.Group>
-          <Form.Label>Ignition Type:</Form.Label>
+        <Form.Group className="bg-info">
+          <Form.Label className="m-2">Ignition Type:</Form.Label>
           <Form.Control
+            className="w-50 float-end"
             type="text"
             name="ignitionType"
             value={firearmData.ignitionType || ''}
@@ -104,8 +120,10 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label>Barrel Length(inches/mm):</Form.Label>
+          <Form.Label className="m-2">Barrel Length:</Form.Label>
+          <span>{measureInches}</span>
           <Form.Control
+            className="w-50 float-end"
             type="number"
             step="1"
             name="barrelLength"
@@ -113,9 +131,11 @@ const SingleFirearm = () => {
             onChange={handleDataChange}
           />
         </Form.Group>
-        <Form.Group>
-          <Form.Label>Caliber(inches/mm):</Form.Label>
+        <Form.Group className="bg-info">
+          <Form.Label className="m-2">Caliber:</Form.Label>
+          <span>{measureInches}</span>
           <Form.Control
+            className="w-50 float-end"
             type="number"
             step="0.001"
             name="caliber"
@@ -124,19 +144,92 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label>Metric:</Form.Label>
+          <Form.Label className="m-2">Dia Touch Hole:</Form.Label>
+          <span>{measureInches}</span>
+          <Form.Control
+            className="w-50 float-end"
+            type="number"
+            step="0.001"
+            name="diaTouchHole"
+            value={firearmData.diaTouchHole || ''}
+            onChange={handleDataChange}
+          />
+        </Form.Group>
+        <Form.Group className="bg-info">
+          <Form.Label className="m-2">Dia@Rear Sight:</Form.Label>
+          <span>{measureInches}</span>
+          <Form.Control
+            className="w-50 float-end"
+            type="number"
+            step="0.001"
+            name="diaRearSight"
+            value={firearmData.diaRearSight || ''}
+            onChange={handleDataChange}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label className="m-2">Dia@Front Sight:</Form.Label>
+          <span>{measureInches}</span>
+          <Form.Control
+            className="w-50 float-end"
+            type="number"
+            step="0.001"
+            name="diaFrontSight"
+            value={firearmData.diaFrontSight || ''}
+            onChange={handleDataChange}
+          />
+        </Form.Group>
+        <Form.Group className="bg-info">
+          <Form.Label className="m-2">Height Rear Sight:</Form.Label>
+          <span>{measureInches}</span>
+          <Form.Control
+            className="w-50 float-end"
+            type="number"
+            step="0.001"
+            name="heightRearSight"
+            value={firearmData.heightRearSight || ''}
+            onChange={handleDataChange}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label className="m-2">Height Front Sight:</Form.Label>
+          <span>{measureInches}</span>
+          <Form.Control
+            className="w-50 float-end"
+            type="number"
+            step="0.001"
+            name="heightFrontSight"
+            value={firearmData.heightFrontSight || ''}
+            onChange={handleDataChange}
+          />
+        </Form.Group>
+        <Form.Group className="bg-info">
+          <Form.Label className="m-2">Sight Radius:</Form.Label>
+          <span>{measureInches}</span>
+          <Form.Control
+            className="w-50 float-end"
+            type="number"
+            step="0.001"
+            name="sightRadius"
+            value={firearmData.sightRadius || ''}
+            onChange={handleDataChange}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label className="m-2">Metric:</Form.Label>
           <Form.Check
+            className="m-2 p-2 float-end"
             type="checkbox"
             name="measureSystem"
             checked={firearmData.measureSystem || false}
             onChange={handleDataChange}
           />
         </Form.Group>
-        <Button className="p-1" type="submit" variant="primary">
+        <Button className="p-1 m-2" type="submit" variant="primary">
           Submit Edits
         </Button>
         <Button
-          className="delete-btn p-1"
+          className="p-1 m-2"
           type="button"
           variant="danger"
           onClick={handleFirearmDelete}
