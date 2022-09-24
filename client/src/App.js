@@ -73,7 +73,6 @@ function App() {
               path="/logs/targets/shots/shot/:date&:target&:numberTargets&:shot&:numberShots&:firearmId"
               component={SingleShot}
             />
-            )} />
             <Route exact path="/" component={Main} />
           </Switch>
         </>

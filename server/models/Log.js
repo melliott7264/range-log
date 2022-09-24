@@ -1,4 +1,5 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, SchemaTypes } = require('mongoose');
+const Firearm = require('./Firearm');
 
 // Log definition by user, date, target, and shot.   There will also be an associted firearm.
 const logSchema = new Schema({

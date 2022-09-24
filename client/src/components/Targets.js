@@ -93,14 +93,14 @@ const Targets = () => {
         </Link>
         <h4 className="text-center">Targets</h4>
       </div>
-      <span className="text-center">
+      <div className="text-center">
         <Button
           className="btn p-1 text-white"
           // onClick={() => setShowModal(true)}
         >
           Add Target
         </Button>
-      </span>
+      </div>
       <ul className="list-group">
         {uniqueTargets.map((target) => (
           <li key={target} className="list-group-item">

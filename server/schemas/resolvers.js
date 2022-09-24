@@ -5,6 +5,7 @@ const Log = require('../models/Log');
 
 const { signToken } = require('../utils/auth');
 const { find } = require('../models/User');
+const { __EnumValue } = require('graphql');
 
 const resolvers = {
   Query: {
@@ -58,6 +59,7 @@ const resolvers = {
           { userId: context.user._id },
           { date: date },
         ]);
+
         return logEntry;
       }
       throw new AuthenticationError('Not Logged In');

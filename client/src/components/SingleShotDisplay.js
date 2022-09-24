@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { useParams, Link } from 'react-router-dom';
 import { GET_LOG_ENTRIES_BY_SHOT, GET_FIREARM } from '../utils/queries';
-import {
-  ADD_LOG_ENTRY,
-  EDIT_LOG_ENTRY,
-  REMOVE_LOG_ENTRY,
-} from '../utils/mutations';
+import { EDIT_LOG_ENTRY, REMOVE_LOG_ENTRY } from '../utils/mutations';
 import dayjs from 'dayjs';
 import AuthService from '../utils/auth';
 import { Form, Button } from 'react-bootstrap';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 
-const ShotDisplay = ({ date, target, shot, firearmId }) => {
+const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
   //   const { date, target, numberTargets, shot, numberShots, firearmId } =
   //     useParams();
 
@@ -40,7 +34,11 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
     { skip: !loggedIn }
   );
 
-  const { data: data2 } = useQuery(
+  const {
+    loading: loading2,
+    error: error2,
+    data: data2,
+  } = useQuery(
     GET_FIREARM,
     { variables: { _id: firearmId } },
     { skip: !loggedIn }
@@ -53,16 +51,12 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
   useEffect(() => {
     const shotData = data?.logsByShot[0] || {};
     setShowShot(shotData);
+  }, [data]);
+
+  useEffect(() => {
     const firearm = data2?.firearm[0] || {};
     setShowFirearm(firearm);
-  }, [data, data2]);
-
-  // useEffect(() => {
-  //   if (currentShot) {
-  //     console.log(currentShot);
-  //     reloadSingleShot();
-  //   }
-  // });
+  }, [data2]);
 
   // routine to edit the selected log entry
   const handleEditLog = async (event) => {
@@ -70,7 +64,6 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
       const response = await editLogEntry({
         variables: {
           _id: showShot._id,
-          userId: showShot.userId,
           date: date,
           target: targetNumber,
           shot: shotNumber,
@@ -110,7 +103,9 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
         },
       });
       console.log(response);
-      window.location.replace(`/logs/targets/shots/${date}&${target}`);
+      window.location.replace(
+        `/logs/targets/shots/${date}${target}&${numberTargets - 1}`
+      );
     } catch (err) {
       console.log(err);
     }
@@ -131,56 +126,6 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
     // console.log(showShot);
   };
 
-  const handleFirearmChange = (event) => {
-    // handling multiple input types
-    const target = event.target;
-    let value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-
-    setShowFirearm({ ...showFirearm, [name]: value });
-    // console.log(showShot);
-  };
-
-  if (data && showShot.measureSystem === true) {
-    measureInches = ' (mm)';
-    measureSpeed = ' (Kph)';
-    measureTemp = ' (C)';
-    measureMass = ' (g)';
-  }
-
-  //   const onNextTarget = () => {
-  //     if (currentTarget < numberTargetsInt) {
-  //       setCurrentTarget(currentTarget + 1);
-  //       window.location.href = `/logs/targets/shots/${date}&${currentTarget}&${numberTargets}`;
-  //     }
-  //   };
-
-  //   const onPreviousTarget = () => {
-  //     if (currentTarget > 1) {
-  //       setCurrentTarget(currentTarget - 1);
-  //       window.location.href = `/logs/targets/shots/${date}&${currentTarget}&${numberTargets}`;
-  //     }
-  //   };
-
-  //   const onNextShot = () => {
-  //     if (currentShot < numberShotsInt) {
-  //       setCurrentShot(currentShot + 1);
-  //       reloadSingleShot();
-  //     }
-  //   };
-
-  //   const onPreviousShot = async () => {
-  //     if (currentShot > 1) {
-  //       setCurrentShot(currentShot - 1);
-  //       reloadSingleShot();
-  //     }
-  //   };
-
-  //   const reloadSingleShot = () => {
-  //     console.log(currentShot);
-  //     window.location.href = `/logs/targets/shots/shot/${date}&${currentTarget}&${numberTargetsInt}&${currentShot}&${numberShotsInt}&${firearmId}`;
-  //   };
-
   if (loading) {
     return <h4>Loading...</h4>;
   }
@@ -189,87 +134,36 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
     return <h4>There was a loading error... {error.message}</h4>;
   }
 
+  if (loading2) {
+    return <h4>Loading...</h4>;
+  }
+
+  if (error2) {
+    return <h4>There was a loading error... {error2.message}</h4>;
+  }
+
+  if (data && showShot?.measureSystem === true) {
+    measureInches = ' (mm)';
+    measureSpeed = ' (Kph)';
+    measureTemp = ' (C)';
+    measureMass = ' (g)';
+  }
+
   return (
     <>
-      {/* <div>
-        <h3 className="text-center">Range Session</h3>
-        <Link to={{ pathname: `/logs/targets/${date}` }}>
-          <p className="text-center">
-            {dayjs(parseInt(date)).format('YYYY-MM-DD')}
-          </p>
-        </Link>
-        <div className="text-center">
-          <button
-            type="button"
-            className="arrowButton left"
-            onClick={onPreviousTarget}
-            disabled={currentTarget === 1 ? true : false}
-          >
-            <ChevronLeftIcon className="button-icon" />
-          </button>
-          <h4 className="d-inline-block p-2">Target</h4>
-          <Link
-            to={{
-              pathname: `/logs/targets/shots/${date}&${currentTarget}&${numberTargets}`,
-            }}
-          >
-            <span className="m-2 float-right">{currentTarget}</span>
-          </Link>
-          <button
-            type="button"
-            className="arrowButton right"
-            onClick={onNextTarget}
-            disabled={currentTarget === numberTargetsInt ? true : false}
-          >
-            <ChevronRightIcon className="button-icon" />
-          </button>
-        </div>
-        <div className="text-center">
-          <button
-            type="button"
-            className="arrowButton left"
-            onClick={onPreviousShot}
-            disabled={currentShot === 1 ? true : false}
-          >
-            <ChevronLeftIcon className="button-icon" />
-          </button>
-          <h4 className="d-inline-block p-2"> Shot</h4>
-          <Link
-            to={{
-              pathname: `/logs/targets/shots/shot/${date}&${currentTarget}&${numberTargetsInt}&${currentShot}&${numberShotsInt}&${firearmId}`,
-            }}
-          >
-            <span className="m-2 float=right">{currentShot}</span>
-          </Link>
-          <button
-            type="button"
-            className="arrowButton right"
-            onClick={onNextShot}
-            disabled={currentShot === numberShotsInt ? true : false}
-          >
-            <ChevronRightIcon className="button-icon" />
-          </button>
-        </div>
-      </div> */}
+      <div>
+        <p className="d-inline-block">Firearm: </p>
+        <span className="m-2">{showFirearm?.name}</span>
+      </div>
       <Form onSubmit={handleEditLog}>
-        <Form.Group>
-          <Form.Label className="m-2">Firearm:</Form.Label>
-          <Form.Control
-            className="w-50 float-end"
-            type="text"
-            name="name"
-            value={showFirearm.name || ''}
-            onChange={handleFirearmChange}
-          />
-        </Form.Group>
         <Form.Group className="bg-info">
           <Form.Label className="m-2">Temperature: {measureTemp}</Form.Label>
 
           <Form.Control
             className="w-50 float-end"
-            type="text"
+            type="number"
             name="temperature"
-            value={showShot.temperature || ''}
+            value={showShot?.temperature || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -278,9 +172,9 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
 
           <Form.Control
             className="w-50 float-end"
-            type="text"
+            type="number"
             name="humidity"
-            value={showShot.humidity || ''}
+            value={showShot?.humidity || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -289,9 +183,9 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
 
           <Form.Control
             className="w-50 float-end"
-            type="text"
+            type="number"
             name="windSpeed"
-            value={showShot.windSpeed || ''}
+            value={showShot?.windSpeed || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -302,7 +196,7 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
             className="w-50 float-end"
             type="text"
             name="windDirection"
-            value={showShot.windDirection || ''}
+            value={showShot?.windDirection || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -311,9 +205,9 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
 
           <Form.Control
             className="w-50 float-end"
-            type="text"
+            type="number"
             name="scoreRing"
-            value={showShot.scoreRing || ''}
+            value={showShot?.scoreRing || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -323,7 +217,7 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
             className="m-2 p-2"
             type="checkbox"
             name="scoreX"
-            checked={showShot.scoreX || false}
+            checked={showShot?.scoreX || false}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -332,9 +226,9 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
 
           <Form.Control
             className="w-50 float-end"
-            type="text"
+            type="number"
             name="scoreOrientation"
-            value={showShot.scoreOrientation || ''}
+            value={showShot?.scoreOrientation || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -344,7 +238,7 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
             className="m-2 p-2"
             type="checkbox"
             name="projectileType"
-            checked={showShot.projectileType || false}
+            checked={showShot?.projectileType || false}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -353,9 +247,9 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
 
           <Form.Control
             className="w-50 float-end"
-            type="text"
+            type="number"
             name="projectileDiameter"
-            value={showShot.projectileDiameter || ''}
+            value={showShot?.projectileDiameter || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -364,9 +258,9 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
 
           <Form.Control
             className="w-50 float-end"
-            type="text"
+            type="number"
             name="projectileWeight"
-            value={showShot.projectileWeight || ''}
+            value={showShot?.projectileWeight || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -377,7 +271,7 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
             className="w-50 float-end"
             type="text"
             name="patchMaterial"
-            value={showShot.patchMaterial || ''}
+            value={showShot?.patchMaterial || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -386,9 +280,9 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
 
           <Form.Control
             className="w-50 float-end"
-            type="text"
+            type="number"
             name="patchThickness"
-            value={showShot.patchThickness || ''}
+            value={showShot?.patchThickness || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -399,7 +293,7 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
             className="w-50 float-end"
             type="text"
             name="patchLube"
-            value={showShot.patchLube || ''}
+            value={showShot?.patchLube || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -409,7 +303,7 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
             className="w-50 float-end"
             type="text"
             name="powderBrand"
-            value={showShot.powderBrand || ''}
+            value={showShot?.powderBrand || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -419,7 +313,7 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
             className="w-50 float-end"
             type="text"
             name="powderGrade"
-            value={showShot.powderGrade || ''}
+            value={showShot?.powderGrade || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -429,7 +323,7 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
             className="w-50 float-end"
             type="text"
             name="powderLot"
-            value={showShot.powderLot || ''}
+            value={showShot?.powderLot || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -437,9 +331,9 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
           <Form.Label className="m-2">Powder Charge: {measureMass}</Form.Label>
           <Form.Control
             className="w-50 float-end"
-            type="text"
+            type="number"
             name="powderCharge"
-            value={showShot.powderCharge || ''}
+            value={showShot?.powderCharge || ''}
             onChange={handleDataChange}
           />
         </Form.Group>
@@ -449,7 +343,7 @@ const ShotDisplay = ({ date, target, shot, firearmId }) => {
             className="m-2 p-2 float-end"
             type="checkbox"
             name="measureSystem"
-            checked={showShot.measureSystem || false}
+            checked={showShot?.measureSystem || false}
             onChange={handleDataChange}
           />
         </Form.Group>
