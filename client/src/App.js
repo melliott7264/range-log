@@ -16,14 +16,10 @@ import Footer from './components/Footer/Footer';
 import Main from './pages/Main';
 import Firearms from './pages/Firearms';
 import SingleFirearm from './components/SingleFirearm';
-<<<<<<< HEAD
-// import Logs from './pages/Logs';
-=======
 import Logs from './pages/Logs';
 import Targets from './components/Targets';
 import Shots from './components/Shots';
 import SingleShot from './components/SingleShot';
->>>>>>> develop
 
 const PORT = process.env.PORT || 3001;
 
