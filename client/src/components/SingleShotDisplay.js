@@ -17,6 +17,7 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
 
   // initialize units of measure
   let measureInches = ' (in)';
+  let measureInch = ' (.001")';
   let measureSpeed = ' (Mph)';
   let measureTemp = ' (F)';
   let measureMass = ' (gr)';
@@ -148,6 +149,7 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
 
   if (data && showShot?.measureSystem === true) {
     measureInches = ' (mm)';
+    measureInch = ' (0.01mm)';
     measureSpeed = ' (Kph)';
     measureTemp = ' (C)';
     measureMass = ' (g)';
@@ -247,7 +249,7 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
           />
         </Form.Group>
         <Form.Group className="bg-info">
-          <Form.Label className="m-2">Bullet Dia: {measureInches}</Form.Label>
+          <Form.Label className="m-2">Bullet Dia: {measureInch}</Form.Label>
 
           <Form.Control
             className="w-50 float-end"
@@ -280,7 +282,7 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label className="m-2">Patch Size: {measureInches}</Form.Label>
+          <Form.Label className="m-2">Patch Size: {measureInch}</Form.Label>
 
           <Form.Control
             className="w-50 float-end"
