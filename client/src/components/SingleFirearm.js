@@ -98,7 +98,7 @@ const SingleFirearm = () => {
   }
 
   return (
-    <div>
+    <div className="single-firearm">
       <div className="text-center">
         <h3>Firearm Description</h3>
       </div>

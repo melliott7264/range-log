@@ -77,8 +77,8 @@ const Firearms = () => {
   }
 
   return (
-    <>
-      <div>
+    <div>
+      <div className="firearms-list">
         <div className="container ">
           <div className="row">
             <div className="text-center">
@@ -243,7 +243,7 @@ const Firearms = () => {
           </Form>
         </Modal.Body>
       </Modal>
-    </>
+    </div>
   );
 };
 
