@@ -1,6 +1,11 @@
 import './App.css';
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 import {
   ApolloClient,
   InMemoryCache,
@@ -74,6 +79,7 @@ function App() {
               component={SingleShot}
             />
             <Route exact path="/" component={Main} />
+            <Redirect to="/" />
           </Switch>
         </>
         <Footer />
