@@ -32,6 +32,9 @@ const Shots = () => {
   const [firearmName, setFirearmName] = useState();
 
   const loggedIn = AuthService.loggedIn();
+  if (!loggedIn) {
+    window.location.replace('/');
+  }
 
   const [addLogEntry] = useMutation(ADD_LOG_ENTRY);
 

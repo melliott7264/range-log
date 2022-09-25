@@ -18,6 +18,7 @@ const Shots = () => {
   const shotNumber = parseInt(shot);
   const [currentShot, setCurrentShot] = useState(shotNumber);
   const numberShotsInt = parseInt(numberShots);
+  const [currentNumberShots, setCurrentNumberShots] = useState(numberShotsInt);
 
   // state controlling modal to add a new session
   const [showModal, setShowModal] = useState(false);
@@ -26,6 +27,9 @@ const Shots = () => {
   const [showFirearm, setShowFirearm] = useState();
 
   const loggedIn = AuthService.loggedIn();
+  if (!loggedIn) {
+    window.location.replace('/');
+  }
 
   const [addLogEntry] = useMutation(ADD_LOG_ENTRY);
 
@@ -38,7 +42,7 @@ const Shots = () => {
 
   const { loading, error, data } = useQuery(
     GET_LOG_ENTRIES_BY_SHOT,
-    { variables: { date: date, target: currentTarget, shot: numberShotsInt } },
+    { variables: { date: date, target: currentTarget, shot: currentShot } },
     { skip: !loggedIn }
   );
 
@@ -112,7 +116,10 @@ const Shots = () => {
         },
       });
       console.log(response);
-      window.location.href = `/logs/targets/shots/${date}&${currentTarget}&${numberTargetsInt}`;
+      // setCurrentNumberShots(currentNumberShots + 1);
+      window.location.href = `/logs/targets/shots/shot/${date}&${currentTarget}&${numberTargetsInt}&${
+        currentNumberShots + 1
+      }&${currentNumberShots + 1}&${firearmId}`;
     } catch (err) {
       console.log(err);
     }
@@ -121,12 +128,22 @@ const Shots = () => {
   const onNextTarget = () => {
     if (currentTarget < numberTargetsInt) {
       setCurrentTarget(currentTarget + 1);
+      // must update the number of shots for new target
+      // will do this by calling the shots component
+      window.location.replace(
+        `/logs/targets/shots/${date}&${currentTarget + 1}&${numberTargetsInt}`
+      );
     }
   };
 
   const onPreviousTarget = () => {
     if (currentTarget > 1) {
       setCurrentTarget(currentTarget - 1);
+      // must update the number of shots for new target
+      // will do this by calling the shots component
+      window.location.replace(
+        `/logs/targets/shots/${date}&${currentTarget - 1}&${numberTargetsInt}`
+      );
     }
   };
 
@@ -203,11 +220,7 @@ const Shots = () => {
             <ChevronLeftIcon className="button-icon" />
           </button>
           <h4 className="d-inline-block p-2"> Shot</h4>
-          {/* <Link
-            to={{
-              pathname: `/logs/targets/shots/shot/${date}&${currentTarget}&${numberTargetsInt}&${currentShot}&${numberShotsInt}&${firearmId}`,
-            }}
-          > */}
+
           <span className="m-2 float=right">{currentShot}</span>
           {/* </Link> */}
           <button

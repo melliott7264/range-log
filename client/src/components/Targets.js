@@ -15,8 +15,9 @@ const Targets = () => {
   const [showTargets, setShowTargets] = useState();
 
   const loggedIn = AuthService.loggedIn();
-
-  // define variable for entire component
+  if (!loggedIn) {
+    window.location.replace('/');
+  }
 
   const { loading, error, data } = useQuery(
     LOG_TARGETS,

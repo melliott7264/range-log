@@ -16,6 +16,9 @@ const Firearms = () => {
   const [showFirearm, setShowFirearm] = useState('');
 
   const loggedIn = AuthService.loggedIn();
+  if (!loggedIn) {
+    window.location.replace('/');
+  }
 
   let measureInches = '(in)';
 
