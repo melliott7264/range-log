@@ -116,11 +116,7 @@ const Shots = () => {
         },
       });
       console.log(response);
-<<<<<<< HEAD
-      // return to shots listing to make sure number of shots gets updated
-=======
-      // setCurrentNumberShots(currentNumberShots + 1);
->>>>>>> develop
+      // redisplay shots after adding a new one
       window.location.replace(
         `/logs/targets/shots/${date}&${currentTarget}&${numberTargetsInt}`
       );
