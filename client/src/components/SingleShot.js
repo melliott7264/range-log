@@ -116,10 +116,10 @@ const Shots = () => {
         },
       });
       console.log(response);
-      // setCurrentNumberShots(currentNumberShots + 1);
-      window.location.href = `/logs/targets/shots/shot/${date}&${currentTarget}&${numberTargetsInt}&${
-        currentNumberShots + 1
-      }&${currentNumberShots + 1}&${firearmId}`;
+      // return to shots listing to make sure number of shots gets updated
+      window.location.replace(
+        `/logs/targets/shots/${date}&${currentTarget}&${numberTargetsInt}`
+      );
     } catch (err) {
       console.log(err);
     }
