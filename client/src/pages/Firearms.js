@@ -21,6 +21,7 @@ const Firearms = () => {
   }
 
   let measureInches = '(in)';
+  let measureInch = ' (.001")';
 
   const [addFirearm] = useMutation(ADD_FIREARM);
 
@@ -72,6 +73,7 @@ const Firearms = () => {
 
   if (showFirearm.measureSystem === true) {
     measureInches = '(mm)';
+    measureInch = ' (0.01mm)';
   }
 
   return (
@@ -162,7 +164,7 @@ const Firearms = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">Dia Touch Hole:</Form.Label>
-              <span>{measureInches}</span>
+              <span>{measureInch}</span>
               <Form.Control
                 type="number"
                 step="0.001"
