@@ -154,7 +154,9 @@ const Shots = () => {
         },
       });
       console.log(response);
-      window.location.href = `/logs/targets/shots/${date}&${currentTarget}&${numberTargetsInt}`;
+      window.location.replace(
+        `/logs/targets/shots/${date}&${currentTarget}&${numberTargetsInt}`
+      );
     } catch (err) {
       console.log(err);
     }
