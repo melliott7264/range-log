@@ -3,6 +3,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_LOG_ENTRIES_BY_SHOT, GET_FIREARM } from '../utils/queries';
 import { EDIT_LOG_ENTRY, REMOVE_LOG_ENTRY } from '../utils/mutations';
 import dayjs from 'dayjs';
+import { ClockIcon } from '@heroicons/react/24/outline';
 import AuthService from '../utils/auth';
 import { Form, Button } from 'react-bootstrap';
 
@@ -14,9 +15,13 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
   const [showFirearm, setShowFirearm] = useState();
 
   const loggedIn = AuthService.loggedIn();
+  if (!loggedIn) {
+    window.location.replace('/');
+  }
 
   // initialize units of measure
   let measureInches = ' (in)';
+  let measureInch = ' (.001")';
   let measureSpeed = ' (Mph)';
   let measureTemp = ' (F)';
   let measureMass = ' (gr)';
@@ -99,16 +104,18 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
       // must check if deleting target and adjust target and numberTargets
       // if shot === 1 then deleting shot deletes target
       let targets = numberTargets;
-      if (shot === 1) {
-        if (target > 1) {
-          target = target - 1;
-          targets = numberTargets - 1;
-          window.location.replace(
-            `/logs/targets/shots/${date}&${target}&${targets}`
-          );
-        } else {
-          window.location.replace(`/logs`);
-        }
+      if (shot === 1 && target === 1) {
+        window.location.replace(`/logs`);
+      } else if (shot === 1 && target > 1) {
+        target = target - 1;
+        targets = numberTargets - 1;
+        window.location.replace(
+          `/logs/targets/shots/${date}&${target}&${targets}`
+        );
+      } else {
+        window.location.replace(
+          `/logs/targets/shots/${date}&${target}&${targets}`
+        );
       }
     } catch (err) {
       console.log(err);
@@ -148,15 +155,16 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
 
   if (data && showShot?.measureSystem === true) {
     measureInches = ' (mm)';
+    measureInch = ' (0.01mm)';
     measureSpeed = ' (Kph)';
     measureTemp = ' (C)';
     measureMass = ' (g)';
   }
 
   return (
-    <>
+    <div className="single-shot-page ">
       <div>
-        <p className="d-inline-block">Firearm: </p>
+        <p className="d-inline-block m-2">Firearm: </p>
         <span className="m-2">{showFirearm?.name}</span>
       </div>
       <Form onSubmit={handleEditLog}>
@@ -172,7 +180,7 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label className="m-2">Humidity:</Form.Label>
+          <Form.Label className="m-2">Humidity: (%)</Form.Label>
 
           <Form.Control
             className="w-50 float-end"
@@ -226,7 +234,10 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
           />
         </Form.Group>
         <Form.Group className="bg-info">
-          <Form.Label className="m-2">Score Orientation:</Form.Label>
+          <Form.Label className="m-2">
+            Score Orientation:
+            <ClockIcon className="clock-face" />
+          </Form.Label>
 
           <Form.Control
             className="w-50 float-end"
@@ -237,7 +248,7 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label className="m-2">Round Ball:</Form.Label>
+          <Form.Label className="m-2">Round Ball: (vs. Conical)</Form.Label>
           <Form.Check
             className="m-2 p-2"
             type="checkbox"
@@ -247,7 +258,7 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
           />
         </Form.Group>
         <Form.Group className="bg-info">
-          <Form.Label className="m-2">Bullet Dia: {measureInches}</Form.Label>
+          <Form.Label className="m-2">Bullet Dia: {measureInch}</Form.Label>
 
           <Form.Control
             className="w-50 float-end"
@@ -280,7 +291,7 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label className="m-2">Patch Size: {measureInches}</Form.Label>
+          <Form.Label className="m-2">Patch Size: {measureInch}</Form.Label>
 
           <Form.Control
             className="w-50 float-end"
@@ -342,7 +353,7 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label className="m-2">Metric:</Form.Label>
+          <Form.Label className="m-2">Metric: (vs. English)</Form.Label>
           <Form.Check
             className="m-2 p-2 float-end"
             type="checkbox"
@@ -363,7 +374,7 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
           Delete Log Entry
         </Button>
       </Form>
-    </>
+    </div>
   );
 };
 

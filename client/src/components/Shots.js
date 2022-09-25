@@ -32,11 +32,15 @@ const Shots = () => {
   const [firearmName, setFirearmName] = useState();
 
   const loggedIn = AuthService.loggedIn();
+  if (!loggedIn) {
+    window.location.replace('/');
+  }
 
   const [addLogEntry] = useMutation(ADD_LOG_ENTRY);
 
   // initialize units of measure
   let measureInches = ' (in)';
+  let measureInch = ' (.001")';
   let measureSpeed = ' (Mph)';
   let measureTemp = ' (F)';
   let measureMass = ' (gr)';
@@ -114,6 +118,7 @@ const Shots = () => {
 
   if (showShot?.measureSystem === true) {
     measureInches = ' (mm)';
+    measureInch = ' (0.01mm)';
     measureSpeed = ' (Kph)';
     measureTemp = ' (C)';
     measureMass = ' (g)';
@@ -337,9 +342,7 @@ const Shots = () => {
               />
             </Form.Group>
             <Form.Group className="bg-info">
-              <Form.Label className="m-2">
-                Bullet Dia: {measureInches}
-              </Form.Label>
+              <Form.Label className="m-2">Bullet Dia: {measureInch}</Form.Label>
 
               <Form.Control
                 className="w-50 float-end"
@@ -374,9 +377,7 @@ const Shots = () => {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label className="m-2">
-                Patch Size: {measureInches}
-              </Form.Label>
+              <Form.Label className="m-2">Patch Size: {measureInch}</Form.Label>
 
               <Form.Control
                 className="w-50 float-end"

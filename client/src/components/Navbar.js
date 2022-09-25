@@ -5,6 +5,7 @@ import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import SignUp from './SignUp';
 import Login from './Login';
+import rifleLogo from '../Rifle19Mask.png';
 
 import AuthService from '../utils/auth';
 
@@ -30,16 +31,17 @@ const AppNavbar = () => {
             style={{ color: 'black' }}
             href="/"
           >
-            <img alt="" src="../../assets/images/Rifle19Mask.png" width="360" />
-            <h1>Muzzleloader Range Log</h1>
-            {loggedIn ? (
-              <h2>
-                {userData[0]?.firstName} {userData[0]?.lastName}
-              </h2>
-            ) : (
-              <h2>Please Log In</h2>
-            )}
-
+            <div>
+              <img alt="" src={rifleLogo} width="360" />
+              <h1>Muzzleloader Range Log</h1>
+              {loggedIn ? (
+                <h2>
+                  {userData[0]?.firstName} {userData[0]?.lastName}
+                </h2>
+              ) : (
+                <h2>Please Log In</h2>
+              )}
+            </div>
             <Nav className="justify-content-center">
               {loggedIn ? (
                 <>

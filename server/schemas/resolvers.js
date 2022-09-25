@@ -332,7 +332,7 @@ const resolvers = {
             scoreOrientation: scoreOrientation,
             projectileType: projectileType,
             projectileDiameter: projectileDiameter,
-            ProjectileWeight: projectileWeight,
+            projectileWeight: projectileWeight,
             patchMaterial: patchMaterial,
             patchThickness: patchThickness,
             patchLube: patchLube,

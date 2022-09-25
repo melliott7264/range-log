@@ -26,10 +26,10 @@ const logSchema = new Schema({
     required: true,
   },
 
-  // The measure system is either true: English or false: Metric
+  // The measure system is either false: English or true: Metric
   measureSystem: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   // Start log entries for date
   // temperature is an integer in Fahrenheit or Celsius

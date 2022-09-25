@@ -12,8 +12,12 @@ const SingleFirearm = () => {
   const { id } = useParams();
 
   const loggedIn = AuthService.loggedIn();
+  if (!loggedIn) {
+    window.location.replace('/');
+  }
 
   let measureInches = '(in)';
+  let measureInch = ' (.001")';
 
   // state controlling firearm description data
   const [firearmData, setFirearmData] = useState({});
@@ -90,6 +94,7 @@ const SingleFirearm = () => {
 
   if (firearmData.measureSystem === true) {
     measureInches = '(mm)';
+    measureInch = ' (0.01mm)';
   }
 
   return (
@@ -145,7 +150,7 @@ const SingleFirearm = () => {
         </Form.Group>
         <Form.Group>
           <Form.Label className="m-2">Dia Touch Hole:</Form.Label>
-          <span>{measureInches}</span>
+          <span>{measureInch}</span>
           <Form.Control
             className="w-50 float-end"
             type="number"
