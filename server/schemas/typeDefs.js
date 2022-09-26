@@ -33,6 +33,8 @@ const typeDefs = gql`
       caliber: Float
       ignitionType: String
       diaTouchHole: Float
+      distanceToTarget: Int
+      muzzleVelocity: Int
       diaRearSight: Float
       diaFrontSight: Float
       heightRearSight: Float
@@ -71,6 +73,8 @@ const typeDefs = gql`
       caliber: Float
       ignitionType: String
       diaTouchHole: Float
+      distanceToTarget: Int
+      muzzleVelocity: Int
       diaRearSight: Float
       diaFrontSight: Float
       heightRearSight: Float
@@ -121,6 +125,8 @@ const typeDefs = gql`
     caliber: Float
     ignitionType: String
     diaTouchHole: Float
+    distanceToTarget: Int
+    muzzleVelocity: Int
     diaRearSight: Float
     diaFrontSight: Float
     heightRearSight: Float

@@ -18,6 +18,8 @@ const SingleFirearm = () => {
 
   let measureInches = '(in)';
   let measureInch = ' (.001")';
+  let measureYard = ' (yd)';
+  let measureVelocity = ' (ft/s)';
 
   // state controlling firearm description data
   const [firearmData, setFirearmData] = useState({});
@@ -49,6 +51,8 @@ const SingleFirearm = () => {
           barrelLength: firearmData.barrelLength,
           caliber: firearmData.caliber,
           diaTouchHole: firearmData.diaTouchHole,
+          distanceToTarget: firearmData.distanceToTarget,
+          muzzleVelocity: firearmData.muzzleVelocity,
           diaRearSight: firearmData.diaRearSight,
           diaFrontSight: firearmData.diaFrontSight,
           heightFrontSight: firearmData.heightFrontSight,
@@ -95,7 +99,37 @@ const SingleFirearm = () => {
   if (firearmData.measureSystem === true) {
     measureInches = '(mm)';
     measureInch = ' (0.01mm)';
+    measureYard = ' (m)';
+    measureVelocity = ' (m/s)';
   }
+
+  // routine to calculate the front sight height
+  const frontSightHeight = () => {
+    const accelerationDueToGravity = 32;
+    let distanceToTarget = firearmData.distanceToTarget;
+    let muzzleVelocity = firearmData.muzzleVelocity;
+    const bulletDrop =
+      0 -
+      0.5 *
+        ((accelerationDueToGravity *
+          ((distanceToTarget * 3) / muzzleVelocity)) ^
+          2) *
+        12;
+    const frontSightHeight =
+      0.5 * firearmData.diaRearSight +
+      firearmData.heightRearSight -
+      0.5 * firearmData.diaFrontSight;
+    const centerBoreToSightLine =
+      firearmData.diaRearSight * 0.5 + firearmData.heightRearSight;
+    const bulletDropFromSightLine = bulletDrop - centerBoreToSightLine;
+    const frontSightHeightCorrection =
+      firearmData.sightRadius *
+      (bulletDropFromSightLine /
+        (distanceToTarget * 36 + firearmData.sightRadius));
+    const correctedFrontSightHeight =
+      frontSightHeight + frontSightHeightCorrection;
+    return correctedFrontSightHeight;
+  };
 
   return (
     <div className="single-firearm">
@@ -161,6 +195,30 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group className="bg-info">
+          <Form.Label className="m-2">Distance:</Form.Label>
+          <span>{measureYard}</span>
+          <Form.Control
+            className="w-50 float-end"
+            type="number"
+            step="0.001"
+            name="distanceToTarget"
+            value={firearmData.distanceToTarget || ''}
+            onChange={handleDataChange}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label className="m-2">Velocity:</Form.Label>
+          <span>{measureVelocity}</span>
+          <Form.Control
+            className="w-50 float-end"
+            type="number"
+            step="0.001"
+            name="muzzleVelocity"
+            value={firearmData.muzzleVelocity || ''}
+            onChange={handleDataChange}
+          />
+        </Form.Group>
+        <Form.Group className="bg-info">
           <Form.Label className="m-2">Dia@Rear Sight:</Form.Label>
           <span>{measureInches}</span>
           <Form.Control
@@ -204,7 +262,7 @@ const SingleFirearm = () => {
             type="number"
             step="0.001"
             name="heightFrontSight"
-            value={firearmData.heightFrontSight || ''}
+            value={frontSightHeight().toFixed(3) || ''}
             onChange={handleDataChange}
           />
         </Form.Group>

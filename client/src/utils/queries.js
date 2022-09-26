@@ -35,6 +35,8 @@ export const GET_ALL_FIREARMS = gql`
       caliber
       ignitionType
       diaTouchHole
+      distanceToTarget
+      muzzleVelocity
       diaRearSight
       diaFrontSight
       heightRearSight
@@ -55,6 +57,8 @@ export const GET_FIREARM = gql`
       caliber
       ignitionType
       diaTouchHole
+      distanceToTarget
+      muzzleVelocity
       diaRearSight
       diaFrontSight
       heightRearSight

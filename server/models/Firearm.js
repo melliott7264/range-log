@@ -51,6 +51,12 @@ const firearmSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
   },
+  distanceToTarget: {
+    type: Number,
+  },
+  muzzleVelocity: {
+    type: Number,
+  },
 });
 
 const Firearm = model('Firearm', firearmSchema);

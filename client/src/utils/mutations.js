@@ -50,6 +50,8 @@ export const ADD_FIREARM = gql`
     $caliber: Float
     $ignitionType: String
     $diaTouchHole: Float
+    $distanceToTarget: Int
+    $muzzleVelocity: Int
     $diaRearSight: Float
     $diaFrontSight: Float
     $heightRearSight: Float
@@ -63,6 +65,8 @@ export const ADD_FIREARM = gql`
       caliber: $caliber
       ignitionType: $ignitionType
       diaTouchHole: $diaTouchHole
+      distanceToTarget: $distanceToTarget
+      muzzleVelocity: $muzzleVelocity
       diaRearSight: $diaRearSight
       diaFrontSight: $diaFrontSight
       heightRearSight: $heightRearSight
@@ -76,6 +80,8 @@ export const ADD_FIREARM = gql`
       caliber
       ignitionType
       diaTouchHole
+      distanceToTarget
+      muzzleVelocity
       diaRearSight
       diaFrontSight
       heightRearSight
@@ -95,6 +101,8 @@ export const EDIT_FIREARM = gql`
     $caliber: Float
     $ignitionType: String
     $diaTouchHole: Float
+    $distanceToTarget: Int
+    $muzzleVelocity: Int
     $diaRearSight: Float
     $diaFrontSight: Float
     $heightRearSight: Float
@@ -109,6 +117,8 @@ export const EDIT_FIREARM = gql`
       caliber: $caliber
       ignitionType: $ignitionType
       diaTouchHole: $diaTouchHole
+      distanceToTarget: $distanceToTarget
+      muzzleVelocity: $muzzleVelocity
       diaRearSight: $diaRearSight
       diaFrontSight: $diaFrontSight
       heightRearSight: $heightRearSight
@@ -122,6 +132,8 @@ export const EDIT_FIREARM = gql`
       caliber
       ignitionType
       diaTouchHole
+      distanceToTarget
+      muzzleVelocity
       diaRearSight
       diaFrontSight
       heightRearSight
