@@ -80,7 +80,7 @@ const Shots = () => {
           setFirearmName(showFirearms[i].name);
         }
       }
-      // define object for new shot modal
+      // seeds new shot with data from last shot
       setShowShot(showShots[showShots.length - 1]);
     }
   }, [data3, showFirearms, showShots]);
@@ -100,6 +100,23 @@ const Shots = () => {
   if (error3) {
     return <h4>There was a loading error... {error3.message}</h4>;
   }
+
+  // Need to get the array of shots to paginate through them
+  const shotArray = () => {
+    // get an array of the shots
+    let shotArray = [];
+    for (let i = 0; i < showShots.length; i++) {
+      shotArray.push(showShots[i].shot);
+    }
+    return shotArray;
+  };
+
+  // Need to get the largest shot number for adding the next shot and to pass to SingleShot
+  const lastShot = () => {
+    // call the function to get the shotArray
+    // return the largest number in the array
+    return Math.max(...shotArray());
+  };
 
   const handleDataChange = (event) => {
     // handling multiple input types
@@ -131,7 +148,7 @@ const Shots = () => {
         variables: {
           date: date,
           target: targetNumber,
-          shot: showShots.length + 1,
+          shot: lastShot() + 1,
           firearmId: showShot.firearmId,
           measureSystem: showShot.measureSystem,
           temperature: showShot.temperature,
@@ -226,7 +243,7 @@ const Shots = () => {
               <div className="col-md-12">
                 <Link
                   to={{
-                    pathname: `/logs/targets/shots/shot/${date}&${target}&${numberTargets}&${shot.shot}&${showShots.length}&${shot.firearmId}`,
+                    pathname: `/logs/targets/shots/shot/${date}&${target}&${numberTargets}&${shot.shot}&${shot.firearmId}`,
                   }}
                 >
                   <p className="text-center">{shot.shot}</p>

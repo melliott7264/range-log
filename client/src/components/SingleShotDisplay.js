@@ -87,6 +87,9 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
         },
       });
       console.log(response);
+      window.location.replace(
+        `/logs/targets/shots/shot/${date}&${targetNumber}&${numberTargets}&${shotNumber}&${firearmId}`
+      );
     } catch (err) {
       console.log(err);
     }

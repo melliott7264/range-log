@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { useParams, Link } from 'react-router-dom';
-import { GET_LOG_ENTRIES_BY_SHOT, GET_FIREARM } from '../utils/queries';
+import { GET_LOG_ENTRIES_BY_TARGET, GET_FIREARM } from '../utils/queries';
 import { ADD_LOG_ENTRY } from '../utils/mutations';
 import dayjs from 'dayjs';
 import AuthService from '../utils/auth';
@@ -10,19 +10,20 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import SingleShotDisplay from './SingleShotDisplay';
 
 const Shots = () => {
-  const { date, target, numberTargets, shot, numberShots, firearmId } =
-    useParams();
+  const { date, target, numberTargets, shot, firearmId } = useParams();
   const targetNumber = parseInt(target);
   const [currentTarget, setCurrentTarget] = useState(targetNumber);
   const numberTargetsInt = parseInt(numberTargets);
   const shotNumber = parseInt(shot);
   const [currentShot, setCurrentShot] = useState(shotNumber);
-  const numberShotsInt = parseInt(numberShots);
-  const [currentNumberShots, setCurrentNumberShots] = useState(numberShotsInt);
 
   // state controlling modal to add a new session
   const [showModal, setShowModal] = useState(false);
 
+  // state controlling all the shot data for a target
+  const [showShots, setShowShots] = useState();
+
+  // states controlling what is passed to SingleShotDisplay
   const [showShot, setShowShot] = useState();
   const [showFirearm, setShowFirearm] = useState();
 
@@ -40,8 +41,10 @@ const Shots = () => {
   let measureTemp = ' (F)';
   let measureMass = ' (gr)';
 
+  // get all the shots for a target so that we can get an array of shots for shot pagination as well
+  // as individual shot data to add a new shot
   const { loading, error, data } = useQuery(
-    GET_LOG_ENTRIES_BY_SHOT,
+    GET_LOG_ENTRIES_BY_TARGET,
     { variables: { date: date, target: currentTarget, shot: currentShot } },
     { skip: !loggedIn }
   );
@@ -57,11 +60,31 @@ const Shots = () => {
   );
 
   useEffect(() => {
-    const shotData = data?.logsByShot[0] || {};
-    setShowShot(shotData);
+    const shotsData = data?.logsByTarget || [];
+    setShowShots(shotsData);
     const firearm = data2?.firearm[0] || {};
     setShowFirearm(firearm);
-  }, [data, data2]);
+    // create showShot array to get current shot data
+    setShowShot(
+      shotsData.filter((shot) => {
+        return shot.shot === currentShot;
+      })
+    );
+  }, [data, data2, currentShot]);
+
+  // Need to get the array of shots to paginate through them
+  const shotArray = () => {
+    return showShots.map((shot) => {
+      return shot.shot;
+    });
+  };
+
+  // Need to get the largest shot number for adding the next shot and to pass to SingleShot
+  const lastShot = () => {
+    // call the function to get the shotArray
+    // return the largest number in the array
+    return Math.max(...shotArray());
+  };
 
   const handleDataChange = (event) => {
     // handling multiple input types
@@ -93,7 +116,7 @@ const Shots = () => {
         variables: {
           date: date,
           target: targetNumber,
-          shot: numberShotsInt + 1,
+          shot: lastShot() + 1,
           firearmId: firearmId,
           measureSystem: showShot.measureSystem,
           temperature: showShot.temperature,
@@ -148,14 +171,15 @@ const Shots = () => {
   };
 
   const onNextShot = () => {
-    if (currentShot < numberShotsInt) {
-      setCurrentShot(currentShot + 1);
+    if (currentShot < lastShot()) {
+      //need to find the shot location in the array and go to the shot at the next index
+      setCurrentShot(shotArray()[shotArray().indexOf(currentShot) + 1]);
     }
   };
 
   const onPreviousShot = async () => {
-    if (currentShot > 1) {
-      setCurrentShot(currentShot - 1);
+    if (currentShot > Math.min(...shotArray())) {
+      setCurrentShot(shotArray()[shotArray().indexOf(currentShot) - 1]);
     }
   };
 
@@ -215,7 +239,7 @@ const Shots = () => {
             type="button"
             className="arrowButton left"
             onClick={onPreviousShot}
-            disabled={currentShot === 1 ? true : false}
+            disabled={currentShot === Math.min(...shotArray()) ? true : false}
           >
             <ChevronLeftIcon className="button-icon" />
           </button>
@@ -227,7 +251,7 @@ const Shots = () => {
             type="button"
             className="arrowButton right"
             onClick={onNextShot}
-            disabled={currentShot === numberShotsInt ? true : false}
+            disabled={currentShot === lastShot() ? true : false}
           >
             <ChevronRightIcon className="button-icon" />
           </button>
@@ -236,7 +260,11 @@ const Shots = () => {
       <div className="text-center">
         <Button
           className="btn p-1 text-white"
-          onClick={() => setShowModal(true)}
+          onClick={() => {
+            //seeds new shot with data from last shot
+            setShowShot(showShots[showShots.length - 1]);
+            setShowModal(true);
+          }}
         >
           Add Shot
         </Button>

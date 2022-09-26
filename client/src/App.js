@@ -75,7 +75,7 @@ function App() {
             />
             <Route
               exact
-              path="/logs/targets/shots/shot/:date&:target&:numberTargets&:shot&:numberShots&:firearmId"
+              path="/logs/targets/shots/shot/:date&:target&:numberTargets&:shot&:firearmId"
               component={SingleShot}
             />
             <Route exact path="/" component={Main} />
