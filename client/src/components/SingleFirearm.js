@@ -290,7 +290,7 @@ const SingleFirearm = () => {
             onChange={handleDataChange}
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="bg-success text-white">
           <Form.Label className="m-2">Height Front Sight:</Form.Label>
           <span>{measureInches}</span>
           <Form.Control
