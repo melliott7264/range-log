@@ -113,6 +113,9 @@ const logSchema = new Schema({
   powderCharge: {
     type: Number,
   },
+  notes: {
+    type: String,
+  },
 });
 
 const Log = model('Log', logSchema);

@@ -67,6 +67,7 @@ const typeDefs = gql`
       powderGrade: String
       powderLot: String
       powderCharge: Int
+      notes: String
     ): Log
     editFirearm(
       _id: ID!
@@ -111,6 +112,7 @@ const typeDefs = gql`
       powderGrade: String
       powderLot: String
       powderCharge: Int
+      notes: String
     ): Log
     removeFirearm(_id: ID!): Firearm
     removeLogEntry(_id: ID!): Log
@@ -169,7 +171,7 @@ const typeDefs = gql`
     powderGrade: String
     powderLot: String
     powderCharge: Int
-    firearms: Firearm
+    notes: String
   }
 
   type Auth {

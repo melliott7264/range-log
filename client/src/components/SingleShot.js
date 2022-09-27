@@ -142,6 +142,7 @@ const Shots = () => {
           powderGrade: showShot.powderGrade,
           powderLot: showShot.powderLot,
           powderCharge: showShot.powderCharge,
+          notes: showShot.notes,
         },
       });
       console.log(response);
@@ -533,6 +534,16 @@ const Shots = () => {
                 type="checkbox"
                 name="measureSystem"
                 checked={showShot?.measureSystem || false}
+                onChange={handleDataChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label className="m-2">Notes:</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows="4"
+                name="notes"
+                value={showShot?.notes || ''}
                 onChange={handleDataChange}
               />
             </Form.Group>

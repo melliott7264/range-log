@@ -100,6 +100,7 @@ export const GET_ALL_LOG_ENTRIES = gql`
       powderGrade
       powderLot
       powderCharge
+      notes
     }
   }
 `;
@@ -135,6 +136,7 @@ export const GET_LOG_ENTRIES_BY_DATE = gql`
       powderGrade
       powderLot
       powderCharge
+      notes
     }
   }
 `;
@@ -170,6 +172,7 @@ export const GET_LOG_ENTRIES_BY_TARGET = gql`
       powderGrade
       powderLot
       powderCharge
+      notes
     }
   }
 `;
@@ -205,6 +208,7 @@ export const GET_LOG_ENTRIES_BY_SHOT = gql`
       powderGrade
       powderLot
       powderCharge
+      notes
     }
   }
 `;
