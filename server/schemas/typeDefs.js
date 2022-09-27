@@ -46,6 +46,9 @@ const typeDefs = gql`
       target: Int!
       shot: Int!
       firearmId: ID!
+      targetType: String
+      targetDistance: Int
+      shootingPosition: String
       measureSystem: Boolean
       temperature: Int
       humidity: Int
@@ -87,6 +90,9 @@ const typeDefs = gql`
       target: Int
       shot: Int
       firearmId: ID
+      targetType: String
+      targetDistance: Int
+      shootingPosition: String
       measureSystem: Boolean
       temperature: Int
       humidity: Int
@@ -142,6 +148,9 @@ const typeDefs = gql`
     target: Int
     shot: Int
     firearmId: ID
+    targetType: String
+    targetDistance: Int
+    shootingPosition: String
     measureSystem: Boolean
     temperature: Int
     humidity: Int

@@ -6,6 +6,7 @@ import { ADD_LOG_ENTRY } from '../utils/mutations';
 import dayjs from 'dayjs';
 import AuthService from '../utils/auth';
 import { Form, Button, Modal } from 'react-bootstrap';
+import { ClockIcon } from '@heroicons/react/24/outline';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import SingleShotDisplay from './SingleShotDisplay';
 
@@ -40,6 +41,7 @@ const Shots = () => {
   let measureSpeed = ' (Mph)';
   let measureTemp = ' (F)';
   let measureMass = ' (gr)';
+  let measureYards = ' (yds)';
 
   // get all the shots for a target so that we can get an array of shots for shot pagination as well
   // as individual shot data to add a new shot
@@ -107,6 +109,7 @@ const Shots = () => {
     measureSpeed = ' (Kph)';
     measureTemp = ' (C)';
     measureMass = ' (g)';
+    measureYards = ' (m)';
   }
 
   // routine to add a log entry
@@ -118,6 +121,9 @@ const Shots = () => {
           target: targetNumber,
           shot: lastShot() + 1,
           firearmId: firearmId,
+          targetType: showShot.targetType,
+          targetDistance: showShot.targetDistance,
+          shootingPosition: showShot.shootingPosition,
           measureSystem: showShot.measureSystem,
           temperature: showShot.temperature,
           humidity: showShot.humidity,
@@ -295,6 +301,40 @@ const Shots = () => {
           </div>
           <Form onSubmit={handleAddLogEntry}>
             <Form.Group className="bg-info">
+              <Form.Label className="m-2">Target Type: </Form.Label>
+              <Form.Control
+                className="w-50 float-end"
+                type="text"
+                name="targetType"
+                value={showShot?.targetType || ''}
+                onChange={handleDataChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label className="m-2">
+                Target Distance: {measureYards}
+              </Form.Label>
+
+              <Form.Control
+                className="w-50 float-end"
+                type="number"
+                name="targetDistance"
+                value={showShot?.targetDistance || ''}
+                onChange={handleDataChange}
+              />
+            </Form.Group>
+            <Form.Group className="bg-info">
+              <Form.Label className="m-2">Shooting Position:</Form.Label>
+
+              <Form.Control
+                className="w-50 float-end"
+                type="text"
+                name="shootingPosition"
+                value={showShot?.shootingPosition || ''}
+                onChange={handleDataChange}
+              />
+            </Form.Group>
+            <Form.Group>
               <Form.Label className="m-2">
                 Temperature: {measureTemp}
               </Form.Label>
@@ -307,7 +347,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="bg-info">
               <Form.Label className="m-2">Humidity:</Form.Label>
 
               <Form.Control
@@ -318,7 +358,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group className="bg-info">
+            <Form.Group>
               <Form.Label className="m-2">
                 Wind Speed: {measureSpeed}
               </Form.Label>
@@ -331,7 +371,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="bg-info">
               <Form.Label className="m-2">Wind Direction:</Form.Label>
 
               <Form.Control
@@ -342,7 +382,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group className="bg-info">
+            <Form.Group>
               <Form.Label className="m-2">Score Ring:</Form.Label>
 
               <Form.Control
@@ -353,7 +393,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="bg-info">
               <Form.Label className="m-2">Score X:</Form.Label>
               <Form.Check
                 className="m-2 p-2"
@@ -363,8 +403,11 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group className="bg-info">
-              <Form.Label className="m-2">Score Orientation:</Form.Label>
+            <Form.Group>
+              <Form.Label className="m-2">
+                Score Orientation:
+                <ClockIcon className="clock-face" />
+              </Form.Label>
 
               <Form.Control
                 className="w-50 float-end"
@@ -374,7 +417,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="bg-info">
               <Form.Label className="m-2">Round Ball:</Form.Label>
               <Form.Check
                 className="m-2 p-2"
@@ -384,7 +427,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group className="bg-info">
+            <Form.Group>
               <Form.Label className="m-2">Bullet Dia: {measureInch}</Form.Label>
 
               <Form.Control
@@ -395,7 +438,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="bg-info">
               <Form.Label className="m-2">
                 Bullet Weight: {measureMass}
               </Form.Label>
@@ -408,7 +451,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group className="bg-info">
+            <Form.Group>
               <Form.Label className="m-2">Patch Material:</Form.Label>
 
               <Form.Control
@@ -419,7 +462,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="bg-info">
               <Form.Label className="m-2">Patch Size: {measureInch}</Form.Label>
 
               <Form.Control
@@ -430,7 +473,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group className="bg-info">
+            <Form.Group>
               <Form.Label className="m-2">Patch Lube</Form.Label>
 
               <Form.Control
@@ -441,7 +484,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="bg-info">
               <Form.Label className="m-2">Powder Brand:</Form.Label>
               <Form.Control
                 className="w-50 float-end"
@@ -451,7 +494,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group className="bg-info">
+            <Form.Group>
               <Form.Label className="m-2">Powder Grade:</Form.Label>
               <Form.Control
                 className="w-50 float-end"
@@ -461,7 +504,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="bg-info">
               <Form.Label className="m-2">Powder Lot:</Form.Label>
               <Form.Control
                 className="w-50 float-end"
@@ -471,7 +514,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group className="bg-info">
+            <Form.Group>
               <Form.Label className="m-2">
                 Powder Charge: {measureMass}
               </Form.Label>
@@ -483,7 +526,7 @@ const Shots = () => {
                 onChange={handleDataChange}
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="bg-info">
               <Form.Label className="m-2">Metric:</Form.Label>
               <Form.Check
                 className="m-2 p-2 float-end"
