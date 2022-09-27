@@ -200,7 +200,7 @@ const SingleFirearm = () => {
           <Form.Control
             className="w-50 float-end"
             type="number"
-            step="1"
+            step="0.01"
             name="barrelLength"
             value={firearmData.barrelLength || ''}
             onChange={handleDataChange}
@@ -236,7 +236,6 @@ const SingleFirearm = () => {
           <Form.Control
             className="w-50 float-end"
             type="number"
-            step="0.001"
             name="distanceToTarget"
             value={firearmData.distanceToTarget || ''}
             onChange={handleDataChange}
@@ -248,7 +247,6 @@ const SingleFirearm = () => {
           <Form.Control
             className="w-50 float-end"
             type="number"
-            step="0.001"
             name="muzzleVelocity"
             value={firearmData.muzzleVelocity || ''}
             onChange={handleDataChange}
