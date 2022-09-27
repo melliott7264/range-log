@@ -29,7 +29,7 @@ const typeDefs = gql`
     addFirearm(
       name: String!
       measureSystem: Boolean
-      barrelLength: Int
+      barrelLength: Float
       caliber: Float
       ignitionType: String
       diaTouchHole: Float
@@ -69,7 +69,7 @@ const typeDefs = gql`
       _id: ID!
       name: String
       measureSystem: Boolean
-      barrelLength: Int
+      barrelLength: Float
       caliber: Float
       ignitionType: String
       diaTouchHole: Float
@@ -121,7 +121,7 @@ const typeDefs = gql`
     _id: ID
     name: String
     measureSystem: Boolean
-    barrelLength: Int
+    barrelLength: Float
     caliber: Float
     ignitionType: String
     diaTouchHole: Float

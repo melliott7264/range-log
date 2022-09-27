@@ -78,7 +78,6 @@ const SingleFirearm = () => {
       value = parseFloat(value);
     }
     setFirearmData({ ...firearmData, [name]: value });
-    console.log(firearmData);
   };
 
   // routine to delete a firearm
@@ -105,30 +104,67 @@ const SingleFirearm = () => {
 
   // routine to calculate the front sight height
   const frontSightHeight = () => {
-    const accelerationDueToGravity = 32;
-    let distanceToTarget = firearmData.distanceToTarget;
-    let muzzleVelocity = firearmData.muzzleVelocity;
-    const bulletDrop =
-      0 -
-      0.5 *
-        ((accelerationDueToGravity *
-          ((distanceToTarget * 3) / muzzleVelocity)) ^
-          2) *
-        12;
-    const frontSightHeight =
-      0.5 * firearmData.diaRearSight +
-      firearmData.heightRearSight -
-      0.5 * firearmData.diaFrontSight;
-    const centerBoreToSightLine =
-      firearmData.diaRearSight * 0.5 + firearmData.heightRearSight;
-    const bulletDropFromSightLine = bulletDrop - centerBoreToSightLine;
-    const frontSightHeightCorrection =
-      firearmData.sightRadius *
-      (bulletDropFromSightLine /
-        (distanceToTarget * 36 + firearmData.sightRadius));
-    const correctedFrontSightHeight =
-      frontSightHeight + frontSightHeightCorrection;
-    return correctedFrontSightHeight;
+    if (firearmData.measureSystem) {
+      // Metric calculations
+      const accelerationDueToGravity = 9.81; // m/s2
+      const distanceToTarget = firearmData.distanceToTarget; // m
+      const muzzleVelocity = firearmData.muzzleVelocity; // m/s
+      const bulletDrop =
+        0 -
+        0.5 *
+          (accelerationDueToGravity *
+            (distanceToTarget / muzzleVelocity) ** 2) *
+          1000; // mm
+
+      const frontSightHeight =
+        0.5 * firearmData.diaRearSight +
+        firearmData.heightRearSight -
+        0.5 * firearmData.diaFrontSight; // mm
+
+      const centerBoreToSightLine =
+        firearmData.diaRearSight * 0.5 + firearmData.heightRearSight; // mm
+
+      const bulletDropFromSightLine = bulletDrop - centerBoreToSightLine; // mm
+
+      const frontSightHeightCorrection =
+        firearmData.sightRadius *
+        (bulletDropFromSightLine /
+          (distanceToTarget * 1000 + firearmData.sightRadius)); // mm
+
+      const correctedFrontSightHeight =
+        frontSightHeight + frontSightHeightCorrection; // mm
+      return correctedFrontSightHeight;
+    } else {
+      // English calculations
+      const accelerationDueToGravity = 32.19; // ft/s2
+      const distanceToTarget = firearmData.distanceToTarget; //yds
+      const muzzleVelocity = firearmData.muzzleVelocity; //ft/s
+      const bulletDrop =
+        0 -
+        0.5 *
+          (accelerationDueToGravity *
+            ((distanceToTarget * 3) / muzzleVelocity) ** 2) *
+          12;
+
+      const frontSightHeight =
+        0.5 * firearmData.diaRearSight +
+        firearmData.heightRearSight -
+        0.5 * firearmData.diaFrontSight;
+
+      const centerBoreToSightLine =
+        firearmData.diaRearSight * 0.5 + firearmData.heightRearSight;
+
+      const bulletDropFromSightLine = bulletDrop - centerBoreToSightLine;
+
+      const frontSightHeightCorrection =
+        firearmData.sightRadius *
+        (bulletDropFromSightLine /
+          (distanceToTarget * 36 + firearmData.sightRadius));
+
+      const correctedFrontSightHeight =
+        frontSightHeight + frontSightHeightCorrection; // inches
+      return correctedFrontSightHeight;
+    }
   };
 
   return (

@@ -46,7 +46,7 @@ export const ADD_FIREARM = gql`
   mutation addFirearm(
     $name: String!
     $measureSystem: Boolean
-    $barrelLength: Int
+    $barrelLength: Float
     $caliber: Float
     $ignitionType: String
     $diaTouchHole: Float
@@ -97,7 +97,7 @@ export const EDIT_FIREARM = gql`
     $_id: ID!
     $name: String
     $measureSystem: Boolean
-    $barrelLength: Int
+    $barrelLength: Float
     $caliber: Float
     $ignitionType: String
     $diaTouchHole: Float
