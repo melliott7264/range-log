@@ -171,6 +171,7 @@ export const ADD_LOG_ENTRY = gql`
     $powderGrade: String
     $powderLot: String
     $powderCharge: Int
+    $notes: String
   ) {
     addLogEntry(
       date: $date
@@ -198,6 +199,7 @@ export const ADD_LOG_ENTRY = gql`
       powderGrade: $powderGrade
       powderLot: $powderLot
       powderCharge: $powderCharge
+      notes: $notes
     ) {
       _id
       userId
@@ -226,6 +228,7 @@ export const ADD_LOG_ENTRY = gql`
       powderGrade
       powderLot
       powderCharge
+      notes
     }
   }
 `;
@@ -258,6 +261,7 @@ export const EDIT_LOG_ENTRY = gql`
     $powderGrade: String
     $powderLot: String
     $powderCharge: Int
+    $notes: String
   ) {
     editLogEntry(
       _id: $_id
@@ -286,6 +290,7 @@ export const EDIT_LOG_ENTRY = gql`
       powderGrade: $powderGrade
       powderLot: $powderLot
       powderCharge: $powderCharge
+      notes: $notes
     ) {
       _id
       userId
@@ -314,6 +319,7 @@ export const EDIT_LOG_ENTRY = gql`
       powderGrade
       powderLot
       powderCharge
+      notes
     }
   }
 `;
@@ -368,6 +374,7 @@ export const REMOVE_LOG_ENTRY = gql`
       powderGrade
       powderLot
       powderCharge
+      notes
     }
   }
 `;

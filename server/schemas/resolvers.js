@@ -262,6 +262,7 @@ const resolvers = {
         powderGrade,
         powderLot,
         powderCharge,
+        notes,
       },
       context
     ) => {
@@ -293,6 +294,7 @@ const resolvers = {
           powderGrade: powderGrade,
           powderLot: powderLot,
           powderCharge: powderCharge,
+          notes: notes,
         });
         return logEntry;
       }
@@ -328,6 +330,7 @@ const resolvers = {
         powderGrade,
         powderLot,
         powderCharge,
+        notes,
       },
       context
     ) => {
@@ -360,6 +363,7 @@ const resolvers = {
             powderGrade: powderGrade,
             powderLot: powderLot,
             powderCharge: powderCharge,
+            notes: notes,
           },
           { new: true }
         );
