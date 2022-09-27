@@ -79,6 +79,9 @@ export const GET_ALL_LOG_ENTRIES = gql`
       target
       shot
       firearmId
+      targetType
+      targetDistance
+      shootingPosition
       measureSystem
       temperature
       humidity
@@ -111,6 +114,9 @@ export const GET_LOG_ENTRIES_BY_DATE = gql`
       target
       shot
       firearmId
+      targetType
+      targetDistance
+      shootingPosition
       measureSystem
       temperature
       humidity
@@ -143,6 +149,9 @@ export const GET_LOG_ENTRIES_BY_TARGET = gql`
       target
       shot
       firearmId
+      targetType
+      targetDistance
+      shootingPosition
       measureSystem
       temperature
       humidity
@@ -175,6 +184,9 @@ export const GET_LOG_ENTRIES_BY_SHOT = gql`
       target
       shot
       firearmId
+      targetType
+      targetDistance
+      shootingPosition
       measureSystem
       temperature
       humidity

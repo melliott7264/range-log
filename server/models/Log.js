@@ -25,7 +25,15 @@ const logSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
   },
-
+  targetType: {
+    type: String,
+  },
+  targetDistance: {
+    type: Number,
+  },
+  shootingPosition: {
+    type: String,
+  },
   // The measure system is either false: English or true: Metric
   measureSystem: {
     type: Boolean,

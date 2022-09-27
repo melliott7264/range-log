@@ -150,6 +150,9 @@ export const ADD_LOG_ENTRY = gql`
     $target: Int!
     $shot: Int!
     $firearmId: ID!
+    $targetType: String
+    $targetDistance: Int
+    $shootingPosition: String
     $measureSystem: Boolean
     $temperature: Int
     $humidity: Int
@@ -174,6 +177,9 @@ export const ADD_LOG_ENTRY = gql`
       target: $target
       shot: $shot
       firearmId: $firearmId
+      targetType: $targetType
+      targetDistance: $targetDistance
+      shootingPosition: $shootingPosition
       measureSystem: $measureSystem
       temperature: $temperature
       humidity: $humidity
@@ -199,6 +205,9 @@ export const ADD_LOG_ENTRY = gql`
       target
       shot
       firearmId
+      targetType
+      targetDistance
+      shootingPosition
       measureSystem
       temperature
       humidity
@@ -228,6 +237,9 @@ export const EDIT_LOG_ENTRY = gql`
     $target: Int
     $shot: Int
     $firearmId: ID
+    $targetType: String
+    $targetDistance: Int
+    $shootingPosition: String
     $measureSystem: Boolean
     $temperature: Int
     $humidity: Int
@@ -253,6 +265,9 @@ export const EDIT_LOG_ENTRY = gql`
       target: $target
       shot: $shot
       firearmId: $firearmId
+      targetType: $targetType
+      targetDistance: $targetDistance
+      shootingPosition: $shootingPosition
       measureSystem: $measureSystem
       temperature: $temperature
       humidity: $humidity
@@ -278,6 +293,9 @@ export const EDIT_LOG_ENTRY = gql`
       target
       shot
       firearmId
+      targetType
+      targetDistance
+      shootingPosition
       measureSystem
       temperature
       humidity
@@ -329,6 +347,9 @@ export const REMOVE_LOG_ENTRY = gql`
       target
       shot
       firearmId
+      targetType
+      targetDistance
+      shootingPosition
       measureSystem
       temperature
       humidity
