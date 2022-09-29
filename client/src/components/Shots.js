@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import {
@@ -9,7 +9,6 @@ import {
 import { ADD_LOG_ENTRY } from '../utils/mutations';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { ClockIcon } from '@heroicons/react/24/outline';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import dayjs from 'dayjs';
 import AuthService from '../utils/auth';
@@ -40,7 +39,7 @@ const Shots = () => {
   const [addLogEntry] = useMutation(ADD_LOG_ENTRY);
 
   // initialize units of measure
-  let measureInches = ' (in)';
+  // let measureInches = ' (in)';
   let measureInch = ' (.001")';
   let measureSpeed = ' (Mph)';
   let measureTemp = ' (F)';
@@ -136,7 +135,7 @@ const Shots = () => {
   };
 
   if (showShot?.measureSystem === true) {
-    measureInches = ' (mm)';
+    // measureInches = ' (mm)';
     measureInch = ' (0.01mm)';
     measureSpeed = ' (Kph)';
     measureTemp = ' (C)';
@@ -250,7 +249,7 @@ const Shots = () => {
               <div className="col-md-12">
                 <Link
                   to={{
-                    pathname: `/logs/targets/shots/shot/${date}&${target}&${numberTargets}&${shot.shot}&${shot.firearmId}`,
+                    pathname: `/logs/targets/shots/shot/${date}&${currentTarget}&${numberTargets}&${shot.shot}&${shot.firearmId}`,
                   }}
                 >
                   <p className="text-center">{shot.shot}</p>
