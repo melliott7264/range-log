@@ -184,10 +184,7 @@ const Firearms = () => {
               <span>{measureYard}</span>
               <Form.Control
                 type="number"
-<<<<<<< HEAD
-=======
                 step="0.001"
->>>>>>> develop
                 name="distanceToTarget"
                 value={showFirearm.distanceToTarget || ''}
                 onChange={handleDataChange}
@@ -198,10 +195,7 @@ const Firearms = () => {
               <span>{measureVelocity}</span>
               <Form.Control
                 type="number"
-<<<<<<< HEAD
-=======
                 step="0.001"
->>>>>>> develop
                 name="muzzleVelocity"
                 value={showFirearm.muzzleVelocity || ''}
                 onChange={handleDataChange}
