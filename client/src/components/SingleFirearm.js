@@ -106,11 +106,20 @@ const SingleFirearm = () => {
 
   // routine to calculate the front sight height
   const frontSightHeight = () => {
+    const distanceToTarget = firearmData.distanceToTarget;
+    const muzzleVelocity = firearmData.muzzleVelocity;
+    const frontSightHeight =
+      0.5 * firearmData.diaRearSight +
+      firearmData.heightRearSight -
+      0.5 * firearmData.diaFrontSight;
+
+    const centerBoreToSightLine =
+      firearmData.diaRearSight * 0.5 + firearmData.heightRearSight;
+
     if (firearmData.measureSystem) {
       // Metric calculations
       const accelerationDueToGravity = 9.81; // m/s2
-      const distanceToTarget = firearmData.distanceToTarget; // m
-      const muzzleVelocity = firearmData.muzzleVelocity; // m/s
+
       const bulletDrop =
         0 -
         0.5 *
@@ -118,15 +127,7 @@ const SingleFirearm = () => {
             (distanceToTarget / muzzleVelocity) ** 2) *
           1000; // mm
 
-      const frontSightHeight =
-        0.5 * firearmData.diaRearSight +
-        firearmData.heightRearSight -
-        0.5 * firearmData.diaFrontSight; // mm
-
-      const centerBoreToSightLine =
-        firearmData.diaRearSight * 0.5 + firearmData.heightRearSight; // mm
-
-      const bulletDropFromSightLine = bulletDrop - centerBoreToSightLine; // mm
+      const bulletDropFromSightLine = bulletDrop - centerBoreToSightLine;
 
       const frontSightHeightCorrection =
         firearmData.sightRadius *
@@ -139,22 +140,13 @@ const SingleFirearm = () => {
     } else {
       // English calculations
       const accelerationDueToGravity = 32.19; // ft/s2
-      const distanceToTarget = firearmData.distanceToTarget; //yds
-      const muzzleVelocity = firearmData.muzzleVelocity; //ft/s
+
       const bulletDrop =
         0 -
         0.5 *
           (accelerationDueToGravity *
             ((distanceToTarget * 3) / muzzleVelocity) ** 2) *
           12;
-
-      const frontSightHeight =
-        0.5 * firearmData.diaRearSight +
-        firearmData.heightRearSight -
-        0.5 * firearmData.diaFrontSight;
-
-      const centerBoreToSightLine =
-        firearmData.diaRearSight * 0.5 + firearmData.heightRearSight;
 
       const bulletDropFromSightLine = bulletDrop - centerBoreToSightLine;
 
