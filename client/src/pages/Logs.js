@@ -54,6 +54,11 @@ const Logs = () => {
   // function unique returns an array with only unique elements
   const uniqueDates = unique(dateArray);
 
+  // sort session dates in decending order
+  const sortedSessions = uniqueDates.sort(function (a, b) {
+    return b - a;
+  });
+
   // routine to add a new log entry for current date
   const handleAddLogEntry = async (event) => {
     try {
@@ -104,7 +109,7 @@ const Logs = () => {
       </div>
 
       <ul className="list-group">
-        {uniqueDates.map((date) => (
+        {sortedSessions.map((date) => (
           <li key={date} className="list-group-item">
             <div className="row">
               <div className="col-md-12">

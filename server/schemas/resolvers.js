@@ -164,6 +164,7 @@ const resolvers = {
         heightRearSight,
         heightFrontSight,
         sightRadius,
+        notes,
       },
       context
     ) => {
@@ -183,6 +184,7 @@ const resolvers = {
           heightRearSight: heightRearSight,
           heightFrontSight: heightFrontSight,
           sightRadius: sightRadius,
+          notes: notes,
         });
         return firearm;
       }
@@ -206,6 +208,7 @@ const resolvers = {
         heightRearSight,
         heightFrontSight,
         sightRadius,
+        notes,
       },
       context
     ) => {
@@ -226,6 +229,7 @@ const resolvers = {
             heightRearSight: heightRearSight,
             heightFrontSight: heightFrontSight,
             sightRadius: sightRadius,
+            notes: notes,
           },
           { new: true }
         );

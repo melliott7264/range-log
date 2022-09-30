@@ -42,6 +42,7 @@ export const GET_ALL_FIREARMS = gql`
       heightRearSight
       heightFrontSight
       sightRadius
+      notes
       userId
     }
   }
@@ -64,6 +65,7 @@ export const GET_FIREARM = gql`
       heightRearSight
       heightFrontSight
       sightRadius
+      notes
       userId
     }
   }

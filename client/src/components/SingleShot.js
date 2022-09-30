@@ -36,7 +36,7 @@ const Shots = () => {
   const [addLogEntry] = useMutation(ADD_LOG_ENTRY);
 
   // initialize units of measure
-  let measureInches = ' (in)';
+  // let measureInches = ' (in)';
   let measureInch = ' (.001")';
   let measureSpeed = ' (Mph)';
   let measureTemp = ' (F)';
@@ -104,7 +104,7 @@ const Shots = () => {
   };
 
   if (showShot?.measureSystem === true) {
-    measureInches = ' (mm)';
+    // measureInches = ' (mm)';
     measureInch = ' (0.01mm)';
     measureSpeed = ' (Kph)';
     measureTemp = ' (C)';

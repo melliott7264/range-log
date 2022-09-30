@@ -49,9 +49,9 @@ const Firearms = () => {
           muzzleVelocity: showFirearm.muzzleVelocity,
           diaRearSight: showFirearm.diaRearSight,
           diaFrontSight: showFirearm.diaFrontSight,
-          heightFrontSight: showFirearm.heightFrontSight,
           heightRearSight: showFirearm.heightRearSight,
           sightRadius: showFirearm.sightRadius,
+          notes: showFirearm.notes,
           measureSystem: showFirearm.measureSystem,
         },
       });
@@ -184,6 +184,10 @@ const Firearms = () => {
               <span>{measureYard}</span>
               <Form.Control
                 type="number"
+<<<<<<< HEAD
+=======
+                step="0.001"
+>>>>>>> develop
                 name="distanceToTarget"
                 value={showFirearm.distanceToTarget || ''}
                 onChange={handleDataChange}
@@ -194,6 +198,10 @@ const Firearms = () => {
               <span>{measureVelocity}</span>
               <Form.Control
                 type="number"
+<<<<<<< HEAD
+=======
+                step="0.001"
+>>>>>>> develop
                 name="muzzleVelocity"
                 value={showFirearm.muzzleVelocity || ''}
                 onChange={handleDataChange}
@@ -249,6 +257,16 @@ const Firearms = () => {
                 type="checkbox"
                 name="measureSystem"
                 checked={showFirearm.measureSystem || false}
+                onChange={handleDataChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Notes:</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows="4"
+                name="notes"
+                value={showFirearm.notes || ''}
                 onChange={handleDataChange}
               />
             </Form.Group>
