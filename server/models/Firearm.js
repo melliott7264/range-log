@@ -57,6 +57,9 @@ const firearmSchema = new Schema({
   muzzleVelocity: {
     type: Number,
   },
+  notes: {
+    type: String,
+  },
 });
 
 const Firearm = model('Firearm', firearmSchema);

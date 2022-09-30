@@ -22,6 +22,8 @@ const Firearms = () => {
 
   let measureInches = '(in)';
   let measureInch = ' (.001")';
+  let measureYard = ' (yd)';
+  let measureVelocity = ' (ft/s)';
 
   const [addFirearm] = useMutation(ADD_FIREARM);
 
@@ -43,11 +45,13 @@ const Firearms = () => {
           barrelLength: showFirearm.barrelLength,
           caliber: showFirearm.caliber,
           diaTouchHole: showFirearm.diaTouchHole,
+          distanceToTarget: showFirearm.distanceToTarget,
+          muzzleVelocity: showFirearm.muzzleVelocity,
           diaRearSight: showFirearm.diaRearSight,
           diaFrontSight: showFirearm.diaFrontSight,
-          heightFrontSight: showFirearm.heightFrontSight,
           heightRearSight: showFirearm.heightRearSight,
           sightRadius: showFirearm.sightRadius,
+          notes: showFirearm.notes,
           measureSystem: showFirearm.measureSystem,
         },
       });
@@ -74,6 +78,8 @@ const Firearms = () => {
   if (showFirearm.measureSystem === true) {
     measureInches = '(mm)';
     measureInch = ' (0.01mm)';
+    measureYard = ' (m)';
+    measureVelocity = ' (m/s)';
   }
 
   return (
@@ -174,6 +180,28 @@ const Firearms = () => {
               />
             </Form.Group>
             <Form.Group>
+              <Form.Label className="m-2">Distance:</Form.Label>
+              <span>{measureYard}</span>
+              <Form.Control
+                type="number"
+                step="0.001"
+                name="distanceToTarget"
+                value={showFirearm.distanceToTarget || ''}
+                onChange={handleDataChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label className="m-2">Velocity:</Form.Label>
+              <span>{measureVelocity}</span>
+              <Form.Control
+                type="number"
+                step="0.001"
+                name="muzzleVelocity"
+                value={showFirearm.muzzleVelocity || ''}
+                onChange={handleDataChange}
+              />
+            </Form.Group>
+            <Form.Group>
               <Form.Label className="m-2">Dia@Rear Sight:</Form.Label>
               <span>{measureInches}</span>
               <Form.Control
@@ -207,17 +235,6 @@ const Firearms = () => {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label className="m-2">Height Front Sight:</Form.Label>
-              <span>{measureInches}</span>
-              <Form.Control
-                type="number"
-                step="0.001"
-                name="heightFrontSight"
-                value={showFirearm.heightFrontSight || ''}
-                onChange={handleDataChange}
-              />
-            </Form.Group>
-            <Form.Group>
               <Form.Label className="m-2">Sight Radius:</Form.Label>
               <span>{measureInches}</span>
               <Form.Control
@@ -234,6 +251,16 @@ const Firearms = () => {
                 type="checkbox"
                 name="measureSystem"
                 checked={showFirearm.measureSystem || false}
+                onChange={handleDataChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Notes:</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows="4"
+                name="notes"
+                value={showFirearm.notes || ''}
                 onChange={handleDataChange}
               />
             </Form.Group>

@@ -57,6 +57,7 @@ export const ADD_FIREARM = gql`
     $heightRearSight: Float
     $heightFrontSight: Float
     $sightRadius: Float
+    $notes: String
   ) {
     addFirearm(
       name: $name
@@ -72,6 +73,7 @@ export const ADD_FIREARM = gql`
       heightRearSight: $heightRearSight
       heightFrontSight: $heightFrontSight
       sightRadius: $sightRadius
+      notes: $notes
     ) {
       _id
       name
@@ -87,6 +89,7 @@ export const ADD_FIREARM = gql`
       heightRearSight
       heightFrontSight
       sightRadius
+      notes
       userId
     }
   }
@@ -108,6 +111,7 @@ export const EDIT_FIREARM = gql`
     $heightRearSight: Float
     $heightFrontSight: Float
     $sightRadius: Float
+    $notes: String
   ) {
     editFirearm(
       _id: $_id
@@ -124,6 +128,7 @@ export const EDIT_FIREARM = gql`
       heightRearSight: $heightRearSight
       heightFrontSight: $heightFrontSight
       sightRadius: $sightRadius
+      notes: $notes
     ) {
       _id
       name
@@ -139,6 +144,7 @@ export const EDIT_FIREARM = gql`
       heightRearSight
       heightFrontSight
       sightRadius
+      notes
       userId
     }
   }
@@ -339,6 +345,7 @@ export const REMOVE_FIREARM = gql`
       heightRearSight
       heightFrontSight
       sightRadius
+      notes
       userId
     }
   }

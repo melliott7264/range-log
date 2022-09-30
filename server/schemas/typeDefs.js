@@ -40,6 +40,7 @@ const typeDefs = gql`
       heightRearSight: Float
       heightFrontSight: Float
       sightRadius: Float
+      notes: String
     ): Firearm
     addLogEntry(
       date: String!
@@ -84,6 +85,7 @@ const typeDefs = gql`
       heightRearSight: Float
       heightFrontSight: Float
       sightRadius: Float
+      notes: String
     ): Firearm
     editLogEntry(
       _id: ID!
@@ -140,6 +142,7 @@ const typeDefs = gql`
     heightRearSight: Float
     heightFrontSight: Float
     sightRadius: Float
+    notes: String
     userId: ID
   }
 

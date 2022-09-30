@@ -5,7 +5,8 @@ import { useParams } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 
 import AuthService from '../utils/auth';
-import { EDIT_FIREARM, REMOVE_FIREARM } from '../utils/mutations';
+// import { EDIT_FIREARM, REMOVE_FIREARM } from '../utils/mutations';
+import { EDIT_FIREARM } from '../utils/mutations';
 
 const SingleFirearm = () => {
   // id passed to component through URI parameters from Route in App.js
@@ -33,7 +34,7 @@ const SingleFirearm = () => {
   );
   const [editFirearm] = useMutation(EDIT_FIREARM);
 
-  const [deleteFirearm] = useMutation(REMOVE_FIREARM);
+  // const [deleteFirearm] = useMutation(REMOVE_FIREARM);
 
   useEffect(() => {
     const firearm = data?.firearm[0] || {};
@@ -58,6 +59,7 @@ const SingleFirearm = () => {
           heightFrontSight: firearmData.heightFrontSight,
           heightRearSight: firearmData.heightRearSight,
           sightRadius: firearmData.sightRadius,
+          notes: firearmData.notes,
           measureSystem: firearmData.measureSystem,
         },
       });
@@ -81,19 +83,19 @@ const SingleFirearm = () => {
   };
 
   // routine to delete a firearm
-  const handleFirearmDelete = async () => {
-    try {
-      const response = await deleteFirearm({
-        variables: {
-          _id: id,
-        },
-      });
-      console.log(response);
-      window.location.replace('/firearms');
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const handleFirearmDelete = async () => {
+  //   try {
+  //     const response = await deleteFirearm({
+  //       variables: {
+  //         _id: id,
+  //       },
+  //     });
+  //     console.log(response);
+  //     window.location.replace('/firearms');
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   if (firearmData.measureSystem === true) {
     measureInches = '(mm)';
@@ -324,17 +326,27 @@ const SingleFirearm = () => {
             onChange={handleDataChange}
           />
         </Form.Group>
+        <Form.Group>
+          <Form.Label>Notes:</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows="4"
+            name="notes"
+            value={firearmData.notes || ''}
+            onChange={handleDataChange}
+          />
+        </Form.Group>
         <Button className="p-1 m-2" type="submit" variant="primary">
           Submit Edits
         </Button>
-        <Button
+        {/* <Button
           className="p-1 m-2"
           type="button"
           variant="danger"
           onClick={handleFirearmDelete}
         >
           Delete Firearm
-        </Button>
+        </Button> */}
       </Form>
     </div>
   );
