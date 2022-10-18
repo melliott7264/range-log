@@ -225,7 +225,7 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group className="bg-info">
-          <Form.Label className="m-2">Distance:</Form.Label>
+          <Form.Label className="m-2">*Distance:</Form.Label>
           <span>{measureYard}</span>
           <Form.Control
             className="w-50 float-end"
@@ -236,7 +236,7 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label className="m-2">Velocity:</Form.Label>
+          <Form.Label className="m-2">*Velocity:</Form.Label>
           <span>{measureVelocity}</span>
           <Form.Control
             className="w-50 float-end"
@@ -247,7 +247,7 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group className="bg-info">
-          <Form.Label className="m-2">Dia@Rear Sight:</Form.Label>
+          <Form.Label className="m-2">*Dia@Rear Sight:</Form.Label>
           <span>{measureInches}</span>
           <Form.Control
             className="w-50 float-end"
@@ -259,7 +259,7 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label className="m-2">Dia@Front Sight:</Form.Label>
+          <Form.Label className="m-2">*Dia@Front Sight:</Form.Label>
           <span>{measureInches}</span>
           <Form.Control
             className="w-50 float-end"
@@ -271,7 +271,7 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group className="bg-info">
-          <Form.Label className="m-2">Height Rear Sight:</Form.Label>
+          <Form.Label className="m-2">*Height Rear Sight:</Form.Label>
           <span>{measureInches}</span>
           <Form.Control
             className="w-50 float-end"
@@ -283,7 +283,7 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group className="bg-success text-white">
-          <Form.Label className="m-2">Height Front Sight:</Form.Label>
+          <Form.Label className="m-2">*Height Front Sight:</Form.Label>
           <span>{measureInches}</span>
           <Form.Control
             className="w-50 float-end"
@@ -295,7 +295,7 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group className="bg-info">
-          <Form.Label className="m-2">Sight Radius:</Form.Label>
+          <Form.Label className="m-2">*Sight Radius:</Form.Label>
           <span>{measureInches}</span>
           <Form.Control
             className="w-50 float-end"
@@ -317,7 +317,7 @@ const SingleFirearm = () => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label>Notes:</Form.Label>
+          <Form.Label className="m-2">Notes:</Form.Label>
           <Form.Control
             as="textarea"
             rows="4"
@@ -338,6 +338,7 @@ const SingleFirearm = () => {
           Delete Firearm
         </Button> */}
       </Form>
+      <p className="m-2">* Used in calculation of front sight height.</p>
     </div>
   );
 };
