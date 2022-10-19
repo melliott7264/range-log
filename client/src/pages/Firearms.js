@@ -3,6 +3,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_ALL_FIREARMS } from '../utils/queries';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { CSVLink, CSVDownload } from 'react-csv';
 
 import AuthService from '../utils/auth';
 import { ADD_FIREARM } from '../utils/mutations';
@@ -35,25 +36,26 @@ const Firearms = () => {
     setShowFirearms(firearmsList);
   }, [data]);
 
-  // header definition to prepare an export of firearms data to a csv file
-  const exportHeaders = [
-    { label: 'ID', key: '_id' },
-    { label: 'Name', key: 'name' },
-    { label: 'Metric', key: 'measureSystem' },
-    { label: 'Barrel Length', key: 'barrelLength' },
-    { label: 'Caliber', key: 'caliber' },
-    { label: 'Ignition Type', key: 'ignitionType' },
-    { label: 'Touch Hole Dia', key: 'diaTouchHole' },
-    { label: 'Distance', key: 'distanceToTarget' },
-    { label: 'Muzzle Velocity', key: 'muzzleVelocity' },
-    { label: 'Dia @ Rear Sight', key: 'diaRearSight' },
-    { label: 'Dia @ Front Sight', key: 'diaFrontSight' },
-    { label: 'Rear Sight Height', key: 'heightRearSight' },
-    { label: 'Front Sight Height', key: 'heightFrontSight' },
-    { label: 'Sight Radius', key: 'sightRadius' },
-    { label: 'Notes', key: 'notes' },
-    { label: 'User Id', key: 'userId' },
-  ];
+  const handleExportCsv = () => {
+    // header definition to prepare an export of firearms data to a csv file
+    const exportHeaders = [
+      { label: 'ID', key: '_id' },
+      { label: 'Name', key: 'name' },
+      { label: 'Metric', key: 'measureSystem' },
+      { label: 'Barrel Length', key: 'barrelLength' },
+      { label: 'Caliber', key: 'caliber' },
+      { label: 'Ignition Type', key: 'ignitionType' },
+      { label: 'Touch Hole Dia', key: 'diaTouchHole' },
+      { label: 'Distance', key: 'distanceToTarget' },
+      { label: 'Muzzle Velocity', key: 'muzzleVelocity' },
+      { label: 'Dia @ Rear Sight', key: 'diaRearSight' },
+      { label: 'Dia @ Front Sight', key: 'diaFrontSight' },
+      { label: 'Rear Sight Height', key: 'heightRearSight' },
+      { label: 'Front Sight Height', key: 'heightFrontSight' },
+      { label: 'Sight Radius', key: 'sightRadius' },
+      { label: 'Notes', key: 'notes' },
+    ];
+  };
 
   // routine to add a firearm
   const handleAddFirearm = async (event) => {
