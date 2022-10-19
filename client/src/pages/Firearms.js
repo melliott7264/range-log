@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_ALL_FIREARMS } from '../utils/queries';
-import { Button, Modal, Form } from 'react-bootstrap';
+import { Button, Modal, Form, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { CSVLink, CSVDownload } from 'react-csv';
+import { CSVLink } from 'react-csv';
 
 import AuthService from '../utils/auth';
 import { ADD_FIREARM } from '../utils/mutations';
@@ -36,26 +36,23 @@ const Firearms = () => {
     setShowFirearms(firearmsList);
   }, [data]);
 
-  const handleExportCsv = () => {
-    // header definition to prepare an export of firearms data to a csv file
-    const exportHeaders = [
-      { label: 'ID', key: '_id' },
-      { label: 'Name', key: 'name' },
-      { label: 'Metric', key: 'measureSystem' },
-      { label: 'Barrel Length', key: 'barrelLength' },
-      { label: 'Caliber', key: 'caliber' },
-      { label: 'Ignition Type', key: 'ignitionType' },
-      { label: 'Touch Hole Dia', key: 'diaTouchHole' },
-      { label: 'Distance', key: 'distanceToTarget' },
-      { label: 'Muzzle Velocity', key: 'muzzleVelocity' },
-      { label: 'Dia @ Rear Sight', key: 'diaRearSight' },
-      { label: 'Dia @ Front Sight', key: 'diaFrontSight' },
-      { label: 'Rear Sight Height', key: 'heightRearSight' },
-      { label: 'Front Sight Height', key: 'heightFrontSight' },
-      { label: 'Sight Radius', key: 'sightRadius' },
-      { label: 'Notes', key: 'notes' },
-    ];
-  };
+  // header definition to prepare an export of firearms data to a csv file
+  const exportFirearmsHeaders = [
+    { label: 'Name', key: 'name' },
+    { label: 'Metric', key: 'measureSystem' },
+    { label: 'Barrel Length', key: 'barrelLength' },
+    { label: 'Caliber', key: 'caliber' },
+    { label: 'Ignition Type', key: 'ignitionType' },
+    { label: 'Touch Hole Dia', key: 'diaTouchHole' },
+    { label: 'Distance', key: 'distanceToTarget' },
+    { label: 'Muzzle Velocity', key: 'muzzleVelocity' },
+    { label: 'Dia @ Rear Sight', key: 'diaRearSight' },
+    { label: 'Dia @ Front Sight', key: 'diaFrontSight' },
+    { label: 'Rear Sight Height', key: 'heightRearSight' },
+    { label: 'Front Sight Height', key: 'heightFrontSight' },
+    { label: 'Sight Radius', key: 'sightRadius' },
+    { label: 'Notes', key: 'notes' },
+  ];
 
   // routine to add a firearm
   const handleAddFirearm = async (event) => {
@@ -107,21 +104,32 @@ const Firearms = () => {
   return (
     <div>
       <div className="firearms-list">
-        <div className="container ">
-          <div className="row">
-            <div className="text-center">
-              <h3>Firearms</h3>
-            </div>
-            <span className="text-center">
+        <Container>
+          <Row>
+            <h3 className="text-center">Firearms</h3>
+          </Row>
+          <Row>
+            <Col></Col>
+            <Col>
               <Button
-                className="btn p-1 text-white"
+                className="btn p-1 add-firearm-btn"
                 onClick={() => setShowModal(true)}
               >
                 Add Firearm
               </Button>
-            </span>
-          </div>
-        </div>
+            </Col>
+            <Col>
+              <CSVLink
+                data={showFirearms}
+                headers={exportFirearmsHeaders}
+                filename={'my_firearms.csv'}
+                target="_blank"
+              >
+                Download Excel Spreadsheet{' '}
+              </CSVLink>
+            </Col>
+          </Row>
+        </Container>
 
         <ul className="list-group">
           {showFirearms.map((firearm) => (
