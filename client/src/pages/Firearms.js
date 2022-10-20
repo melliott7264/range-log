@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_ALL_FIREARMS } from '../utils/queries';
-import { Button, Modal, Form, Container, Row, Col } from 'react-bootstrap';
+import { Button, Modal, Form, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { CSVLink } from 'react-csv';
 
 import AuthService from '../utils/auth';
 import { ADD_FIREARM } from '../utils/mutations';
@@ -35,25 +34,6 @@ const Firearms = () => {
     const firearmsList = data?.firearmsByUser || [];
     setShowFirearms(firearmsList);
   }, [data]);
-
-  // header definition to prepare an export of firearms data to a csv file
-  const exportFirearmsHeaders = [
-    { label: 'Firearm ID', key: '_id' },
-    { label: 'Name', key: 'name' },
-    { label: 'Metric', key: 'measureSystem' },
-    { label: 'Barrel Length', key: 'barrelLength' },
-    { label: 'Caliber', key: 'caliber' },
-    { label: 'Ignition Type', key: 'ignitionType' },
-    { label: 'Touch Hole Dia', key: 'diaTouchHole' },
-    { label: 'Distance', key: 'distanceToTarget' },
-    { label: 'Muzzle Velocity', key: 'muzzleVelocity' },
-    { label: 'Dia @ Rear Sight', key: 'diaRearSight' },
-    { label: 'Dia @ Front Sight', key: 'diaFrontSight' },
-    { label: 'Rear Sight Height', key: 'heightRearSight' },
-    { label: 'Front Sight Height', key: 'heightFrontSight' },
-    { label: 'Sight Radius', key: 'sightRadius' },
-    { label: 'Notes', key: 'notes' },
-  ];
 
   // routine to add a firearm
   const handleAddFirearm = async (event) => {
@@ -110,25 +90,11 @@ const Firearms = () => {
             <h3 className="text-center">Firearms</h3>
           </Row>
           <Row>
-            <Col></Col>
-            <Col>
-              <Button
-                className="p-1 text-center"
-                onClick={() => setShowModal(true)}
-              >
+            <div className="text-center">
+              <Button className="p-1" onClick={() => setShowModal(true)}>
                 Add Firearm
               </Button>
-            </Col>
-            <Col>
-              <CSVLink
-                data={showFirearms}
-                headers={exportFirearmsHeaders}
-                filename={'my_firearms.csv'}
-                target="_blank"
-              >
-                Download Excel Spreadsheet{' '}
-              </CSVLink>
-            </Col>
+            </div>
           </Row>
         </Container>
 
