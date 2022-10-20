@@ -42,7 +42,7 @@ const SingleFirearm = () => {
   }, [data]);
 
   // routine to edit the selected firearm
-  const handleEditFirearm = async (event) => {
+  const handleEditFirearm = async () => {
     try {
       const response = await editFirearm({
         variables: {
@@ -56,7 +56,7 @@ const SingleFirearm = () => {
           muzzleVelocity: firearmData.muzzleVelocity,
           diaRearSight: firearmData.diaRearSight,
           diaFrontSight: firearmData.diaFrontSight,
-          heightFrontSight: firearmData.heightFrontSight,
+          heightFrontSight: parseFloat(frontSightHeight().toFixed(3)),
           heightRearSight: firearmData.heightRearSight,
           sightRadius: firearmData.sightRadius,
           notes: firearmData.notes,
@@ -157,9 +157,14 @@ const SingleFirearm = () => {
 
       const correctedFrontSightHeight =
         frontSightHeight + frontSightHeightCorrection; // inches
+
       return correctedFrontSightHeight;
     }
   };
+
+  // if (frontSightHeight()) {
+  //
+  // }
 
   return (
     <div className="single-firearm">
@@ -338,7 +343,9 @@ const SingleFirearm = () => {
           Delete Firearm
         </Button> */}
       </Form>
-      <p className="m-2">* Used in calculation of front sight height.</p>
+      <p className="m-2">
+        * Used in calculation of front sight height. Click on Submit to save.
+      </p>
     </div>
   );
 };
