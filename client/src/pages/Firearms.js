@@ -38,6 +38,7 @@ const Firearms = () => {
 
   // header definition to prepare an export of firearms data to a csv file
   const exportFirearmsHeaders = [
+    { label: 'Firearm ID', key: '_id' },
     { label: 'Name', key: 'name' },
     { label: 'Metric', key: 'measureSystem' },
     { label: 'Barrel Length', key: 'barrelLength' },
@@ -112,7 +113,7 @@ const Firearms = () => {
             <Col></Col>
             <Col>
               <Button
-                className="btn p-1 add-firearm-btn"
+                className="p-1 text-center"
                 onClick={() => setShowModal(true)}
               >
                 Add Firearm

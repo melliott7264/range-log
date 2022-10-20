@@ -5,12 +5,14 @@ import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import SignUp from './SignUp';
 import Login from './Login';
+import Download from './Download';
 import rifleLogo from '../Rifle19Mask.png';
 
 import AuthService from '../utils/auth';
 
 const AppNavbar = () => {
   const [showModal, setShowModal] = useState(false);
+  const [showDownload, setShowDownload] = useState(false);
   const loggedIn = AuthService.loggedIn();
 
   // Retrieve logged in user information and setup state to update it
@@ -51,6 +53,13 @@ const AppNavbar = () => {
 
                   <Nav.Link style={{ color: 'black' }} as={Link} to="/logs">
                     Logs
+                  </Nav.Link>
+
+                  <Nav.Link
+                    style={{ color: 'black' }}
+                    onClick={() => setShowDownload(true)}
+                  >
+                    Downloads
                   </Nav.Link>
 
                   <Nav.Link
@@ -100,6 +109,23 @@ const AppNavbar = () => {
                 <SignUp handleModalClose={() => setShowModal(false)} />
               </Tab.Pane>
             </Tab.Content>
+          </Modal.Body>
+        </Tab.Container>
+      </Modal>
+      <Modal
+        size="md"
+        show={showDownload}
+        onHide={() => setShowDownload(false)}
+        aria-labelledby="signup-modal"
+      >
+        <Tab.Container defaultActiveKey="download">
+          <Modal.Header className="border-bottom-0" closeButton>
+            <Modal.Title id="download-modal">
+              <h2 className="text-center">Download Log Data</h2>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Download handleDownloadClose={() => setShowDownload(false)} />
           </Modal.Body>
         </Tab.Container>
       </Modal>

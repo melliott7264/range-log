@@ -162,10 +162,6 @@ const SingleFirearm = () => {
     }
   };
 
-  // if (frontSightHeight()) {
-  //
-  // }
-
   return (
     <div className="single-firearm">
       <div className="text-center">
