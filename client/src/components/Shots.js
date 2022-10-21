@@ -86,6 +86,15 @@ const Shots = () => {
     }
   }, [data3, showFirearms, showShots]);
 
+  // Calculate the score for a target
+  const getTargetScore = () => {
+    let targetScore = 0;
+    showShots?.forEach((shot) => {
+      targetScore += shot.scoreRing;
+    });
+    return targetScore;
+  };
+
   if (loading2) {
     return <h4>Loading...</h4>;
   }
@@ -231,6 +240,7 @@ const Shots = () => {
           >
             <ChevronRightIcon className="button-icon" />
           </button>
+          <h5>Target Score: {getTargetScore()}</h5>
         </div>
         <h5 className="text-center">Shots</h5>
       </div>

@@ -74,6 +74,15 @@ const Shots = () => {
     );
   }, [data, data2, currentShot]);
 
+  // Calculate the score for a target
+  const getTargetScore = () => {
+    let targetScore = 0;
+    showShots?.forEach((shot) => {
+      targetScore += shot.scoreRing;
+    });
+    return targetScore;
+  };
+
   // Need to get the array of shots to paginate through them
   const shotArray = () => {
     return showShots.map((shot) => {
@@ -240,6 +249,7 @@ const Shots = () => {
           >
             <ChevronRightIcon className="button-icon" />
           </button>
+          <h5>Target Score: {getTargetScore()}</h5>
         </div>
         <div className="text-center">
           <button
