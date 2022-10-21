@@ -9,6 +9,7 @@ import { Form, Button, Modal } from 'react-bootstrap';
 import { ClockIcon } from '@heroicons/react/24/outline';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import SingleShotDisplay from './SingleShotDisplay';
+import { getTargetScore } from '../utils/utils.js';
 
 const Shots = () => {
   const { date, target, numberTargets, shot, firearmId } = useParams();
@@ -34,14 +35,6 @@ const Shots = () => {
   }
 
   const [addLogEntry] = useMutation(ADD_LOG_ENTRY);
-
-  // initialize units of measure
-  // let measureInches = ' (in)';
-  let measureInch = ' (.001")';
-  let measureSpeed = ' (Mph)';
-  let measureTemp = ' (F)';
-  let measureMass = ' (gr)';
-  let measureYards = ' (yds)';
 
   // get all the shots for a target so that we can get an array of shots for shot pagination as well
   // as individual shot data to add a new shot
@@ -74,14 +67,22 @@ const Shots = () => {
     );
   }, [data, data2, currentShot]);
 
-  // Calculate the score for a target
-  const getTargetScore = () => {
-    let targetScore = 0;
-    showShots?.forEach((shot) => {
-      targetScore += shot.scoreRing;
-    });
-    return targetScore;
-  };
+  // initialize units of measure
+  // let measureInches = ' (in)';
+  let measureInch = ' (.001")';
+  let measureSpeed = ' (Mph)';
+  let measureTemp = ' (F)';
+  let measureMass = ' (gr)';
+  let measureYards = ' (yds)';
+
+  if (showShot?.measureSystem === true) {
+    // measureInches = ' (mm)';
+    measureInch = ' (0.01mm)';
+    measureSpeed = ' (Kph)';
+    measureTemp = ' (C)';
+    measureMass = ' (g)';
+    measureYards = ' (m)';
+  }
 
   // Need to get the array of shots to paginate through them
   const shotArray = () => {
@@ -111,15 +112,6 @@ const Shots = () => {
     setShowShot({ ...showShot, [name]: value });
     // console.log(showShot);
   };
-
-  if (showShot?.measureSystem === true) {
-    // measureInches = ' (mm)';
-    measureInch = ' (0.01mm)';
-    measureSpeed = ' (Kph)';
-    measureTemp = ' (C)';
-    measureMass = ' (g)';
-    measureYards = ' (m)';
-  }
 
   // routine to add a log entry
   const handleAddLogEntry = async () => {
@@ -249,7 +241,7 @@ const Shots = () => {
           >
             <ChevronRightIcon className="button-icon" />
           </button>
-          <h5>Target Score: {getTargetScore()}</h5>
+          <h5>Target Score: {getTargetScore(showShots)}</h5>
         </div>
         <div className="text-center">
           <button

@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import dayjs from 'dayjs';
 import AuthService from '../utils/auth';
+import { getTargetScore } from '../utils/utils.js';
 
 const Shots = () => {
   const { date, target, numberTargets } = useParams();
@@ -37,14 +38,6 @@ const Shots = () => {
   }
 
   const [addLogEntry] = useMutation(ADD_LOG_ENTRY);
-
-  // initialize units of measure
-  // let measureInches = ' (in)';
-  let measureInch = ' (.001")';
-  let measureSpeed = ' (Mph)';
-  let measureTemp = ' (F)';
-  let measureMass = ' (gr)';
-  let measureYards = ' (yds)';
 
   const {
     loading: loading2,
@@ -85,15 +78,6 @@ const Shots = () => {
       setShowShot(showShots[showShots.length - 1]);
     }
   }, [data3, showFirearms, showShots]);
-
-  // Calculate the score for a target
-  const getTargetScore = () => {
-    let targetScore = 0;
-    showShots?.forEach((shot) => {
-      targetScore += shot.scoreRing;
-    });
-    return targetScore;
-  };
 
   if (loading2) {
     return <h4>Loading...</h4>;
@@ -142,6 +126,14 @@ const Shots = () => {
     setShowShot({ ...showShot, [name]: value });
     // console.log(showShot);
   };
+
+  // initialize units of measure
+  // let measureInches = ' (in)';
+  let measureInch = ' (.001")';
+  let measureSpeed = ' (Mph)';
+  let measureTemp = ' (F)';
+  let measureMass = ' (gr)';
+  let measureYards = ' (yds)';
 
   if (showShot?.measureSystem === true) {
     // measureInches = ' (mm)';
@@ -240,7 +232,7 @@ const Shots = () => {
           >
             <ChevronRightIcon className="button-icon" />
           </button>
-          <h5>Target Score: {getTargetScore()}</h5>
+          <h5>Target Score: {getTargetScore(showShots)}</h5>
         </div>
         <h5 className="text-center">Shots</h5>
       </div>
