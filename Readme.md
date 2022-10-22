@@ -2,7 +2,7 @@
 
 ## Description
 
-Muzzleloader shooters have unique requirements for documenting their shooting sessions at the range. They need to document all the variables in the loading of each shot as well as the result. A cartridge gun shooter just needs to document the cartridge they are using. This project is an attempt to provide a range log with the expanded reporting requirements of the muzzleloader shooter. The MVP will just be a text based log running from a server. The intention is that this product will be primarily used on mobile devices. Then we will add local storage and eventually full PWA functionality. At some point in the future, we may have graphical plotting of shots on a target, but that is way downt he line.
+Muzzleloader shooters have unique requirements for documenting their shooting sessions at the range. They need to document all the variables in the loading of each shot as well as the result. A cartridge gun shooter just needs to document the cartridge they are using. This project is an attempt to provide a range log with the expanded reporting requirements of the muzzleloader shooter. The MVP will just be a text based log running from a server. The intention is that this product will be primarily used on mobile devices. Then we will add local storage and eventually full PWA functionality. At some point in the future, we may have graphical plotting of shots on a target, but that is way down the line.
 
 ## Table of Contents (Optional)
 
@@ -19,15 +19,7 @@ This project will run from Heroku at https://muzzleloader-range-log.herokuapp.co
 
 ## Usage
 
-Execute the application from the web at https://muzzleloader-range-log.herokuapp.com. The first thing you will need to do is signup; after which you will get an initial screen with Firearms, Logs and Logout options in the navbar. You will want to click on Firearms and add the firearms you will be recording in the log. Clicking on the added firearms in the listing, you will be able to edit or delete them.
-
-The Logs functions have yet to be added.
-
-To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
-
-    ```md
-    ![alt text](assets/images/screenshot.png)
-    ```
+Execute the application from the web at https://muzzleloader-range-log.herokuapp.com. The instructions for use may be found here: https://www.markelliottva.com/2022/09/muzzleloader-range-log/.
 
 ## Credits
 
