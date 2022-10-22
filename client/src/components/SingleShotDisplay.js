@@ -6,6 +6,7 @@ import { EDIT_LOG_ENTRY } from '../utils/mutations';
 import { ClockIcon } from '@heroicons/react/24/outline';
 import AuthService from '../utils/auth';
 import { Form, Button } from 'react-bootstrap';
+import Units from '../utils/units.js';
 
 const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
   const targetNumber = parseInt(target);
@@ -18,14 +19,6 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
   if (!loggedIn) {
     window.location.replace('/');
   }
-
-  // initialize units of measure
-  // let measureInches = ' (in)';
-  let measureInch = ' (.001")';
-  let measureSpeed = ' (Mph)';
-  let measureTemp = ' (F)';
-  let measureMass = ' (gr)';
-  let measureYards = ' (yds)';
 
   const { loading, error, data } = useQuery(
     GET_LOG_ENTRIES_BY_SHOT,
@@ -161,14 +154,8 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
     return <h4>There was a loading error... {error2.message}</h4>;
   }
 
-  if (data && showShot?.measureSystem === true) {
-    // measureInches = ' (mm)';
-    measureInch = ' (0.01mm)';
-    measureSpeed = ' (Kph)';
-    measureTemp = ' (C)';
-    measureMass = ' (g)';
-    measureYards = ' (m)';
-  }
+  // Call Units method to switch units if measureSystem is metric (true)
+  Units.switchUnits(showShot?.measureSystem);
 
   return (
     <div className="single-shot-page ">
@@ -189,7 +176,7 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
         </Form.Group>
         <Form.Group>
           <Form.Label className="m-2">
-            Target Distance: {measureYards}
+            Target Distance: {Units.measureYards}
           </Form.Label>
 
           <Form.Control
@@ -212,7 +199,9 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label className="m-2">Temperature: {measureTemp}</Form.Label>
+          <Form.Label className="m-2">
+            Temperature: {Units.measureTemp}
+          </Form.Label>
 
           <Form.Control
             className="w-50 float-end"
@@ -234,7 +223,9 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label className="m-2">Wind Speed: {measureSpeed}</Form.Label>
+          <Form.Label className="m-2">
+            Wind Speed: {Units.measureSpeed}
+          </Form.Label>
 
           <Form.Control
             className="w-50 float-end"
@@ -301,7 +292,9 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label className="m-2">Bullet Dia: {measureInch}</Form.Label>
+          <Form.Label className="m-2">
+            Bullet Dia: {Units.measureInch}
+          </Form.Label>
 
           <Form.Control
             className="w-50 float-end"
@@ -312,7 +305,9 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
           />
         </Form.Group>
         <Form.Group className="bg-info">
-          <Form.Label className="m-2">Bullet Weight: {measureMass}</Form.Label>
+          <Form.Label className="m-2">
+            Bullet Weight: {Units.measureMass}
+          </Form.Label>
 
           <Form.Control
             className="w-50 float-end"
@@ -334,7 +329,9 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
           />
         </Form.Group>
         <Form.Group className="bg-info">
-          <Form.Label className="m-2">Patch Size: {measureInch}</Form.Label>
+          <Form.Label className="m-2">
+            Patch Size: {Units.measureInch}
+          </Form.Label>
 
           <Form.Control
             className="w-50 float-end"
@@ -386,7 +383,9 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label className="m-2">Powder Charge: {measureMass}</Form.Label>
+          <Form.Label className="m-2">
+            Powder Charge: {Units.measureMass}
+          </Form.Label>
           <Form.Control
             className="w-50 float-end"
             type="number"

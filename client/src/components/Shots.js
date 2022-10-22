@@ -125,7 +125,7 @@ const Shots = () => {
   };
 
   // Call Units method to switch units if measureSystem is metric (true)
-  Units.switchUnits(showShot.measureSystem);
+  Units.switchUnits(showShot?.measureSystem);
 
   // routine to add a log entry
   const handleAddLogEntry = async () => {
