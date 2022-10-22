@@ -10,8 +10,9 @@ import { ClockIcon } from '@heroicons/react/24/outline';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import SingleShotDisplay from './SingleShotDisplay';
 import { getTargetScore } from '../utils/utils.js';
+import Units from '../utils/units.js';
 
-const Shots = () => {
+const SingleShot = () => {
   const { date, target, numberTargets, shot, firearmId } = useParams();
   const targetNumber = parseInt(target);
   const [currentTarget, setCurrentTarget] = useState(targetNumber);
@@ -67,22 +68,8 @@ const Shots = () => {
     );
   }, [data, data2, currentShot]);
 
-  // initialize units of measure
-  // let measureInches = ' (in)';
-  let measureInch = ' (.001")';
-  let measureSpeed = ' (Mph)';
-  let measureTemp = ' (F)';
-  let measureMass = ' (gr)';
-  let measureYards = ' (yds)';
-
-  if (showShot?.measureSystem === true) {
-    // measureInches = ' (mm)';
-    measureInch = ' (0.01mm)';
-    measureSpeed = ' (Kph)';
-    measureTemp = ' (C)';
-    measureMass = ' (g)';
-    measureYards = ' (m)';
-  }
+  // Call Units method to switch units if measureSystem is metric (true)
+  Units.switchUnits(showShot?.measureSystem);
 
   // Need to get the array of shots to paginate through them
   const shotArray = () => {
@@ -315,7 +302,7 @@ const Shots = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">
-                Target Distance: {measureYards}
+                Target Distance: {Units.measureYards}
               </Form.Label>
 
               <Form.Control
@@ -339,7 +326,7 @@ const Shots = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">
-                Temperature: {measureTemp}
+                Temperature: {Units.measureTemp}
               </Form.Label>
 
               <Form.Control
@@ -363,7 +350,7 @@ const Shots = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">
-                Wind Speed: {measureSpeed}
+                Wind Speed: {Units.measureSpeed}
               </Form.Label>
 
               <Form.Control
@@ -431,7 +418,9 @@ const Shots = () => {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label className="m-2">Bullet Dia: {measureInch}</Form.Label>
+              <Form.Label className="m-2">
+                Bullet Dia: {Units.measureInch}
+              </Form.Label>
 
               <Form.Control
                 className="w-50 float-end"
@@ -443,7 +432,7 @@ const Shots = () => {
             </Form.Group>
             <Form.Group className="bg-info">
               <Form.Label className="m-2">
-                Bullet Weight: {measureMass}
+                Bullet Weight: {Units.measureMass}
               </Form.Label>
 
               <Form.Control
@@ -466,7 +455,9 @@ const Shots = () => {
               />
             </Form.Group>
             <Form.Group className="bg-info">
-              <Form.Label className="m-2">Patch Size: {measureInch}</Form.Label>
+              <Form.Label className="m-2">
+                Patch Size: {Units.measureInch}
+              </Form.Label>
 
               <Form.Control
                 className="w-50 float-end"
@@ -519,7 +510,7 @@ const Shots = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">
-                Powder Charge: {measureMass}
+                Powder Charge: {Units.measureMass}
               </Form.Label>
               <Form.Control
                 className="w-50 float-end"
@@ -559,4 +550,4 @@ const Shots = () => {
   );
 };
 
-export default Shots;
+export default SingleShot;

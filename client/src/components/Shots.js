@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { useParams } from 'react-router-dom';
-import {
-  // LOG_SHOTS,
-  GET_LOG_ENTRIES_BY_TARGET,
-  GET_ALL_FIREARMS,
-} from '../utils/queries';
+import { GET_LOG_ENTRIES_BY_TARGET, GET_ALL_FIREARMS } from '../utils/queries';
 import { ADD_LOG_ENTRY } from '../utils/mutations';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -13,6 +9,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import dayjs from 'dayjs';
 import AuthService from '../utils/auth';
 import { getTargetScore } from '../utils/utils.js';
+import Units from '../utils/units.js';
 
 const Shots = () => {
   const { date, target, numberTargets } = useParams();
@@ -127,22 +124,8 @@ const Shots = () => {
     // console.log(showShot);
   };
 
-  // initialize units of measure
-  // let measureInches = ' (in)';
-  let measureInch = ' (.001")';
-  let measureSpeed = ' (Mph)';
-  let measureTemp = ' (F)';
-  let measureMass = ' (gr)';
-  let measureYards = ' (yds)';
-
-  if (showShot?.measureSystem === true) {
-    // measureInches = ' (mm)';
-    measureInch = ' (0.01mm)';
-    measureSpeed = ' (Kph)';
-    measureTemp = ' (C)';
-    measureMass = ' (g)';
-    measureYards = ' (m)';
-  }
+  // Call Units method to switch units if measureSystem is metric (true)
+  Units.switchUnits(showShot.measureSystem);
 
   // routine to add a log entry
   const handleAddLogEntry = async () => {
@@ -290,7 +273,7 @@ const Shots = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">
-                Target Distance: {measureYards}
+                Target Distance: {Units.measureYards}
               </Form.Label>
 
               <Form.Control
@@ -314,7 +297,7 @@ const Shots = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">
-                Temperature: {measureTemp}
+                Temperature: {Units.measureTemp}
               </Form.Label>
 
               <Form.Control
@@ -338,7 +321,7 @@ const Shots = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">
-                Wind Speed: {measureSpeed}
+                Wind Speed: {Units.measureSpeed}
               </Form.Label>
 
               <Form.Control
@@ -403,7 +386,9 @@ const Shots = () => {
               />
             </Form.Group>
             <Form.Group>
-              <Form.Label className="m-2">Bullet Dia: {measureInch}</Form.Label>
+              <Form.Label className="m-2">
+                Bullet Dia: {Units.measureInch}
+              </Form.Label>
 
               <Form.Control
                 className="w-50 float-end"
@@ -415,7 +400,7 @@ const Shots = () => {
             </Form.Group>
             <Form.Group className="bg-info">
               <Form.Label className="m-2">
-                Bullet Weight: {measureMass}
+                Bullet Weight: {Units.measureMass}
               </Form.Label>
 
               <Form.Control
@@ -438,7 +423,9 @@ const Shots = () => {
               />
             </Form.Group>
             <Form.Group className="bg-info">
-              <Form.Label className="m-2">Patch Size: {measureInch}</Form.Label>
+              <Form.Label className="m-2">
+                Patch Size: {Units.measureInch}
+              </Form.Label>
 
               <Form.Control
                 className="w-50 float-end"
@@ -491,7 +478,7 @@ const Shots = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">
-                Powder Charge: {measureMass}
+                Powder Charge: {Units.measureMass}
               </Form.Label>
               <Form.Control
                 className="w-50 float-end"
