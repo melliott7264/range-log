@@ -3,9 +3,8 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_FIREARM } from '../utils/queries';
 import { useParams } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
-
+import Units from '../utils/units';
 import AuthService from '../utils/auth';
-// import { EDIT_FIREARM, REMOVE_FIREARM } from '../utils/mutations';
 import { EDIT_FIREARM } from '../utils/mutations';
 
 const SingleFirearm = () => {
@@ -16,11 +15,6 @@ const SingleFirearm = () => {
   if (!loggedIn) {
     window.location.replace('/');
   }
-
-  let measureInches = '(in)';
-  let measureInch = ' (.001")';
-  let measureYard = ' (yd)';
-  let measureVelocity = ' (ft/s)';
 
   // state controlling firearm description data
   const [firearmData, setFirearmData] = useState({});
@@ -97,12 +91,8 @@ const SingleFirearm = () => {
   //   }
   // };
 
-  if (firearmData.measureSystem === true) {
-    measureInches = '(mm)';
-    measureInch = ' (0.01mm)';
-    measureYard = ' (m)';
-    measureVelocity = ' (m/s)';
-  }
+  // Call Units method to switch units if measureSystem is metric (true)
+  Units.switchUnits(firearmData?.measureSystem);
 
   // routine to calculate the front sight height
   const frontSightHeight = () => {
@@ -191,7 +181,7 @@ const SingleFirearm = () => {
         </Form.Group>
         <Form.Group>
           <Form.Label className="m-2">Barrel Length:</Form.Label>
-          <span>{measureInches}</span>
+          <span>{Units.measureInches}</span>
           <Form.Control
             className="w-50 float-end"
             type="number"
@@ -203,7 +193,7 @@ const SingleFirearm = () => {
         </Form.Group>
         <Form.Group className="bg-info">
           <Form.Label className="m-2">Caliber:</Form.Label>
-          <span>{measureInches}</span>
+          <span>{Units.measureInches}</span>
           <Form.Control
             className="w-50 float-end"
             type="number"
@@ -215,7 +205,7 @@ const SingleFirearm = () => {
         </Form.Group>
         <Form.Group>
           <Form.Label className="m-2">Dia Touch Hole:</Form.Label>
-          <span>{measureInch}</span>
+          <span>{Units.measureInch}</span>
           <Form.Control
             className="w-50 float-end"
             type="number"
@@ -227,7 +217,7 @@ const SingleFirearm = () => {
         </Form.Group>
         <Form.Group className="bg-info">
           <Form.Label className="m-2">*Distance:</Form.Label>
-          <span>{measureYard}</span>
+          <span>{Units.measureYards}</span>
           <Form.Control
             className="w-50 float-end"
             type="number"
@@ -238,7 +228,7 @@ const SingleFirearm = () => {
         </Form.Group>
         <Form.Group>
           <Form.Label className="m-2">*Velocity:</Form.Label>
-          <span>{measureVelocity}</span>
+          <span>{Units.measureVelocity}</span>
           <Form.Control
             className="w-50 float-end"
             type="number"
@@ -249,7 +239,7 @@ const SingleFirearm = () => {
         </Form.Group>
         <Form.Group className="bg-info">
           <Form.Label className="m-2">*Dia@Rear Sight:</Form.Label>
-          <span>{measureInches}</span>
+          <span>{Units.measureInches}</span>
           <Form.Control
             className="w-50 float-end"
             type="number"
@@ -261,7 +251,7 @@ const SingleFirearm = () => {
         </Form.Group>
         <Form.Group>
           <Form.Label className="m-2">*Dia@Front Sight:</Form.Label>
-          <span>{measureInches}</span>
+          <span>{Units.measureInches}</span>
           <Form.Control
             className="w-50 float-end"
             type="number"
@@ -273,7 +263,7 @@ const SingleFirearm = () => {
         </Form.Group>
         <Form.Group className="bg-info">
           <Form.Label className="m-2">*Height Rear Sight:</Form.Label>
-          <span>{measureInches}</span>
+          <span>{Units.measureInches}</span>
           <Form.Control
             className="w-50 float-end"
             type="number"
@@ -285,7 +275,7 @@ const SingleFirearm = () => {
         </Form.Group>
         <Form.Group className="bg-success text-white">
           <Form.Label className="m-2">*Height Front Sight:</Form.Label>
-          <span>{measureInches}</span>
+          <span>{Units.measureInches}</span>
           <Form.Control
             className="w-50 float-end"
             type="number"
@@ -297,7 +287,7 @@ const SingleFirearm = () => {
         </Form.Group>
         <Form.Group className="bg-info">
           <Form.Label className="m-2">*Sight Radius:</Form.Label>
-          <span>{measureInches}</span>
+          <span>{Units.measureInches}</span>
           <Form.Control
             className="w-50 float-end"
             type="number"

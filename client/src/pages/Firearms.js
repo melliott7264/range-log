@@ -3,9 +3,9 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_ALL_FIREARMS } from '../utils/queries';
 import { Button, Modal, Form, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
 import AuthService from '../utils/auth';
 import { ADD_FIREARM } from '../utils/mutations';
+import Units from '../utils/units';
 
 const Firearms = () => {
   // state to show listing of user firearms from which to select
@@ -19,11 +19,6 @@ const Firearms = () => {
   if (!loggedIn) {
     window.location.replace('/');
   }
-
-  let measureInches = '(in)';
-  let measureInch = ' (.001")';
-  let measureYard = ' (yd)';
-  let measureVelocity = ' (ft/s)';
 
   const [addFirearm] = useMutation(ADD_FIREARM);
 
@@ -75,12 +70,8 @@ const Firearms = () => {
     setShowFirearm({ ...showFirearm, [name]: value });
   };
 
-  if (showFirearm.measureSystem === true) {
-    measureInches = '(mm)';
-    measureInch = ' (0.01mm)';
-    measureYard = ' (m)';
-    measureVelocity = ' (m/s)';
-  }
+  // Call Units method to switch units if measureSystem is metric (true)
+  Units.switchUnits(showFirearm?.measureSystem);
 
   return (
     <div>
@@ -145,7 +136,7 @@ const Firearms = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label>Barrel Length:</Form.Label>
-              <span>{measureInches}</span>
+              <span>{Units.measureInches}</span>
               <Form.Control
                 type="number"
                 step="0.01"
@@ -156,7 +147,7 @@ const Firearms = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label>Caliber:</Form.Label>
-              <span>{measureInches}</span>
+              <span>{Units.measureInches}</span>
               <Form.Control
                 type="number"
                 step="0.001"
@@ -167,7 +158,7 @@ const Firearms = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">Dia Touch Hole:</Form.Label>
-              <span>{measureInch}</span>
+              <span>{Units.measureInch}</span>
               <Form.Control
                 type="number"
                 step="0.001"
@@ -178,7 +169,7 @@ const Firearms = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">Distance:</Form.Label>
-              <span>{measureYard}</span>
+              <span>{Units.measureYards}</span>
               <Form.Control
                 type="number"
                 step="0.001"
@@ -189,7 +180,7 @@ const Firearms = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">Velocity:</Form.Label>
-              <span>{measureVelocity}</span>
+              <span>{Units.measureVelocity}</span>
               <Form.Control
                 type="number"
                 step="0.001"
@@ -200,7 +191,7 @@ const Firearms = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">Dia@Rear Sight:</Form.Label>
-              <span>{measureInches}</span>
+              <span>{Units.measureInches}</span>
               <Form.Control
                 type="number"
                 step="0.001"
@@ -211,7 +202,7 @@ const Firearms = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">Dia@Front Sight:</Form.Label>
-              <span>{measureInches}</span>
+              <span>{Units.measureInches}</span>
               <Form.Control
                 type="number"
                 step="0.001"
@@ -222,7 +213,7 @@ const Firearms = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">Height Rear Sight:</Form.Label>
-              <span>{measureInches}</span>
+              <span>{Units.measureInches}</span>
               <Form.Control
                 type="number"
                 step="0.001"
@@ -233,7 +224,7 @@ const Firearms = () => {
             </Form.Group>
             <Form.Group>
               <Form.Label className="m-2">Sight Radius:</Form.Label>
-              <span>{measureInches}</span>
+              <span>{Units.measureInches}</span>
               <Form.Control
                 type="number"
                 step="0.001"
