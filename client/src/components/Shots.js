@@ -128,7 +128,8 @@ const Shots = () => {
   Units.switchUnits(showShot?.measureSystem);
 
   // routine to add a log entry
-  const handleAddLogEntry = async () => {
+  const handleAddLogEntry = async (event) => {
+    event.preventDefault();
     try {
       const response = await addLogEntry({
         variables: {

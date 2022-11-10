@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_LOG_ENTRIES_BY_SHOT, GET_FIREARM } from '../utils/queries';
-// import { EDIT_LOG_ENTRY, REMOVE_LOG_ENTRY } from '../utils/mutations';
-import { EDIT_LOG_ENTRY } from '../utils/mutations';
+import { EDIT_LOG_ENTRY, REMOVE_LOG_ENTRY } from '../utils/mutations';
+// import { EDIT_LOG_ENTRY } from '../utils/mutations';
 import { ClockIcon } from '@heroicons/react/24/outline';
 import AuthService from '../utils/auth';
 import { Form, Button } from 'react-bootstrap';
@@ -38,7 +38,7 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
 
   const [editLogEntry] = useMutation(EDIT_LOG_ENTRY);
 
-  // const [deleteLogEntry] = useMutation(REMOVE_LOG_ENTRY);
+  const [deleteLogEntry] = useMutation(REMOVE_LOG_ENTRY);
 
   useEffect(() => {
     const shotData = data?.logsByShot[0] || {};
@@ -52,6 +52,7 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
 
   // routine to edit the selected log entry
   const handleEditLog = async (event) => {
+    event.preventDefault();
     try {
       const response = await editLogEntry({
         variables: {
@@ -93,35 +94,35 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
     }
   };
 
-  // routine to delete a firearm
-  // const handleDeleteLogEntry = async () => {
-  //   try {
-  //     const response = await deleteLogEntry({
-  //       variables: {
-  //         _id: showShot._id,
-  //       },
-  //     });
-  //     console.log(response);
-  //     // must check if deleting target and adjust target and numberTargets
-  //     // if shot === 1 then deleting shot deletes target
-  //     let targets = numberTargets;
-  //     if (shot === 1 && target === 1) {
-  //       window.location.replace(`/logs`);
-  //     } else if (shot === 1 && target > 1) {
-  //       target = target - 1;
-  //       targets = numberTargets - 1;
-  //       window.location.replace(
-  //         `/logs/targets/shots/${date}&${target}&${targets}`
-  //       );
-  //     } else {
-  //       window.location.replace(
-  //         `/logs/targets/shots/${date}&${target}&${targets}`
-  //       );
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  // routine to delete a log entry
+  const handleDeleteLogEntry = async () => {
+    try {
+      const response = await deleteLogEntry({
+        variables: {
+          _id: showShot._id,
+        },
+      });
+      console.log(response);
+      // must check if deleting target and adjust target and numberTargets
+      // if shot === 1 then deleting shot deletes target
+      let targets = numberTargets;
+      if (shot === 1 && target === 1) {
+        window.location.replace(`/logs`);
+      } else if (shot === 1 && target > 1) {
+        target = target - 1;
+        targets = numberTargets - 1;
+        window.location.replace(
+          `/logs/targets/shots/${date}&${target}&${targets}`
+        );
+      } else {
+        window.location.replace(
+          `/logs/targets/shots/${date}&${target}&${targets}`
+        );
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleDataChange = (event) => {
     // handling multiple input types
@@ -417,14 +418,14 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
         <Button className="p-1 m-2" type="submit" variant="primary">
           Submit Edits
         </Button>
-        {/* <Button
+        <Button
           className="p-1 m-2"
           type="button"
           variant="danger"
           onClick={handleDeleteLogEntry}
         >
           Delete Log Entry
-        </Button> */}
+        </Button>
       </Form>
     </div>
   );
