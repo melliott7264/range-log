@@ -32,6 +32,7 @@ const Firearms = () => {
 
   // routine to add a firearm
   const handleAddFirearm = async (event) => {
+    event.preventDefault();
     try {
       const response = await addFirearm({
         variables: {
@@ -51,6 +52,7 @@ const Firearms = () => {
         },
       });
       console.log(response);
+      window.location.replace(`/firearms`);
     } catch (err) {
       console.log(err);
     }

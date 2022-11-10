@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import Units from '../utils/units';
 import AuthService from '../utils/auth';
-import { EDIT_FIREARM } from '../utils/mutations';
+import { EDIT_FIREARM, REMOVE_FIREARM } from '../utils/mutations';
 
 const SingleFirearm = () => {
   // id passed to component through URI parameters from Route in App.js
@@ -28,7 +28,7 @@ const SingleFirearm = () => {
   );
   const [editFirearm] = useMutation(EDIT_FIREARM);
 
-  // const [deleteFirearm] = useMutation(REMOVE_FIREARM);
+  const [deleteFirearm] = useMutation(REMOVE_FIREARM);
 
   useEffect(() => {
     const firearm = data?.firearm[0] || {};
@@ -36,7 +36,8 @@ const SingleFirearm = () => {
   }, [data]);
 
   // routine to edit the selected firearm
-  const handleEditFirearm = async () => {
+  const handleEditFirearm = async (event) => {
+    event.preventDefault();
     try {
       const response = await editFirearm({
         variables: {
@@ -58,6 +59,7 @@ const SingleFirearm = () => {
         },
       });
       console.log(response);
+      window.location.replace(`/firearms/single/${id}`);
     } catch (err) {
       console.log(err);
     }
@@ -77,19 +79,19 @@ const SingleFirearm = () => {
   };
 
   // routine to delete a firearm
-  // const handleFirearmDelete = async () => {
-  //   try {
-  //     const response = await deleteFirearm({
-  //       variables: {
-  //         _id: id,
-  //       },
-  //     });
-  //     console.log(response);
-  //     window.location.replace('/firearms');
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  const handleFirearmDelete = async () => {
+    try {
+      const response = await deleteFirearm({
+        variables: {
+          _id: id,
+        },
+      });
+      console.log(response);
+      window.location.replace('/firearms');
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   // Call Units method to switch units if measureSystem is metric (true)
   Units.switchUnits(firearmData?.measureSystem);
@@ -320,14 +322,14 @@ const SingleFirearm = () => {
         <Button className="p-1 m-2" type="submit" variant="primary">
           Submit Edits
         </Button>
-        {/* <Button
+        <Button
           className="p-1 m-2"
           type="button"
           variant="danger"
           onClick={handleFirearmDelete}
         >
           Delete Firearm
-        </Button> */}
+        </Button>
       </Form>
       <p className="m-2">
         * Used in calculation of front sight height. Click on Submit to save.
