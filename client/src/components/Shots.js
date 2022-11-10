@@ -93,20 +93,20 @@ const Shots = () => {
   }
 
   // Need to get the array of shots to paginate through them
-  const shotArray = () => {
-    // get an array of the shots
-    let shotArray = [];
-    for (let i = 0; i < showShots.length; i++) {
-      shotArray.push(showShots[i].shot);
-    }
-    return shotArray;
-  };
+  // const shotArray = () => {
+  //   // get an array of the shots
+  //   let shotArray = [];
+  //   for (let i = 0; i < showShots.length; i++) {
+  //     shotArray.push(showShots[i].shot);
+  //   }
+  //   return shotArray;
+  // };
 
   // Need to get the largest shot number for adding the next shot and to pass to SingleShot
   const lastShot = () => {
     // call the function to get the shotArray
-    // return the largest number in the array
-    return Math.max(...shotArray());
+    // return the length of the shot array
+    return showShots.length;
   };
 
   const handleDataChange = (event) => {
@@ -134,7 +134,7 @@ const Shots = () => {
       const response = await addLogEntry({
         variables: {
           date: date,
-          target: targetNumber,
+          target: currentTarget,
           shot: lastShot() + 1,
           firearmId: showShot.firearmId,
           targetType: showShot.targetType,

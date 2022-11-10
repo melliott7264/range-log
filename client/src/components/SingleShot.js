@@ -82,7 +82,7 @@ const SingleShot = () => {
   const lastShot = () => {
     // call the function to get the shotArray
     // return the largest number in the array
-    return Math.max(...shotArray());
+    return showShots.length;
   };
 
   const handleDataChange = (event) => {
@@ -107,7 +107,7 @@ const SingleShot = () => {
       const response = await addLogEntry({
         variables: {
           date: date,
-          target: targetNumber,
+          target: currentTarget,
           shot: lastShot() + 1,
           firearmId: firearmId,
           targetType: showShot.targetType,
