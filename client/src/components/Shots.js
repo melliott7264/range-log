@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { useParams } from 'react-router-dom';
-import { GET_LOG_ENTRIES_BY_TARGET, GET_ALL_FIREARMS } from '../utils/queries';
+import {
+  GET_LOG_ENTRIES_BY_TARGET,
+  GET_ALL_FIREARMS,
+  LOG_TARGETS,
+} from '../utils/queries';
 import { ADD_LOG_ENTRY } from '../utils/mutations';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -23,6 +27,9 @@ const Shots = () => {
   // state controlling shots listing for target
   const [showShots, setShowShots] = useState();
 
+  // state controlling array of targets
+  const [showTargets, setShowTargets] = useState();
+
   // state controlling listing of all firearms for the logged in user
   const [showFirearms, setShowFirearms] = useState();
 
@@ -35,6 +42,22 @@ const Shots = () => {
   }
 
   const [addLogEntry] = useMutation(ADD_LOG_ENTRY);
+
+  // need to track targets array in case a target is deleted out of order
+  const { data } = useQuery(
+    LOG_TARGETS,
+    { variables: { date: date } },
+    { skip: !loggedIn }
+  );
+
+  useEffect(() => {
+    const targetsArray = data?.logTargetsByDate || [];
+    setShowTargets(targetsArray);
+  }, [data]);
+
+  if (data) {
+    console.log(showTargets);
+  }
 
   const {
     loading: loading2,
@@ -170,15 +193,21 @@ const Shots = () => {
     }
   };
 
+  // need to track current target by index in case targets are deleted out of order
   const onNextTarget = () => {
-    if (currentTarget < numberTargetsInt) {
-      setCurrentTarget(currentTarget + 1);
+    // if index of currentTarget less than the highest index
+    if (showTargets.findIndex(currentTarget) < showTargets.length - 1) {
+      // then set current target to value of the target at the next index up
+      setCurrentTarget(showTargets[showTargets.findIndex(currentTarget) + 1]);
     }
   };
 
   const onPreviousTarget = () => {
-    if (currentTarget > 1) {
-      setCurrentTarget(currentTarget - 1);
+    // if index of current target greater than the first one
+    console.log(showTargets.findIndex(currentTarget));
+    if (showTargets.findIndex(currentTarget) > 0) {
+      // then set the current target to the value of the target at the next index down
+      setCurrentTarget(showTargets[showTargets.findIndex(currentTarget) - 1]);
     }
   };
 

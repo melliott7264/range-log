@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_LOG_ENTRIES_BY_SHOT, GET_FIREARM } from '../utils/queries';
+import {
+  GET_LOG_ENTRIES_BY_SHOT,
+  GET_FIREARM,
+  LOG_TARGETS,
+  LOG_SHOTS,
+} from '../utils/queries';
 import { EDIT_LOG_ENTRY, REMOVE_LOG_ENTRY } from '../utils/mutations';
 // import { EDIT_LOG_ENTRY } from '../utils/mutations';
 import { ClockIcon } from '@heroicons/react/24/outline';
@@ -14,6 +19,8 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
 
   const [showShot, setShowShot] = useState();
   const [showFirearm, setShowFirearm] = useState();
+  const [showTargets, setShowTargets] = useState();
+  const [showShots, setShowShots] = useState();
 
   const loggedIn = AuthService.loggedIn();
   if (!loggedIn) {
@@ -36,6 +43,20 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
     { skip: !loggedIn }
   );
 
+  // pull back new targets after delete
+  const { data: data3 } = useQuery(
+    LOG_TARGETS,
+    { variables: { date: date } },
+    { skip: !loggedIn }
+  );
+
+  // pull back new shots afater delete
+  const { data: data4 } = useQuery(
+    LOG_SHOTS,
+    { variables: { date: date, target: target } },
+    { skip: !loggedIn }
+  );
+
   const [editLogEntry] = useMutation(EDIT_LOG_ENTRY);
 
   const [deleteLogEntry] = useMutation(REMOVE_LOG_ENTRY);
@@ -49,6 +70,17 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
     const firearm = data2?.firearm[0] || {};
     setShowFirearm(firearm);
   }, [data2]);
+
+  // next two useEffects only needed when shot deleted
+  useEffect(() => {
+    const targetsArray = data3?.logTargetsByDate || [];
+    setShowTargets(targetsArray);
+  }, [data3]);
+
+  useEffect(() => {
+    const shotsArray = data4?.logShotsByTargetDate || [];
+    setShowShots(shotsArray);
+  }, [data4]);
 
   // routine to edit the selected log entry
   const handleEditLog = async (event) => {
@@ -103,18 +135,21 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
         },
       });
       console.log(response);
+
       // must check if deleting target and adjust target and numberTargets
-      // if shot === 1 then deleting shot deletes target
-      let targets = numberTargets;
-      if (shot === 1 && target === 1) {
+      // if there is only one shot then deleting shot deletes target
+      let targets = showTargets.length;
+      if (showShots.length === 1 && targets === 1) {
         window.location.replace(`/logs`);
-      } else if (shot === 1 && target > 1) {
-        target = target - 1;
-        targets = numberTargets - 1;
+      } else if (showShots.length === 1 && targets > 1) {
+        // if there are more than one target left set target to first target in array
+        target = showTargets[0];
+        console.log(date, target, targets);
         window.location.replace(
           `/logs/targets/shots/${date}&${target}&${targets}`
         );
       } else {
+        console.log(date, target, targets);
         window.location.replace(
           `/logs/targets/shots/${date}&${target}&${targets}`
         );

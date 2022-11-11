@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { LOG_TARGETS } from '../utils/queries';
 import { ADD_LOG_ENTRY } from '../utils/mutations';
 import { Link } from 'react-router-dom';
-import { Button, Modal, Form } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import dayjs from 'dayjs';
 import AuthService from '../utils/auth';
 import { unique } from '../utils/utils';
