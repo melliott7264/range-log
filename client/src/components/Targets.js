@@ -53,7 +53,7 @@ const Targets = () => {
         variables: {
           firearmId: showTargets[0].firearmId,
           date: date,
-          target: uniqueTargets.length + 1,
+          target: Math.max(...uniqueTargets) + 1,
           shot: 1,
         },
       });
