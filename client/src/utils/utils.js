@@ -14,3 +14,12 @@ export const getTargetScore = (shotsArray) => {
   });
   return targetScore;
 };
+
+// Given the complete array of targets by date (showTargets), the following code returns an array of unique target elements
+export const uniqueTargets = (targetsArray) => {
+  return unique(
+    targetsArray.map(({ target }) => {
+      return target;
+    })
+  );
+};

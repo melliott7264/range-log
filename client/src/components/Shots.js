@@ -14,7 +14,7 @@ import dayjs from 'dayjs';
 import AuthService from '../utils/auth';
 import { getTargetScore } from '../utils/utils.js';
 import Units from '../utils/units.js';
-import { unique } from '../utils/utils';
+import { unique, uniqueTargets } from '../utils/utils';
 
 const Shots = () => {
   const { date, target, numberTargets } = useParams();
@@ -55,41 +55,6 @@ const Shots = () => {
     const targetsArray = data?.logTargetsByDate || [];
     setShowTargets(targetsArray);
   }, [data]);
-
-  if (data) {
-    console.log(
-      unique(
-        showTargets.map(({ target }) => {
-          return target;
-        })
-      )
-    );
-    console.log(
-      Math.max(
-        ...unique(
-          showTargets.map(({ target }) => {
-            return target;
-          })
-        )
-      )
-    );
-    console.log(
-      Math.min(
-        ...unique(
-          showTargets.map(({ target }) => {
-            return target;
-          })
-        )
-      )
-    );
-    console.log(
-      unique(
-        showTargets.map(({ target }) => {
-          return target;
-        })
-      ).indexOf(currentTarget)
-    );
-  }
 
   const {
     loading: loading2,
@@ -229,25 +194,13 @@ const Shots = () => {
   const onNextTarget = () => {
     // if index of currentTarget less than the highest index
     if (
-      unique(
-        showTargets.map(({ target }) => {
-          return target;
-        })
-      ).indexOf(currentTarget) <
+      uniqueTargets(showTargets).indexOf(currentTarget) <
       showTargets.length - 1
     ) {
       // then set current target to value of the target at the next index up
       setCurrentTarget(
-        unique(
-          showTargets.map(({ target }) => {
-            return target;
-          })
-        )[
-          unique(
-            showTargets.map(({ target }) => {
-              return target;
-            })
-          ).indexOf(currentTarget) + 1
+        uniqueTargets(showTargets)[
+          uniqueTargets(showTargets).indexOf(currentTarget) + 1
         ]
       );
     }
@@ -255,26 +208,14 @@ const Shots = () => {
 
   const onPreviousTarget = () => {
     // if index of current target greater than the first one
-
     if (
-      unique(
-        showTargets.map(({ target }) => {
-          return target;
-        })
-      ).indexOf(currentTarget) > 0
+      // the following code returns an array of unique target elements and gets the index of the current target
+      uniqueTargets(showTargets).indexOf(currentTarget) > 0
     ) {
       // then set the current target to the value of the target at the next index down
       setCurrentTarget(
-        unique(
-          showTargets.map(({ target }) => {
-            return target;
-          })
-        )[
-          unique(
-            showTargets.map(({ target }) => {
-              return target;
-            })
-          ).indexOf(currentTarget) - 1
+        uniqueTargets(showTargets)[
+          uniqueTargets(showTargets).indexOf(currentTarget) - 1
         ]
       );
     }

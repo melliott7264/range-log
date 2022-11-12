@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { useParams, Link } from 'react-router-dom';
-import { GET_LOG_ENTRIES_BY_TARGET, GET_FIREARM } from '../utils/queries';
+import {
+  GET_LOG_ENTRIES_BY_TARGET,
+  GET_FIREARM,
+  LOG_TARGETS,
+} from '../utils/queries';
 import { ADD_LOG_ENTRY } from '../utils/mutations';
 import dayjs from 'dayjs';
 import AuthService from '../utils/auth';
@@ -11,7 +15,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import SingleShotDisplay from './SingleShotDisplay';
 import { getTargetScore } from '../utils/utils.js';
 import Units from '../utils/units.js';
-import { unique } from '../utils/utils';
+import { uniqueTargets } from '../utils/utils';
 
 const SingleShot = () => {
   const { date, target, numberTargets, shot, firearmId } = useParams();
@@ -27,6 +31,9 @@ const SingleShot = () => {
   // state controlling all the shot data for a target
   const [showShots, setShowShots] = useState();
 
+  // state controlling array of targets
+  const [showTargets, setShowTargets] = useState();
+
   // states controlling what is passed to SingleShotDisplay
   const [showShot, setShowShot] = useState();
   const [showFirearm, setShowFirearm] = useState();
@@ -37,6 +44,18 @@ const SingleShot = () => {
   }
 
   const [addLogEntry] = useMutation(ADD_LOG_ENTRY);
+
+  // need to track targets array in case a target is deleted out of order
+  const { data: data3 } = useQuery(
+    LOG_TARGETS,
+    { variables: { date: date } },
+    { skip: !loggedIn }
+  );
+
+  useEffect(() => {
+    const targetsArray = data3?.logTargetsByDate || [];
+    setShowTargets(targetsArray);
+  }, [data3]);
 
   // get all the shots for a target so that we can get an array of shots for shot pagination as well
   // as individual shot data to add a new shot
@@ -146,23 +165,42 @@ const SingleShot = () => {
   };
 
   const onNextTarget = () => {
-    if (currentTarget < numberTargetsInt) {
-      setCurrentTarget(currentTarget + 1);
+    // if index of currentTarget less than the highest index
+    if (
+      uniqueTargets(showTargets).indexOf(currentTarget) <
+      showTargets.length - 1
+    ) {
+      // then set current target to value of the target at the next index up
+      setCurrentTarget(
+        uniqueTargets(showTargets)[
+          uniqueTargets(showTargets).indexOf(currentTarget) + 1
+        ]
+      );
       // must update the number of shots for new target
       // will do this by calling the shots component
       window.location.replace(
-        `/logs/targets/shots/${date}&${currentTarget + 1}&${numberTargetsInt}`
+        `/logs/targets/shots/${date}&${currentTarget + 1}&${
+          uniqueTargets(showTargets).length
+        }`
       );
     }
   };
 
   const onPreviousTarget = () => {
-    if (currentTarget > 1) {
-      setCurrentTarget(currentTarget - 1);
+    // if index of current target greater than the first one
+    if (uniqueTargets(showTargets).indexOf(currentTarget) > 0) {
+      // then set the current target to the value of the target at the next index down
+      setCurrentTarget(
+        uniqueTargets(showTargets)[
+          uniqueTargets(showTargets).indexOf(currentTarget) - 1
+        ]
+      );
       // must update the number of shots for new target
       // will do this by calling the shots component
       window.location.replace(
-        `/logs/targets/shots/${date}&${currentTarget - 1}&${numberTargetsInt}`
+        `/logs/targets/shots/${date}&${currentTarget - 1}&${
+          uniqueTargets(showTargets).length
+        }`
       );
     }
   };
