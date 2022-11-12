@@ -12,6 +12,7 @@ import { ClockIcon } from '@heroicons/react/24/outline';
 import AuthService from '../utils/auth';
 import { Form, Button } from 'react-bootstrap';
 import Units from '../utils/units.js';
+import { unique } from '../utils/utils';
 
 const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
   const targetNumber = parseInt(target);

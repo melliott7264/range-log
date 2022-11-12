@@ -11,6 +11,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import SingleShotDisplay from './SingleShotDisplay';
 import { getTargetScore } from '../utils/utils.js';
 import Units from '../utils/units.js';
+import { unique } from '../utils/utils';
 
 const SingleShot = () => {
   const { date, target, numberTargets, shot, firearmId } = useParams();

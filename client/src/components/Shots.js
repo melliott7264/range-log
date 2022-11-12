@@ -14,6 +14,7 @@ import dayjs from 'dayjs';
 import AuthService from '../utils/auth';
 import { getTargetScore } from '../utils/utils.js';
 import Units from '../utils/units.js';
+import { unique } from '../utils/utils';
 
 const Shots = () => {
   const { date, target, numberTargets } = useParams();
@@ -56,7 +57,38 @@ const Shots = () => {
   }, [data]);
 
   if (data) {
-    console.log(showTargets);
+    console.log(
+      unique(
+        showTargets.map(({ target }) => {
+          return target;
+        })
+      )
+    );
+    console.log(
+      Math.max(
+        ...unique(
+          showTargets.map(({ target }) => {
+            return target;
+          })
+        )
+      )
+    );
+    console.log(
+      Math.min(
+        ...unique(
+          showTargets.map(({ target }) => {
+            return target;
+          })
+        )
+      )
+    );
+    console.log(
+      unique(
+        showTargets.map(({ target }) => {
+          return target;
+        })
+      ).indexOf(currentTarget)
+    );
   }
 
   const {
@@ -196,18 +228,55 @@ const Shots = () => {
   // need to track current target by index in case targets are deleted out of order
   const onNextTarget = () => {
     // if index of currentTarget less than the highest index
-    if (showTargets.findIndex(currentTarget) < showTargets.length - 1) {
+    if (
+      unique(
+        showTargets.map(({ target }) => {
+          return target;
+        })
+      ).indexOf(currentTarget) <
+      showTargets.length - 1
+    ) {
       // then set current target to value of the target at the next index up
-      setCurrentTarget(showTargets[showTargets.findIndex(currentTarget) + 1]);
+      setCurrentTarget(
+        unique(
+          showTargets.map(({ target }) => {
+            return target;
+          })
+        )[
+          unique(
+            showTargets.map(({ target }) => {
+              return target;
+            })
+          ).indexOf(currentTarget) + 1
+        ]
+      );
     }
   };
 
   const onPreviousTarget = () => {
     // if index of current target greater than the first one
-    console.log(showTargets.findIndex(currentTarget));
-    if (showTargets.findIndex(currentTarget) > 0) {
+
+    if (
+      unique(
+        showTargets.map(({ target }) => {
+          return target;
+        })
+      ).indexOf(currentTarget) > 0
+    ) {
       // then set the current target to the value of the target at the next index down
-      setCurrentTarget(showTargets[showTargets.findIndex(currentTarget) - 1]);
+      setCurrentTarget(
+        unique(
+          showTargets.map(({ target }) => {
+            return target;
+          })
+        )[
+          unique(
+            showTargets.map(({ target }) => {
+              return target;
+            })
+          ).indexOf(currentTarget) - 1
+        ]
+      );
     }
   };
 
@@ -225,7 +294,18 @@ const Shots = () => {
             type="button"
             className="arrowButton left"
             onClick={onPreviousTarget}
-            disabled={currentTarget === 1 ? true : false}
+            disabled={
+              currentTarget ===
+              Math.min(
+                ...unique(
+                  showTargets.map(({ target }) => {
+                    return target;
+                  })
+                )
+              )
+                ? true
+                : false
+            }
           >
             <ChevronLeftIcon className="button-icon" />
           </button>
@@ -241,7 +321,18 @@ const Shots = () => {
             type="button"
             className="arrowButton right"
             onClick={onNextTarget}
-            disabled={currentTarget === numberTargetsInt ? true : false}
+            disabled={
+              currentTarget ===
+              Math.max(
+                ...unique(
+                  showTargets.map(({ target }) => {
+                    return target;
+                  })
+                )
+              )
+                ? true
+                : false
+            }
           >
             <ChevronRightIcon className="button-icon" />
           </button>
