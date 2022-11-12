@@ -206,7 +206,7 @@ const SingleShot = () => {
   };
 
   const onNextShot = () => {
-    if (currentShot < lastShot()) {
+    if (currentShot < Math.max(...shotArray())) {
       //need to find the shot location in the array and go to the shot at the next index
       setCurrentShot(shotArray()[shotArray().indexOf(currentShot) + 1]);
     }
@@ -248,7 +248,11 @@ const SingleShot = () => {
             type="button"
             className="arrowButton left"
             onClick={onPreviousTarget}
-            disabled={currentTarget === 1 ? true : false}
+            disabled={
+              currentTarget === Math.min(...uniqueTargets(showTargets))
+                ? true
+                : false
+            }
           >
             <ChevronLeftIcon className="button-icon" />
           </button>
@@ -264,7 +268,11 @@ const SingleShot = () => {
             type="button"
             className="arrowButton right"
             onClick={onNextTarget}
-            disabled={currentTarget === numberTargetsInt ? true : false}
+            disabled={
+              currentTarget === Math.max(...uniqueTargets(showTargets))
+                ? true
+                : false
+            }
           >
             <ChevronRightIcon className="button-icon" />
           </button>
@@ -287,7 +295,7 @@ const SingleShot = () => {
             type="button"
             className="arrowButton right"
             onClick={onNextShot}
-            disabled={currentShot === lastShot() ? true : false}
+            disabled={currentShot === Math.max(...shotArray()) ? true : false}
           >
             <ChevronRightIcon className="button-icon" />
           </button>

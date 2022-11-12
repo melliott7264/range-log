@@ -14,7 +14,7 @@ import dayjs from 'dayjs';
 import AuthService from '../utils/auth';
 import { getTargetScore } from '../utils/utils.js';
 import Units from '../utils/units.js';
-import { unique, uniqueTargets } from '../utils/utils';
+import { uniqueTargets } from '../utils/utils';
 
 const Shots = () => {
   const { date, target, numberTargets } = useParams();
@@ -236,14 +236,7 @@ const Shots = () => {
             className="arrowButton left"
             onClick={onPreviousTarget}
             disabled={
-              currentTarget ===
-              Math.min(
-                ...unique(
-                  showTargets.map(({ target }) => {
-                    return target;
-                  })
-                )
-              )
+              currentTarget === Math.min(...uniqueTargets(showTargets))
                 ? true
                 : false
             }
@@ -263,14 +256,7 @@ const Shots = () => {
             className="arrowButton right"
             onClick={onNextTarget}
             disabled={
-              currentTarget ===
-              Math.max(
-                ...unique(
-                  showTargets.map(({ target }) => {
-                    return target;
-                  })
-                )
-              )
+              currentTarget === Math.max(...uniqueTargets(showTargets))
                 ? true
                 : false
             }

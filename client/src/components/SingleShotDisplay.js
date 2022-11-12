@@ -12,7 +12,7 @@ import { ClockIcon } from '@heroicons/react/24/outline';
 import AuthService from '../utils/auth';
 import { Form, Button } from 'react-bootstrap';
 import Units from '../utils/units.js';
-import { unique } from '../utils/utils';
+import { uniqueTargets } from '../utils/utils';
 
 const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
   const targetNumber = parseInt(target);
@@ -139,12 +139,12 @@ const ShotDisplay = ({ date, target, shot, numberTargets, firearmId }) => {
 
       // must check if deleting target and adjust target and numberTargets
       // if there is only one shot then deleting shot deletes target
-      let targets = showTargets.length;
+      let targets = uniqueTargets(showTargets).length;
       if (showShots.length === 1 && targets === 1) {
         window.location.replace(`/logs`);
       } else if (showShots.length === 1 && targets > 1) {
         // if there are more than one target left set target to first target in array
-        target = showTargets[0];
+        target = uniqueTargets(showTargets)[0];
         console.log(date, target, targets);
         window.location.replace(
           `/logs/targets/shots/${date}&${target}&${targets}`
