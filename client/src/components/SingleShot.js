@@ -102,7 +102,7 @@ const SingleShot = () => {
   const lastShot = () => {
     // call the function to get the shotArray
     // return the largest number in the array
-    return showShots.length;
+    return Math.max(...shotArray());
   };
 
   const handleDataChange = (event) => {

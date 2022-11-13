@@ -113,20 +113,17 @@ const Shots = () => {
   }
 
   // Need to get the array of shots to paginate through them
-  // const shotArray = () => {
-  //   // get an array of the shots
-  //   let shotArray = [];
-  //   for (let i = 0; i < showShots.length; i++) {
-  //     shotArray.push(showShots[i].shot);
-  //   }
-  //   return shotArray;
-  // };
+  const shotArray = () => {
+    return showShots.map((shot) => {
+      return shot.shot;
+    });
+  };
 
   // Need to get the largest shot number for adding the next shot and to pass to SingleShot
   const lastShot = () => {
     // call the function to get the shotArray
     // return the length of the shot array
-    return showShots.length;
+    return Math.max(...shotArray());
   };
 
   const handleDataChange = (event) => {
