@@ -379,6 +379,11 @@ const resolvers = {
     removeFirearm: async (parrent, { _id }, context) => {
       if (context.user) {
         const firearm = await Firearm.findOneAndDelete({ _id: _id });
+        const logDelete = await Log.deleteMany({ firearmId: _id });
+        console.log(
+          'Firearm deleted.  Associated log entry deleted count...',
+          logDelete
+        );
         return firearm;
       }
       throw new AuthenticationError('Not Logged In');
