@@ -48,6 +48,7 @@ const Targets = () => {
 
   // routine to add a new log entry for a new target for current date
   const handleAddLogEntry = async (event) => {
+    event.preventDefault();
     try {
       const response = await addTarget({
         variables: {

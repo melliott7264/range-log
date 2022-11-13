@@ -61,6 +61,7 @@ const Logs = () => {
 
   // routine to add a new log entry for current date
   const handleAddLogEntry = async (event) => {
+    event.preventDefault();
     try {
       const response = await addSession({
         variables: {
@@ -71,6 +72,7 @@ const Logs = () => {
         },
       });
       console.log(response);
+      window.location.replace('/logs');
     } catch (err) {
       console.log(err);
     }
