@@ -7,6 +7,11 @@ import SignUp from './SignUp';
 import Login from './Login';
 import Download from './Download';
 import rifleLogo from '../Rifle19Mask.png';
+import {
+  LockOpenIcon,
+  LockClosedIcon,
+  ArrowDownOnSquareIcon,
+} from '@heroicons/react/24/outline';
 
 import AuthService from '../utils/auth';
 
@@ -59,6 +64,7 @@ const AppNavbar = () => {
                     style={{ color: 'black' }}
                     onClick={() => setShowDownload(true)}
                   >
+                    <ArrowDownOnSquareIcon className="download-icon" />
                     Downloads
                   </Nav.Link>
 
@@ -66,6 +72,7 @@ const AppNavbar = () => {
                     style={{ color: 'black' }}
                     onClick={AuthService.logout}
                   >
+                    <LockClosedIcon className="lock-icon" />
                     Logout
                   </Nav.Link>
                 </>
@@ -74,6 +81,7 @@ const AppNavbar = () => {
                   style={{ color: 'black' }}
                   onClick={() => setShowModal(true)}
                 >
+                  <LockOpenIcon className="unlock-icon" />
                   Login/SignUp
                 </Nav.Link>
               )}

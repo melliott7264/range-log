@@ -12,7 +12,10 @@ code {
     monospace;
 }
 
-.button-icon {
+.button-icon,
+.unlock-icon,
+.lock-icon,
+.download-icon {
   width: 1em;
   height: 1em;
 }
