@@ -76,8 +76,15 @@ const Firearms = () => {
   Units.switchUnits(showFirearm?.measureSystem);
 
   return (
-    <div>
-      <div className="firearms-list">
+    <div className="background-wrap">
+      <div>
+        <img
+          className="background-image"
+          src="/assets/images/target_background-1.jpg"
+          alt="background target"
+        ></img>
+      </div>
+      <div className="firearms-list background-content">
         <Container>
           <Row>
             <h3 className="text-center">Firearms</h3>
@@ -93,7 +100,7 @@ const Firearms = () => {
 
         <ul className="list-group">
           {showFirearms.map((firearm) => (
-            <li key={firearm._id} className="list-group-item">
+            <li key={firearm._id} className="list-group-item firearm-list-item">
               <div className="row">
                 <div className="col-md-12">
                   <Link to={{ pathname: `/firearms/single/${firearm._id}` }}>

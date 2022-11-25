@@ -6,6 +6,31 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.background-wrap {
+  overflow: hidden;
+  position: relative;
+}
+.background-image {
+  opacity: 0.15;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+.background-content {
+  position: relative;
+}
+
+li {
+  width: 10em;
+  margin: auto;
+}
+
+.firearm-list-item {
+  width: 100%;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -47,7 +72,7 @@ code {
   .single-shot-page,
   .single-firearm,
   .firearms-list {
-    max-width: 50vw;
+    max-width: 70vw;
     margin: auto;
   }
 }

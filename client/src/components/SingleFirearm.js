@@ -155,185 +155,194 @@ const SingleFirearm = () => {
   };
 
   return (
-    <div className="single-firearm">
-      <div className="text-center">
-        <h3>Firearm Description</h3>
+    <div className="background-wrap">
+      <div>
+        <img
+          className="background-image"
+          src="/assets/images/target_background-1.jpg"
+          alt="background target"
+        ></img>
       </div>
-      <Form onSubmit={handleEditFirearm}>
-        <Form.Group>
-          <Form.Label className="m-2">Name:</Form.Label>
+      <div className="background-content single-firearm">
+        <div className="text-center">
+          <h3>Firearm Description</h3>
+        </div>
+        <Form onSubmit={handleEditFirearm}>
+          <Form.Group>
+            <Form.Label className="m-2">Name:</Form.Label>
 
-          <Form.Control
-            className="w-50 float-end"
-            type="text"
-            name="name"
-            value={firearmData.name || ''}
-            onChange={handleDataChange}
-          />
-        </Form.Group>
-        <Form.Group className="bg-info">
-          <Form.Label className="m-2">Ignition Type:</Form.Label>
-          <Form.Control
-            className="w-50 float-end"
-            type="text"
-            name="ignitionType"
-            value={firearmData.ignitionType || ''}
-            onChange={handleDataChange}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label className="m-2">Barrel Length:</Form.Label>
-          <span>{Units.measureInches}</span>
-          <Form.Control
-            className="w-50 float-end"
-            type="number"
-            step="0.01"
-            name="barrelLength"
-            value={firearmData.barrelLength || ''}
-            onChange={handleDataChange}
-          />
-        </Form.Group>
-        <Form.Group className="bg-info">
-          <Form.Label className="m-2">Caliber:</Form.Label>
-          <span>{Units.measureInches}</span>
-          <Form.Control
-            className="w-50 float-end"
-            type="number"
-            step="0.001"
-            name="caliber"
-            value={firearmData.caliber || ''}
-            onChange={handleDataChange}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label className="m-2">Dia Touch Hole:</Form.Label>
-          <span>{Units.measureInch}</span>
-          <Form.Control
-            className="w-50 float-end"
-            type="number"
-            step="0.001"
-            name="diaTouchHole"
-            value={firearmData.diaTouchHole || ''}
-            onChange={handleDataChange}
-          />
-        </Form.Group>
-        <Form.Group className="bg-info">
-          <Form.Label className="m-2">*Distance:</Form.Label>
-          <span>{Units.measureYards}</span>
-          <Form.Control
-            className="w-50 float-end"
-            type="number"
-            name="distanceToTarget"
-            value={firearmData.distanceToTarget || ''}
-            onChange={handleDataChange}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label className="m-2">*Velocity:</Form.Label>
-          <span>{Units.measureVelocity}</span>
-          <Form.Control
-            className="w-50 float-end"
-            type="number"
-            name="muzzleVelocity"
-            value={firearmData.muzzleVelocity || ''}
-            onChange={handleDataChange}
-          />
-        </Form.Group>
-        <Form.Group className="bg-info">
-          <Form.Label className="m-2">*Dia@Rear Sight:</Form.Label>
-          <span>{Units.measureInches}</span>
-          <Form.Control
-            className="w-50 float-end"
-            type="number"
-            step="0.001"
-            name="diaRearSight"
-            value={firearmData.diaRearSight || ''}
-            onChange={handleDataChange}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label className="m-2">*Dia@Front Sight:</Form.Label>
-          <span>{Units.measureInches}</span>
-          <Form.Control
-            className="w-50 float-end"
-            type="number"
-            step="0.001"
-            name="diaFrontSight"
-            value={firearmData.diaFrontSight || ''}
-            onChange={handleDataChange}
-          />
-        </Form.Group>
-        <Form.Group className="bg-info">
-          <Form.Label className="m-2">*Height Rear Sight:</Form.Label>
-          <span>{Units.measureInches}</span>
-          <Form.Control
-            className="w-50 float-end"
-            type="number"
-            step="0.001"
-            name="heightRearSight"
-            value={firearmData.heightRearSight || ''}
-            onChange={handleDataChange}
-          />
-        </Form.Group>
-        <Form.Group className="bg-success text-white">
-          <Form.Label className="m-2">*Height Front Sight:</Form.Label>
-          <span>{Units.measureInches}</span>
-          <Form.Control
-            className="w-50 float-end"
-            type="number"
-            step="0.001"
-            name="heightFrontSight"
-            value={frontSightHeight().toFixed(3) || ''}
-            onChange={handleDataChange}
-          />
-        </Form.Group>
-        <Form.Group className="bg-info">
-          <Form.Label className="m-2">*Sight Radius:</Form.Label>
-          <span>{Units.measureInches}</span>
-          <Form.Control
-            className="w-50 float-end"
-            type="number"
-            step="0.001"
-            name="sightRadius"
-            value={firearmData.sightRadius || ''}
-            onChange={handleDataChange}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label className="m-2">Metric:</Form.Label>
-          <Form.Check
-            className="m-2 p-2 float-end"
-            type="checkbox"
-            name="measureSystem"
-            checked={firearmData.measureSystem || false}
-            onChange={handleDataChange}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label className="m-2">Notes:</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows="4"
-            name="notes"
-            value={firearmData.notes || ''}
-            onChange={handleDataChange}
-          />
-        </Form.Group>
-        <Button className="p-1 m-2" type="submit" variant="primary">
-          Submit Edits
-        </Button>
-        <Button
-          className="p-1 m-2"
-          type="button"
-          variant="danger"
-          onClick={handleFirearmDelete}
-        >
-          Delete Firearm
-        </Button>
-      </Form>
-      <p className="m-2">
-        * Used in calculation of front sight height. Click on Submit to save.
-      </p>
+            <Form.Control
+              className="w-50 float-end"
+              type="text"
+              name="name"
+              value={firearmData.name || ''}
+              onChange={handleDataChange}
+            />
+          </Form.Group>
+          <Form.Group className="bg-info">
+            <Form.Label className="m-2">Ignition Type:</Form.Label>
+            <Form.Control
+              className="w-50 float-end"
+              type="text"
+              name="ignitionType"
+              value={firearmData.ignitionType || ''}
+              onChange={handleDataChange}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label className="m-2">Barrel Length:</Form.Label>
+            <span>{Units.measureInches}</span>
+            <Form.Control
+              className="w-50 float-end"
+              type="number"
+              step="0.01"
+              name="barrelLength"
+              value={firearmData.barrelLength || ''}
+              onChange={handleDataChange}
+            />
+          </Form.Group>
+          <Form.Group className="bg-info">
+            <Form.Label className="m-2">Caliber:</Form.Label>
+            <span>{Units.measureInches}</span>
+            <Form.Control
+              className="w-50 float-end"
+              type="number"
+              step="0.001"
+              name="caliber"
+              value={firearmData.caliber || ''}
+              onChange={handleDataChange}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label className="m-2">Dia Touch Hole:</Form.Label>
+            <span>{Units.measureInch}</span>
+            <Form.Control
+              className="w-50 float-end"
+              type="number"
+              step="0.001"
+              name="diaTouchHole"
+              value={firearmData.diaTouchHole || ''}
+              onChange={handleDataChange}
+            />
+          </Form.Group>
+          <Form.Group className="bg-info">
+            <Form.Label className="m-2">*Distance:</Form.Label>
+            <span>{Units.measureYards}</span>
+            <Form.Control
+              className="w-50 float-end"
+              type="number"
+              name="distanceToTarget"
+              value={firearmData.distanceToTarget || ''}
+              onChange={handleDataChange}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label className="m-2">*Velocity:</Form.Label>
+            <span>{Units.measureVelocity}</span>
+            <Form.Control
+              className="w-50 float-end"
+              type="number"
+              name="muzzleVelocity"
+              value={firearmData.muzzleVelocity || ''}
+              onChange={handleDataChange}
+            />
+          </Form.Group>
+          <Form.Group className="bg-info">
+            <Form.Label className="m-2">*Dia@Rear Sight:</Form.Label>
+            <span>{Units.measureInches}</span>
+            <Form.Control
+              className="w-50 float-end"
+              type="number"
+              step="0.001"
+              name="diaRearSight"
+              value={firearmData.diaRearSight || ''}
+              onChange={handleDataChange}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label className="m-2">*Dia@Front Sight:</Form.Label>
+            <span>{Units.measureInches}</span>
+            <Form.Control
+              className="w-50 float-end"
+              type="number"
+              step="0.001"
+              name="diaFrontSight"
+              value={firearmData.diaFrontSight || ''}
+              onChange={handleDataChange}
+            />
+          </Form.Group>
+          <Form.Group className="bg-info">
+            <Form.Label className="m-2">*Height Rear Sight:</Form.Label>
+            <span>{Units.measureInches}</span>
+            <Form.Control
+              className="w-50 float-end"
+              type="number"
+              step="0.001"
+              name="heightRearSight"
+              value={firearmData.heightRearSight || ''}
+              onChange={handleDataChange}
+            />
+          </Form.Group>
+          <Form.Group className="bg-success text-white">
+            <Form.Label className="m-2">*Height Front Sight:</Form.Label>
+            <span>{Units.measureInches}</span>
+            <Form.Control
+              className="w-50 float-end"
+              type="number"
+              step="0.001"
+              name="heightFrontSight"
+              value={frontSightHeight().toFixed(3) || ''}
+              onChange={handleDataChange}
+            />
+          </Form.Group>
+          <Form.Group className="bg-info">
+            <Form.Label className="m-2">*Sight Radius:</Form.Label>
+            <span>{Units.measureInches}</span>
+            <Form.Control
+              className="w-50 float-end"
+              type="number"
+              step="0.001"
+              name="sightRadius"
+              value={firearmData.sightRadius || ''}
+              onChange={handleDataChange}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label className="m-2">Metric:</Form.Label>
+            <Form.Check
+              className="m-2 p-2 float-end"
+              type="checkbox"
+              name="measureSystem"
+              checked={firearmData.measureSystem || false}
+              onChange={handleDataChange}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label className="m-2">Notes:</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows="4"
+              name="notes"
+              value={firearmData.notes || ''}
+              onChange={handleDataChange}
+            />
+          </Form.Group>
+          <Button className="p-1 m-2" type="submit" variant="primary">
+            Submit Edits
+          </Button>
+          <Button
+            className="p-1 m-2"
+            type="button"
+            variant="danger"
+            onClick={handleFirearmDelete}
+          >
+            Delete Firearm
+          </Button>
+        </Form>
+        <p className="m-2">
+          * Used in calculation of front sight height. Click on Submit to save.
+        </p>
+      </div>
     </div>
   );
 };

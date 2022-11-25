@@ -75,37 +75,46 @@ const Targets = () => {
 
   return (
     <>
-      <div>
-        <h3 className="text-center">Range Session</h3>
-        <Link to={{ pathname: `/logs/targets/${date}` }}>
-          <p className="text-center">
-            {dayjs(parseInt(date)).format('YYYY-MM-DD')}
-          </p>
-        </Link>
-        <h4 className="text-center">Targets</h4>
-      </div>
-      <div className="text-center">
-        <Button className="btn p-1 text-white" onClick={handleAddLogEntry}>
-          Add Target
-        </Button>
-      </div>
-      <ul className="list-group">
-        {uniqueTargets.map((target) => (
-          <li key={target} className="list-group-item">
-            <div className="row">
-              <div className="col-md-12">
-                <Link
-                  to={{
-                    pathname: `/logs/targets/shots/${date}&${target}&${uniqueTargets.length}`,
-                  }}
-                >
-                  <h4 className="text-center">{target}</h4>
-                </Link>
+      <div className="background-wrap">
+        <div>
+          <img
+            className="background-image"
+            src="/assets/images/target_background-1.jpg"
+            alt="background target"
+          ></img>
+        </div>
+        <div className="background-content">
+          <h3 className="text-center">Range Session</h3>
+          <Link to={{ pathname: `/logs/targets/${date}` }}>
+            <p className="text-center">
+              {dayjs(parseInt(date)).format('YYYY-MM-DD')}
+            </p>
+          </Link>
+          <h4 className="text-center">Targets</h4>
+        </div>
+        <div className="text-center">
+          <Button className="btn p-1 text-white" onClick={handleAddLogEntry}>
+            Add Target
+          </Button>
+        </div>
+        <ul className="list-group">
+          {uniqueTargets.map((target) => (
+            <li key={target} className="list-group-item">
+              <div className="row">
+                <div className="col-md-12">
+                  <Link
+                    to={{
+                      pathname: `/logs/targets/shots/${date}&${target}&${uniqueTargets.length}`,
+                    }}
+                  >
+                    <h4 className="text-center">{target}</h4>
+                  </Link>
+                </div>
               </div>
-            </div>
-          </li>
-        ))}
-      </ul>
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   );
 };

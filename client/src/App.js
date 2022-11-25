@@ -58,29 +58,31 @@ function App() {
     <ApolloProvider client={client}>
       <Router forceRefresh={true}>
         <>
-          <Navbar />
-          <Switch>
-            <Route exact path="/firearms" component={Firearms} />
-            <Route
-              exact
-              path="/firearms/single/:id"
-              component={SingleFirearm}
-            />
-            <Route exact path="/logs" component={Logs} />
-            <Route exact path="/logs/targets/:date" component={Targets} />
-            <Route
-              exact
-              path="/logs/targets/shots/:date&:target&:numberTargets"
-              component={Shots}
-            />
-            <Route
-              exact
-              path="/logs/targets/shots/shot/:date&:target&:numberTargets&:shot&:firearmId"
-              component={SingleShot}
-            />
-            <Route exact path="/" component={Main} />
-            <Redirect to="/" />
-          </Switch>
+          <div className="page-container">
+            <Navbar />
+            <Switch>
+              <Route exact path="/firearms" component={Firearms} />
+              <Route
+                exact
+                path="/firearms/single/:id"
+                component={SingleFirearm}
+              />
+              <Route exact path="/logs" component={Logs} />
+              <Route exact path="/logs/targets/:date" component={Targets} />
+              <Route
+                exact
+                path="/logs/targets/shots/:date&:target&:numberTargets"
+                component={Shots}
+              />
+              <Route
+                exact
+                path="/logs/targets/shots/shot/:date&:target&:numberTargets&:shot&:firearmId"
+                component={SingleShot}
+              />
+              <Route exact path="/" component={Main} />
+              <Redirect to="/" />
+            </Switch>
+          </div>
         </>
         <Footer />
       </Router>

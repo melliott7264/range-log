@@ -92,70 +92,79 @@ const Logs = () => {
 
   return (
     <>
-      <div>
-        <div className="container">
-          <div className="row">
-            <div className="text-center">
-              <h3>Range Sessions</h3>
+      <div className="background-wrap">
+        <div>
+          <img
+            className="background-image"
+            src="/assets/images/target_background-1.jpg"
+            alt="background target"
+          ></img>
+        </div>
+        <div className="background-content">
+          <div className="container">
+            <div className="row">
+              <div className="text-center">
+                <h3>Range Sessions</h3>
+              </div>
+              <span className="text-center">
+                <Button
+                  className="btn p-1 text-white"
+                  onClick={() => setShowModal(true)}
+                >
+                  Add Session
+                </Button>
+              </span>
             </div>
-            <span className="text-center">
-              <Button
-                className="btn p-1 text-white"
-                onClick={() => setShowModal(true)}
-              >
-                Add Session
-              </Button>
-            </span>
           </div>
         </div>
-      </div>
 
-      <ul className="list-group">
-        {sortedSessions.map((date) => (
-          <li key={date} className="list-group-item">
-            <div className="row">
-              <div className="col-md-12">
-                <Link to={{ pathname: `/logs/targets/${date}` }}>
-                  <p className="text-center">
-                    {dayjs(parseInt(date)).format('YYYY-MM-DD')}
-                  </p>
-                </Link>
+        <ul className="list-group">
+          {sortedSessions.map((date) => (
+            <li key={date} className="list-group-item">
+              <div className="row">
+                <div className="col-md-12">
+                  <Link to={{ pathname: `/logs/targets/${date}` }}>
+                    <p className="text-center">
+                      {dayjs(parseInt(date)).format('YYYY-MM-DD')}
+                    </p>
+                  </Link>
+                </div>
               </div>
-            </div>
-          </li>
-        ))}
-      </ul>
-      <Modal
-        size="md"
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        aria-labelledby="add-session-modal"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="add-session-modal">
-            <h4>Add New Range Session for Today</h4>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={handleAddLogEntry}>
-            <Form.Select
-              aria-label="Select from list of firearms"
-              custom
-              onChange={handleSelectFirearm}
-            >
-              <option>Select the firearm for this session</option>
-              {showFirearms?.map((firearm) => (
-                <option key={firearm._id} value={firearm._id}>
-                  {firearm.name}
-                </option>
-              ))}
-            </Form.Select>
-            <Button type="submit" variant="primary">
-              Submit
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
+            </li>
+          ))}
+        </ul>
+        <Modal
+          size="md"
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          aria-labelledby="add-session-modal"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="add-session-modal">
+              <h4>Add New Range Session for Today</h4>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form onSubmit={handleAddLogEntry}>
+              <Form.Select
+                aria-label="Select from list of firearms"
+                custom
+                onChange={handleSelectFirearm}
+              >
+                <option>Select the firearm for this session</option>
+                {showFirearms?.map((firearm) => (
+                  <option key={firearm._id} value={firearm._id}>
+                    {firearm.name}
+                  </option>
+                ))}
+              </Form.Select>
+              <Button type="submit" variant="primary">
+                Submit
+              </Button>
+            </Form>
+          </Modal.Body>
+        </Modal>
+      </div>
     </>
   );
 };
