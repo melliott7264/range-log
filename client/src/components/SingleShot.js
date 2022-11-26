@@ -179,9 +179,11 @@ const SingleShot = () => {
       // must update the number of shots for new target
       // will do this by calling the shots component
       window.location.replace(
-        `/logs/targets/shots/${date}&${currentTarget + 1}&${
-          uniqueTargets(showTargets).length
-        }`
+        `/logs/targets/shots/${date}&${
+          uniqueTargets(showTargets)[
+            uniqueTargets(showTargets).indexOf(currentTarget) + 1
+          ]
+        }&${uniqueTargets(showTargets).length}`
       );
     }
   };
@@ -198,9 +200,11 @@ const SingleShot = () => {
       // must update the number of shots for new target
       // will do this by calling the shots component
       window.location.replace(
-        `/logs/targets/shots/${date}&${currentTarget - 1}&${
-          uniqueTargets(showTargets).length
-        }`
+        `/logs/targets/shots/${date}&${
+          uniqueTargets(showTargets)[
+            uniqueTargets(showTargets).indexOf(currentTarget) - 1
+          ]
+        }&${uniqueTargets(showTargets).length}`
       );
     }
   };
