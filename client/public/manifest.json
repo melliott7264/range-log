@@ -3,42 +3,44 @@
   "name": "Muzzleloader Range Log",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "./assets/images/favicon.ico",
       "sizes": "64x64",
       "type": "image/x-icon"
     },
     {
-      "src": "maskable_icon_x96.png",
+      "src": "./assets/images/maskable_icon_x96.png",
       "type": "image/png",
       "sizes": "96x96",
-      "purpose": "maskable"
+      "purpose": "any"
     },
     {
-      "src": "maskable_icon_x128.png",
+      "src": "./assets/images/maskable_icon_x128.png",
       "type": "image/png",
       "sizes": "128x128",
-      "purpose": "maskable"
+      "purpose": "any"
     },
     {
-      "src": "maskable_icon_x192.png",
+      "src": "./assets/images/maskable_icon_x192.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "maskable"
+      "purpose": "any"
     },
     {
-      "src": "maskable_icon_x384.png",
+      "src": "./assets/images/maskable_icon_x384.png",
       "type": "image/png",
       "sizes": "384x384",
-      "purpose": "maskable"
+      "purpose": "any"
     },
     {
-      "src": "maskable_icon_x512.png",
+      "src": "./assets/images/maskable_icon_x512.png",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose": "maskable"
+      "purpose": "any"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
+  "scope": "/",
+  "orientation": "portrait",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
