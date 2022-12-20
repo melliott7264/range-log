@@ -26,6 +26,9 @@ import Targets from './components/Targets';
 import Shots from './components/Shots';
 import SingleShot from './components/SingleShot';
 
+//This is a test of the client side .env
+// console.log(process.env.REACT_APP_CLIENT_SIDE_TEST);
+
 const PORT = process.env.PORT || 3001;
 
 let graphqlPath = `http://localhost:${PORT}/graphql`;
