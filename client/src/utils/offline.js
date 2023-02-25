@@ -68,4 +68,6 @@ class OfflineService {
 
 }
 
+}
+
 export default new OfflineService();
