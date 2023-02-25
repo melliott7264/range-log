@@ -59,13 +59,13 @@ const client = new ApolloClient({
 });
 
 //TODO: Routine to upload data saved to indexedDB
-// if (OfflineService.onlineCheck() && OfflineService.savedDataCheck()) {
+// if (OfflineService.onlineCheck() && OfflineService.savedDataCheck("firearms")) {
 // Check if user loggedIN
 //   const loggedIn = AuthService.loggedIn();
 //   if (!loggedIn) {
 //   window.location.replace('/');
 //   }
-//  if(OfflineService.firearmDataCheck()) {
+//  if(OfflineService.savedDataCheck("firearms")) {
 //    OfflineService.updateFirearmData();
 //  } else {
 //    OfflineService.updateLogData();  
