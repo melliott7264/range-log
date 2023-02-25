@@ -25,6 +25,8 @@ import Logs from './pages/Logs';
 import Targets from './components/Targets';
 import Shots from './components/Shots';
 import SingleShot from './components/SingleShot';
+// Services to handle offline storage
+// import OfflineService from '../utils/offline';
 
 //This is a test of the client side .env
 // console.log(process.env.REACT_APP_CLIENT_SIDE_TEST);
@@ -55,6 +57,34 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
+
+//TODO: Routine to upload data saved to indexedDB
+// Check if network is online
+// If online, check if there is any saved data
+// Check if user loggedIN
+//   const loggedIn = AuthService.loggedIn();
+//  if (!loggedIn) {
+//    window.location.replace('/');
+//   }
+// If there is saved FIREARM data upload it as follows:
+// const [addFirearm] = useMutation(ADD_FIREARM);
+//  const response = await addFirearm({
+//   variables: {
+//     name: from IndexedDB,
+//     ignitionType: from IndexedDB,
+//     barrelLength: from IndexedDB,
+//     caliber: from IndexedDB,
+//     diaTouchHole: from IndexedDB,
+//     distanceToTarget: from IndexedDB,
+//     muzzleVelocity: from IndexedDB,
+//     diaRearSight: from IndexedDB,
+//     diaFrontSight: from IndexedDB,
+//     heightRearSight: from IndexedDB,
+//     sightRadius: from IndexedDB,
+//     notes: from IndexedDB,
+//     measureSystem: from IndexedDB,
+//   },
+// });
 
 function App() {
   return (

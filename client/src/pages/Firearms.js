@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import AuthService from '../utils/auth';
 import { ADD_FIREARM } from '../utils/mutations';
 import Units from '../utils/units';
+// Services to handle offline storage
+// import OfflineService from '../utils/offline';
 
 const Firearms = () => {
   // state to show listing of user firearms from which to select
@@ -34,6 +36,9 @@ const Firearms = () => {
   const handleAddFirearm = async (event) => {
     event.preventDefault();
     try {
+      // TODO: check if network online
+      // if not online, write firearm info in variables below to indexedDB(firearm#.)
+      // if online proceed:
       const response = await addFirearm({
         variables: {
           name: showFirearm.name,
