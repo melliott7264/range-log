@@ -38,7 +38,9 @@ const Firearms = () => {
     try {
       // TODO: check if network online
       // if not online, write firearm info in variables below to indexedDB(firearm#.)
-      // if online proceed:
+      // if (!OfflineService.onlineCheck()) {
+      //  OfflineService.saveFirearmData(showFirearm);
+      // } else {
       const response = await addFirearm({
         variables: {
           name: showFirearm.name,
@@ -57,6 +59,7 @@ const Firearms = () => {
         },
       });
       console.log(response);
+      // }
       window.location.replace(`/firearms`);
     } catch (err) {
       console.log(err);

@@ -59,32 +59,18 @@ const client = new ApolloClient({
 });
 
 //TODO: Routine to upload data saved to indexedDB
-// Check if network is online
-// If online, check if there is any saved data
+// if (OfflineService.onlineCheck() && OfflineService.savedDataCheck()) {
 // Check if user loggedIN
 //   const loggedIn = AuthService.loggedIn();
-//  if (!loggedIn) {
-//    window.location.replace('/');
+//   if (!loggedIn) {
+//   window.location.replace('/');
 //   }
-// If there is saved FIREARM data upload it as follows:
-// const [addFirearm] = useMutation(ADD_FIREARM);
-//  const response = await addFirearm({
-//   variables: {
-//     name: from IndexedDB,
-//     ignitionType: from IndexedDB,
-//     barrelLength: from IndexedDB,
-//     caliber: from IndexedDB,
-//     diaTouchHole: from IndexedDB,
-//     distanceToTarget: from IndexedDB,
-//     muzzleVelocity: from IndexedDB,
-//     diaRearSight: from IndexedDB,
-//     diaFrontSight: from IndexedDB,
-//     heightRearSight: from IndexedDB,
-//     sightRadius: from IndexedDB,
-//     notes: from IndexedDB,
-//     measureSystem: from IndexedDB,
-//   },
-// });
+//  if(OfflineService.firearmDataCheck()) {
+//    OfflineService.updateFirearmData();
+//  } else {
+//    OfflineService.updateLogData();  
+//  }
+// }
 
 function App() {
   return (
