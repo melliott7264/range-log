@@ -58,14 +58,22 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-//TODO: Routine to upload data saved to indexedDB
-// if (OfflineService.onlineCheck() && OfflineService.savedDataCheck("firearms")) {
-// Check if user loggedIN
-//   const loggedIn = AuthService.loggedIn();
-//   if (!loggedIn) {
-//   window.location.replace('/');
-//   }
-//    OfflineService.updateFirearmData();
+//TODO: Routine to upload firearm data saved to indexedDB
+// Check if online and there is saved data to upload
+// if (OfflineService.onlineCheck()){
+//    const savedFirearmDataArray = OfflineService.savedDataCheck("firearms");
+//    if(savedFirearmsDataArray.length>=1) {
+//      const loggedIn = AuthService.loggedIn();
+//      if (!loggedIn) {
+//        window.location.replace('/');
+//      }   
+//    }
+// } 
+
+// Update firearm data using array returned by savedDataCheck("firearms")
+//    process array
+//      
+// 
 // }
 
 function App() {
