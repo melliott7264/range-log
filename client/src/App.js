@@ -65,11 +65,7 @@ const client = new ApolloClient({
 //   if (!loggedIn) {
 //   window.location.replace('/');
 //   }
-//  if(OfflineService.savedDataCheck("firearms")) {
 //    OfflineService.updateFirearmData();
-//  } else {
-//    OfflineService.updateLogData();  
-//  }
 // }
 
 function App() {

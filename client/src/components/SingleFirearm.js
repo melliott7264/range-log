@@ -39,6 +39,11 @@ const SingleFirearm = () => {
   const handleEditFirearm = async (event) => {
     event.preventDefault();
     try {
+      // TODO: check if network online
+      // if not online, write firearm info in variables below to indexedDB(firearm)
+      // if (!OfflineService.onlineCheck()) {
+      //  OfflineService.saveFirearmData(showFirearm, "ADD");
+      // } else {
       const response = await editFirearm({
         variables: {
           _id: id,
@@ -81,6 +86,11 @@ const SingleFirearm = () => {
   // routine to delete a firearm
   const handleFirearmDelete = async () => {
     try {
+      // TODO: check if network online
+      // if not online, write firearm info in variables below to indexedDB(firearm)
+      // if (!OfflineService.onlineCheck()) {
+      //  OfflineService.saveFirearmData(showFirearm, "ADD");
+      // } else {
       const response = await deleteFirearm({
         variables: {
           _id: id,
