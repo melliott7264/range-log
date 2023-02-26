@@ -77,10 +77,11 @@ class OfflineService {
   async saveFirearmData(firearmData, operation, id) {
     // Must save a field with ADD/EDIT/DELETE operation along with firearm data
     try {
+        let firearmId = "";
     if (id) {
-        const firearmId = id
+        firearmId = id
     } else {
-        const firearmId = uuidv4();
+        firearmId = uuidv4();
     }
     const db = new Dexie('rangeLogDb');
     db.version(1).stores({
@@ -211,49 +212,57 @@ async updateFirearmData() {
         const response = await addFirearm({
         variables: {
             name: firearmsAdds[i].name,
-            ignitionType: firearmsAdds[i]. ignitionType,
-            barrelLength: firearmsAdds[i]. ignitionType,
-            caliber: firearmsAdds[i]. ignitionType,
-            diaTouchHole: firearmsAdds[i]. ignitionType,
-            distanceToTarget: firearmsAdds[i]. ignitionType,
-            muzzleVelocity: firearmsAdds[i]. ignitionType,
-            diaRearSight: firearmsAdds[i]. ignitionType,
-            diaFrontSight: firearmsAdds[i]. ignitionType,
-            heightRearSight: firearmsAdds[i]. ignitionType,
-            sightRadius: firearmsAdds[i]. ignitionType,
-            notes: firearmsAdds[i]. ignitionType,
-            measureSystem: firearmsAdds[i]. ignitionType,
+            ignitionType: firearmsAdds[i].ignitionType,
+            barrelLength: firearmsAdds[i].barrelLength,
+            caliber: firearmsAdds[i].caliber,
+            diaTouchHole: firearmsAdds[i].diaTouchHole,
+            distanceToTarget: firearmsAdds[i].distanceToTarget,
+            muzzleVelocity: firearmsAdds[i].muzzleVelocity,
+            diaRearSight: firearmsAdds[i].diaRearSight,
+            diaFrontSight: firearmsAdds[i].diaFrontSight,
+            heightRearSight: firearmsAdds[i].heightRearSight,
+            sightRadius: firearmsAdds[i].sightRadius,
+            notes: firearmsAdds[i].notes,
+            measureSystem: firearmsAdds[i].measureSystem,
             },
         });
+        }
     }
 
-    const firearmsAdds = await db.firearms.where("operation").equals("EDIT");
-    if (firearmsAdds.length>=1) {
-        for (let i=0; i<firearmsAdds.length; i++) {
+    const firearmsEdits = await db.firearms.where("operation").equals("EDIT");
+    if (firearmsEdits.length>=1) {
+        for (let i=0; i<firearmsEdits.length; i++) {
         const response = await editFirearm({
         variables: {
-            _id: firearmsAdds[i].id,
-            name: firearmsAdds[i].name,
-            ignitionType: firearmsAdds[i]. ignitionType,
-            barrelLength: firearmsAdds[i]. ignitionType,
-            caliber: firearmsAdds[i]. ignitionType,
-            diaTouchHole: firearmsAdds[i]. ignitionType,
-            distanceToTarget: firearmsAdds[i]. ignitionType,
-            muzzleVelocity: firearmsAdds[i]. ignitionType,
-            diaRearSight: firearmsAdds[i]. ignitionType,
-            diaFrontSight: firearmsAdds[i]. ignitionType,
-            heightRearSight: firearmsAdds[i]. ignitionType,
-            sightRadius: firearmsAdds[i]. ignitionType,
-            notes: firearmsAdds[i]. ignitionType,
-            measureSystem: firearmsAdds[i]. ignitionType,
+            _id: firearmsEdits[i].id,
+            name: firearmsEdits[i].name,
+            ignitionType: firearmsEdits[i].ignitionType,
+            barrelLength: firearmsEdits[i].barrelLength,
+            caliber: firearmsEdits[i].caliber,
+            diaTouchHole: firearmsEdits[i].diaTouchHole,
+            distanceToTarget: firearmsEdits[i].distanceToTarget,
+            muzzleVelocity: firearmsEdits[i].muzzleVelocity,
+            diaRearSight: firearmsEdits[i].diaRearSight,
+            diaFrontSight: firearmsEdits[i].diaFrontSight,
+            heightRearSight: firearmsEdits[i].heightRearSight,
+            sightRadius: firearmsEdits[i].sightRadius,
+            notes: firearmsEdits[i].notes,
+            measureSystem: firearmsEdits[i].measureSystem,
             },
         });
-    }
-    const response = await deleteFirearm({
+        }
+    }    
+
+    const firearmsDeletes = await db.firearms.where("operation").equals("DELETE");
+    if (firearmsEdits.length>=1) {
+        for (let i=0; i<firearmsEdits.length; i++) {
+        const response = await deleteFirearm({
         variables: {
-            _id: id,
-        },
-    });
+            _id: firearmsDeletes[i].id,
+            },
+        });
+        }
+    }  
 
  }
 
