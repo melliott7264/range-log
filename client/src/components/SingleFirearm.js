@@ -42,7 +42,7 @@ const SingleFirearm = () => {
       // TODO: check if network online
       // if not online, write firearm info in variables below to indexedDB(firearm)
       // if (!OfflineService.onlineCheck()) {
-      //  OfflineService.saveFirearmData(showFirearm, "ADD");
+      //  OfflineService.saveFirearmData(firearmData, "EDIT", id);
       // } else {
       const response = await editFirearm({
         variables: {

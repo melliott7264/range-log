@@ -74,9 +74,14 @@ class OfflineService {
 
 
   //Save firearm data to offline storage
-  async saveFirearmData(firearmData, operation) {
+  async saveFirearmData(firearmData, operation, id) {
     // Must save a field with ADD/EDIT/DELETE operation along with firearm data
     try {
+    if (id) {
+        const firearmId = id
+    } else {
+        const firearmId = uuidv4();
+    }
     const db = new Dexie('rangeLogDb');
     db.version(1).stores({
         firearms: `id,
@@ -125,7 +130,7 @@ class OfflineService {
     });
     
     const response = await db.firearms.buldAdd([{
-            id: uuidv4(),
+            id: firearmId,
             name: firearmData.name,
             ignitionType: firearmData.ignitionType,
             barrelLength: firearmData.barrelLength,
@@ -146,7 +151,7 @@ class OfflineService {
 }};
   };
 
-  
+
   //Write offline firearm data to online database
 async updateFirearmData() {
     const [addFirearm] = useMutation(ADD_FIREARM);
@@ -200,23 +205,50 @@ async updateFirearmData() {
                 operation`
     });
 
-    const response = await addFirearm/editFirearm({
-    variables: {
-        name: from IndexedDB,
-        ignitionType: from IndexedDB,
-        barrelLength: from IndexedDB,
-        caliber: from IndexedDB,
-        diaTouchHole: from IndexedDB,
-        distanceToTarget: from IndexedDB,
-        muzzleVelocity: from IndexedDB,
-        diaRearSight: from IndexedDB,
-        diaFrontSight: from IndexedDB,
-        heightRearSight: from IndexedDB,
-        sightRadius: from IndexedDB,
-        notes: from IndexedDB,
-        measureSystem: from IndexedDB,
-    },
-    });
+    const firearmsAdds = await db.firearms.where("operation").equals("ADD");
+    if (firearmsAdds.length>=1) {
+        for (let i=0; i<firearmsAdds.length; i++) {
+        const response = await addFirearm({
+        variables: {
+            name: firearmsAdds[i].name,
+            ignitionType: firearmsAdds[i]. ignitionType,
+            barrelLength: firearmsAdds[i]. ignitionType,
+            caliber: firearmsAdds[i]. ignitionType,
+            diaTouchHole: firearmsAdds[i]. ignitionType,
+            distanceToTarget: firearmsAdds[i]. ignitionType,
+            muzzleVelocity: firearmsAdds[i]. ignitionType,
+            diaRearSight: firearmsAdds[i]. ignitionType,
+            diaFrontSight: firearmsAdds[i]. ignitionType,
+            heightRearSight: firearmsAdds[i]. ignitionType,
+            sightRadius: firearmsAdds[i]. ignitionType,
+            notes: firearmsAdds[i]. ignitionType,
+            measureSystem: firearmsAdds[i]. ignitionType,
+            },
+        });
+    }
+
+    const firearmsAdds = await db.firearms.where("operation").equals("EDIT");
+    if (firearmsAdds.length>=1) {
+        for (let i=0; i<firearmsAdds.length; i++) {
+        const response = await editFirearm({
+        variables: {
+            _id: firearmsAdds[i].id,
+            name: firearmsAdds[i].name,
+            ignitionType: firearmsAdds[i]. ignitionType,
+            barrelLength: firearmsAdds[i]. ignitionType,
+            caliber: firearmsAdds[i]. ignitionType,
+            diaTouchHole: firearmsAdds[i]. ignitionType,
+            distanceToTarget: firearmsAdds[i]. ignitionType,
+            muzzleVelocity: firearmsAdds[i]. ignitionType,
+            diaRearSight: firearmsAdds[i]. ignitionType,
+            diaFrontSight: firearmsAdds[i]. ignitionType,
+            heightRearSight: firearmsAdds[i]. ignitionType,
+            sightRadius: firearmsAdds[i]. ignitionType,
+            notes: firearmsAdds[i]. ignitionType,
+            measureSystem: firearmsAdds[i]. ignitionType,
+            },
+        });
+    }
     const response = await deleteFirearm({
         variables: {
             _id: id,
