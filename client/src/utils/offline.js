@@ -63,12 +63,12 @@ async savedDataCheck(table) {
     db.version(1).stores(dbStores);
 
     if (table === "firearms") {
-    const firearmsOperations = await db.firearms.where("operation").anyOf("ADD", "EDIT", "DELETE").count();
-        if (firearmsOperations >= 1) {return true} else {return false}
+        const firearmsOperations = await db.firearms.where("operation").anyOf("ADD", "EDIT", "DELETE");
+        return firearmsOperations;
     }
     if (table === "logs") {
-        const logsOperations = await db.logs.where("operation").anyOf("ADD", "EDIT", "DELETE").count();
-        if (logsOperations >=1) {return true} else {return false}
+        const logsOperations = await db.logs.where("operation").anyOf("ADD", "EDIT", "DELETE");
+        return logsOperations;
     }
 };
 

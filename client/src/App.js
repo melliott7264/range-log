@@ -11,7 +11,9 @@ import {
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
+  // useMutation,
 } from '@apollo/client';
+// import { ADD_FIREARM, EDIT_FIREARM, REMOVE_FIREARM } from "../utils/mutations";
 import { setContext } from '@apollo/client/link/context';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -59,6 +61,9 @@ const client = new ApolloClient({
 });
 
 //TODO: Routine to upload firearm data saved to indexedDB
+// const [addFirearm] = useMutation(ADD_FIREARM);
+// const [editFirearm] = useMutation(EDIT_FIREARM);
+// const [deleteFirearm] = useMutation(REMOVE_FIREARM);
 // Check if online and there is saved data to upload
 // if (OfflineService.onlineCheck()){
 //    const savedFirearmDataArray = OfflineService.savedDataCheck("firearms");
@@ -72,9 +77,11 @@ const client = new ApolloClient({
 
 // Update firearm data using array returned by savedDataCheck("firearms")
 //    process array
-//      
+//      if operation is ADD,  ADD_FIREARM mutation
+//      if operation is EDIT, EDIT_FIREARM mutation
+//      if operation is DELETE, REMOVE_FIREARM mutation
 // 
-// }
+// 
 
 function App() {
   return (
