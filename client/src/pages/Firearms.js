@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { GET_ALL_FIREARMS } from '../utils/queries';
-import { Button, Modal, Form, Container, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import AuthService from '../utils/auth';
-import { ADD_FIREARM } from '../utils/mutations';
-import Units from '../utils/units';
-// Services to handle offline storage
-import OfflineService from '../utils/offline';
+import React, { useState, useEffect } from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_ALL_FIREARMS } from "../utils/queries";
+import { Button, Modal, Form, Container, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import AuthService from "../utils/auth";
+import { ADD_FIREARM } from "../utils/mutations";
+import Units from "../utils/units";
+
+// import Dexie from "dexie";
+import { db, init } from "../offline";
 
 const Firearms = () => {
   // state to show listing of user firearms from which to select
@@ -15,11 +16,14 @@ const Firearms = () => {
   // state controlling modal to add new firearm
   const [showModal, setShowModal] = useState(false);
   // state controlling added firearm
-  const [showFirearm, setShowFirearm] = useState('');
+  const [showFirearm, setShowFirearm] = useState("");
+
+  // initialize the indexedDB database for offline data storage
+  init();
 
   const loggedIn = AuthService.loggedIn();
   if (!loggedIn) {
-    window.location.replace('/');
+    window.location.replace("/");
   }
 
   const [addFirearm] = useMutation(ADD_FIREARM);
@@ -38,27 +42,26 @@ const Firearms = () => {
     try {
       // TODO: check if network online
       // if not online, write firearm info in variables below to indexedDB(firearm)
-      if (!OfflineService.onlineCheck()) {
-          OfflineService.saveFirearmData(showFirearm, "ADD");
+      if (!navigator.onLine) {
       } else {
-      const response = await addFirearm({
-        variables: {
-          name: showFirearm.name,
-          ignitionType: showFirearm.ignitionType,
-          barrelLength: showFirearm.barrelLength,
-          caliber: showFirearm.caliber,
-          diaTouchHole: showFirearm.diaTouchHole,
-          distanceToTarget: showFirearm.distanceToTarget,
-          muzzleVelocity: showFirearm.muzzleVelocity,
-          diaRearSight: showFirearm.diaRearSight,
-          diaFrontSight: showFirearm.diaFrontSight,
-          heightRearSight: showFirearm.heightRearSight,
-          sightRadius: showFirearm.sightRadius,
-          notes: showFirearm.notes,
-          measureSystem: showFirearm.measureSystem,
-        },
-      });
-      console.log(response);
+        const response = await addFirearm({
+          variables: {
+            name: showFirearm.name,
+            ignitionType: showFirearm.ignitionType,
+            barrelLength: showFirearm.barrelLength,
+            caliber: showFirearm.caliber,
+            diaTouchHole: showFirearm.diaTouchHole,
+            distanceToTarget: showFirearm.distanceToTarget,
+            muzzleVelocity: showFirearm.muzzleVelocity,
+            diaRearSight: showFirearm.diaRearSight,
+            diaFrontSight: showFirearm.diaFrontSight,
+            heightRearSight: showFirearm.heightRearSight,
+            sightRadius: showFirearm.sightRadius,
+            notes: showFirearm.notes,
+            measureSystem: showFirearm.measureSystem,
+          },
+        });
+        console.log(response);
       }
       window.location.replace(`/firearms`);
     } catch (err) {
@@ -69,11 +72,11 @@ const Firearms = () => {
   const handleDataChange = (event) => {
     // handling multiple input types
     const target = event.target;
-    let value = target.type === 'checkbox' ? target.checked : target.value;
+    let value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
     // The following code is necessary because Form.Control type=number actually returns a string
     // parseFloat will also return an integer if an integer is typed as well as returning a float
-    if (target.type === 'number') {
+    if (target.type === "number") {
       value = parseFloat(value);
     }
 
@@ -138,7 +141,7 @@ const Firearms = () => {
               <Form.Control
                 type="text"
                 name="name"
-                value={showFirearm.name || ''}
+                value={showFirearm.name || ""}
                 onChange={handleDataChange}
               />
             </Form.Group>
@@ -147,7 +150,7 @@ const Firearms = () => {
               <Form.Control
                 type="text"
                 name="ignitionType"
-                value={showFirearm.ignitionType || ''}
+                value={showFirearm.ignitionType || ""}
                 onChange={handleDataChange}
               />
             </Form.Group>
@@ -158,7 +161,7 @@ const Firearms = () => {
                 type="number"
                 step="0.01"
                 name="barrelLength"
-                value={showFirearm.barrelLength || ''}
+                value={showFirearm.barrelLength || ""}
                 onChange={handleDataChange}
               />
             </Form.Group>
@@ -169,7 +172,7 @@ const Firearms = () => {
                 type="number"
                 step="0.001"
                 name="caliber"
-                value={showFirearm.caliber || ''}
+                value={showFirearm.caliber || ""}
                 onChange={handleDataChange}
               />
             </Form.Group>
@@ -180,7 +183,7 @@ const Firearms = () => {
                 type="number"
                 step="0.001"
                 name="diaTouchHole"
-                value={showFirearm.diaTouchHole || ''}
+                value={showFirearm.diaTouchHole || ""}
                 onChange={handleDataChange}
               />
             </Form.Group>
@@ -191,7 +194,7 @@ const Firearms = () => {
                 type="number"
                 step="0.001"
                 name="distanceToTarget"
-                value={showFirearm.distanceToTarget || ''}
+                value={showFirearm.distanceToTarget || ""}
                 onChange={handleDataChange}
               />
             </Form.Group>
@@ -202,7 +205,7 @@ const Firearms = () => {
                 type="number"
                 step="0.001"
                 name="muzzleVelocity"
-                value={showFirearm.muzzleVelocity || ''}
+                value={showFirearm.muzzleVelocity || ""}
                 onChange={handleDataChange}
               />
             </Form.Group>
@@ -213,7 +216,7 @@ const Firearms = () => {
                 type="number"
                 step="0.001"
                 name="diaRearSight"
-                value={showFirearm.diaRearSight || ''}
+                value={showFirearm.diaRearSight || ""}
                 onChange={handleDataChange}
               />
             </Form.Group>
@@ -224,7 +227,7 @@ const Firearms = () => {
                 type="number"
                 step="0.001"
                 name="diaFrontSight"
-                value={showFirearm.diaFrontSight || ''}
+                value={showFirearm.diaFrontSight || ""}
                 onChange={handleDataChange}
               />
             </Form.Group>
@@ -235,7 +238,7 @@ const Firearms = () => {
                 type="number"
                 step="0.001"
                 name="heightRearSight"
-                value={showFirearm.heightRearSight || ''}
+                value={showFirearm.heightRearSight || ""}
                 onChange={handleDataChange}
               />
             </Form.Group>
@@ -246,7 +249,7 @@ const Firearms = () => {
                 type="number"
                 step="0.001"
                 name="sightRadius"
-                value={showFirearm.sightRadius || ''}
+                value={showFirearm.sightRadius || ""}
                 onChange={handleDataChange}
               />
             </Form.Group>
@@ -265,7 +268,7 @@ const Firearms = () => {
                 as="textarea"
                 rows="4"
                 name="notes"
-                value={showFirearm.notes || ''}
+                value={showFirearm.notes || ""}
                 onChange={handleDataChange}
               />
             </Form.Group>

@@ -7,11 +7,15 @@ import Units from "../utils/units";
 import AuthService from "../utils/auth";
 import { EDIT_FIREARM, REMOVE_FIREARM } from "../utils/mutations";
 
-import Dexie from "dexie";
+// import Dexie from "dexie";
+import { db, init } from "../offline";
 
 const SingleFirearm = () => {
   // id passed to component through URI parameters from Route in App.js
   const { id } = useParams();
+
+  // initialize the indexedDB database for offline data storage
+  init();
 
   const loggedIn = AuthService.loggedIn();
   if (!loggedIn) {
@@ -46,29 +50,24 @@ const SingleFirearm = () => {
       // if not online, write firearm info in variables below to indexedDB(firearm)
       // console.log(OfflineService.onlineCheck());
       if (navigator.onLine) {
-        const db = new Dexie("rangeLogDb");
-          db.version(1).stores({
-            firearms: "id, operation",
-            logs: "id, firearmId, date, target, shot, operation",
-          });
-          const response = await db.firearms.put({
-            id: id,
-            operation: "EDIT",
-            name: firearmData.name,
-            ignitionType: firearmData.ignitionType,
-            barrelLength: firearmData.barrelLength,
-            caliber: firearmData.caliber,
-            diaTouchHole: firearmData.diaTouchHole,
-            distanceToTarget: firearmData.distanceToTarget,
-            muzzleVelocity: firearmData.muzzleVelocity,
-            diaRearSight: firearmData.diaRearSight,
-            diaFrontSight: firearmData.diaFrontSight,
-            heightRearSight: firearmData.heightRearSight,
-            sightRadius: firearmData.sightRadius,
-            notes: firearmData.notes,
-            measureSystem: firearmData.measureSystem,
-          });
-          console.log(response);
+        const response = await db.firearms.put({
+          id: id,
+          operation: "EDIT",
+          name: firearmData.name,
+          ignitionType: firearmData.ignitionType,
+          barrelLength: firearmData.barrelLength,
+          caliber: firearmData.caliber,
+          diaTouchHole: firearmData.diaTouchHole,
+          distanceToTarget: firearmData.distanceToTarget,
+          muzzleVelocity: firearmData.muzzleVelocity,
+          diaRearSight: firearmData.diaRearSight,
+          diaFrontSight: firearmData.diaFrontSight,
+          heightRearSight: firearmData.heightRearSight,
+          sightRadius: firearmData.sightRadius,
+          notes: firearmData.notes,
+          measureSystem: firearmData.measureSystem,
+        });
+        console.log(response);
       } else {
         const response = await editFirearm({
           variables: {
@@ -91,7 +90,11 @@ const SingleFirearm = () => {
         });
         console.log(response);
       }
-      window.location.replace(`/firearms/single/${id}`);
+      if (navigator.onLine) {
+        window.location.replace(`/firearms/single/${id}`);
+      } else {
+        console.log("App is offline - do not reload page");
+      }
     } catch (err) {
       console.log(err);
     }
@@ -116,16 +119,11 @@ const SingleFirearm = () => {
       // TODO: check if network online
       // if not online, write firearm info in variables below to indexedDB(firearm)
       if (!navigator.onLine) {
-        const db = new Dexie("rangeLogDb");
-          db.version(1).stores({
-            firearms: "id, operation",
-            logs: "id, firearmId, date, target, shot, operation",
-          });
-          const response = await db.firearms.put({
-            id: id,
-            operation: "DELETE"
-          });
-          console.log(response);
+        const response = await db.firearms.put({
+          id: id,
+          operation: "DELETE",
+        });
+        console.log(response);
       } else {
         const response = await deleteFirearm({
           variables: {

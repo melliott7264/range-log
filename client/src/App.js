@@ -28,7 +28,7 @@ import Targets from './components/Targets';
 import Shots from './components/Shots';
 import SingleShot from './components/SingleShot';
 // Services to handle offline storage
-// import OfflineService from '../utils/offline';
+import { db, init } from "./offline";
 
 //This is a test of the client side .env
 // console.log(process.env.REACT_APP_CLIENT_SIDE_TEST);
@@ -65,23 +65,7 @@ const client = new ApolloClient({
 // const [editFirearm] = useMutation(EDIT_FIREARM);
 // const [deleteFirearm] = useMutation(REMOVE_FIREARM);
 // Check if online and there is saved data to upload
-// if (OfflineService.onlineCheck()){
-//    const savedFirearmDataArray = OfflineService.savedDataCheck("firearms");
-//    if(savedFirearmsDataArray.length>=1) {
-//      const loggedIn = AuthService.loggedIn();
-//      if (!loggedIn) {
-//        window.location.replace('/');
-//      }   
-//    }
-// } 
-
-// Update firearm data using array returned by savedDataCheck("firearms")
-//    process array
-//      if operation is ADD,  ADD_FIREARM mutation
-//      if operation is EDIT, EDIT_FIREARM mutation
-//      if operation is DELETE, REMOVE_FIREARM mutation
-// 
-// 
+init();
 
 function App() {
   return (
