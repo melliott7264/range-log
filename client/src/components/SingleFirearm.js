@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { GET_FIREARM } from '../utils/queries';
-import { useParams } from 'react-router-dom';
-import { Button, Form } from 'react-bootstrap';
-import Units from '../utils/units';
-import AuthService from '../utils/auth';
-import { EDIT_FIREARM, REMOVE_FIREARM } from '../utils/mutations';
+import React, { useState, useEffect } from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_FIREARM } from "../utils/queries";
+import { useParams } from "react-router-dom";
+import { Button, Form } from "react-bootstrap";
+import Units from "../utils/units";
+import AuthService from "../utils/auth";
+import { EDIT_FIREARM, REMOVE_FIREARM } from "../utils/mutations";
+
+import Dexie from "dexie";
 
 const SingleFirearm = () => {
   // id passed to component through URI parameters from Route in App.js
@@ -13,7 +15,7 @@ const SingleFirearm = () => {
 
   const loggedIn = AuthService.loggedIn();
   if (!loggedIn) {
-    window.location.replace('/');
+    window.location.replace("/");
   }
 
   // state controlling firearm description data
@@ -38,32 +40,57 @@ const SingleFirearm = () => {
   // routine to edit the selected firearm
   const handleEditFirearm = async (event) => {
     event.preventDefault();
+    // console.log("Firearm Form Submit button clicked");
     try {
       // TODO: check if network online
       // if not online, write firearm info in variables below to indexedDB(firearm)
-      // if (!OfflineService.onlineCheck()) {
-      //  OfflineService.saveFirearmData(firearmData, "EDIT", id);
-      // } else {
-      const response = await editFirearm({
-        variables: {
-          _id: id,
-          name: firearmData.name,
-          ignitionType: firearmData.ignitionType,
-          barrelLength: firearmData.barrelLength,
-          caliber: firearmData.caliber,
-          diaTouchHole: firearmData.diaTouchHole,
-          distanceToTarget: firearmData.distanceToTarget,
-          muzzleVelocity: firearmData.muzzleVelocity,
-          diaRearSight: firearmData.diaRearSight,
-          diaFrontSight: firearmData.diaFrontSight,
-          heightFrontSight: parseFloat(frontSightHeight().toFixed(3)),
-          heightRearSight: firearmData.heightRearSight,
-          sightRadius: firearmData.sightRadius,
-          notes: firearmData.notes,
-          measureSystem: firearmData.measureSystem,
-        },
-      });
-      console.log(response);
+      // console.log(OfflineService.onlineCheck());
+      if (navigator.onLine) {
+        const db = new Dexie("rangeLogDb");
+          db.version(1).stores({
+            firearms: "id, operation",
+            logs: "id, firearmId, date, target, shot, operation",
+          });
+          const response = await db.firearms.put({
+            id: id,
+            operation: "EDIT",
+            name: firearmData.name,
+            ignitionType: firearmData.ignitionType,
+            barrelLength: firearmData.barrelLength,
+            caliber: firearmData.caliber,
+            diaTouchHole: firearmData.diaTouchHole,
+            distanceToTarget: firearmData.distanceToTarget,
+            muzzleVelocity: firearmData.muzzleVelocity,
+            diaRearSight: firearmData.diaRearSight,
+            diaFrontSight: firearmData.diaFrontSight,
+            heightRearSight: firearmData.heightRearSight,
+            sightRadius: firearmData.sightRadius,
+            notes: firearmData.notes,
+            measureSystem: firearmData.measureSystem,
+          });
+          console.log(response);
+      } else {
+        const response = await editFirearm({
+          variables: {
+            _id: id,
+            name: firearmData.name,
+            ignitionType: firearmData.ignitionType,
+            barrelLength: firearmData.barrelLength,
+            caliber: firearmData.caliber,
+            diaTouchHole: firearmData.diaTouchHole,
+            distanceToTarget: firearmData.distanceToTarget,
+            muzzleVelocity: firearmData.muzzleVelocity,
+            diaRearSight: firearmData.diaRearSight,
+            diaFrontSight: firearmData.diaFrontSight,
+            heightFrontSight: parseFloat(frontSightHeight().toFixed(3)),
+            heightRearSight: firearmData.heightRearSight,
+            sightRadius: firearmData.sightRadius,
+            notes: firearmData.notes,
+            measureSystem: firearmData.measureSystem,
+          },
+        });
+        console.log(response);
+      }
       window.location.replace(`/firearms/single/${id}`);
     } catch (err) {
       console.log(err);
@@ -73,11 +100,11 @@ const SingleFirearm = () => {
   const handleDataChange = (event) => {
     // handling multiple input types
     const target = event.target;
-    let value = target.type === 'checkbox' ? target.checked : target.value;
+    let value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
     // The following code is necessary because Form.Control type=number actually returns a string
     // parseFloat will also return an integer if an integer is typed as well as returning a float
-    if (target.type === 'number') {
+    if (target.type === "number") {
       value = parseFloat(value);
     }
     setFirearmData({ ...firearmData, [name]: value });
@@ -88,16 +115,26 @@ const SingleFirearm = () => {
     try {
       // TODO: check if network online
       // if not online, write firearm info in variables below to indexedDB(firearm)
-      // if (!OfflineService.onlineCheck()) {
-      //  OfflineService.saveFirearmData(showFirearm, "ADD");
-      // } else {
-      const response = await deleteFirearm({
-        variables: {
-          _id: id,
-        },
-      });
-      console.log(response);
-      window.location.replace('/firearms');
+      if (!navigator.onLine) {
+        const db = new Dexie("rangeLogDb");
+          db.version(1).stores({
+            firearms: "id, operation",
+            logs: "id, firearmId, date, target, shot, operation",
+          });
+          const response = await db.firearms.put({
+            id: id,
+            operation: "DELETE"
+          });
+          console.log(response);
+      } else {
+        const response = await deleteFirearm({
+          variables: {
+            _id: id,
+          },
+        });
+        console.log(response);
+      }
+      window.location.replace("/firearms");
     } catch (err) {
       console.log(err);
     }
@@ -185,7 +222,7 @@ const SingleFirearm = () => {
               className="w-50 float-end"
               type="text"
               name="name"
-              value={firearmData.name || ''}
+              value={firearmData.name || ""}
               onChange={handleDataChange}
             />
           </Form.Group>
@@ -195,7 +232,7 @@ const SingleFirearm = () => {
               className="w-50 float-end"
               type="text"
               name="ignitionType"
-              value={firearmData.ignitionType || ''}
+              value={firearmData.ignitionType || ""}
               onChange={handleDataChange}
             />
           </Form.Group>
@@ -207,7 +244,7 @@ const SingleFirearm = () => {
               type="number"
               step="0.01"
               name="barrelLength"
-              value={firearmData.barrelLength || ''}
+              value={firearmData.barrelLength || ""}
               onChange={handleDataChange}
             />
           </Form.Group>
@@ -219,7 +256,7 @@ const SingleFirearm = () => {
               type="number"
               step="0.001"
               name="caliber"
-              value={firearmData.caliber || ''}
+              value={firearmData.caliber || ""}
               onChange={handleDataChange}
             />
           </Form.Group>
@@ -231,7 +268,7 @@ const SingleFirearm = () => {
               type="number"
               step="0.001"
               name="diaTouchHole"
-              value={firearmData.diaTouchHole || ''}
+              value={firearmData.diaTouchHole || ""}
               onChange={handleDataChange}
             />
           </Form.Group>
@@ -242,7 +279,7 @@ const SingleFirearm = () => {
               className="w-50 float-end"
               type="number"
               name="distanceToTarget"
-              value={firearmData.distanceToTarget || ''}
+              value={firearmData.distanceToTarget || ""}
               onChange={handleDataChange}
             />
           </Form.Group>
@@ -253,7 +290,7 @@ const SingleFirearm = () => {
               className="w-50 float-end"
               type="number"
               name="muzzleVelocity"
-              value={firearmData.muzzleVelocity || ''}
+              value={firearmData.muzzleVelocity || ""}
               onChange={handleDataChange}
             />
           </Form.Group>
@@ -265,7 +302,7 @@ const SingleFirearm = () => {
               type="number"
               step="0.001"
               name="diaRearSight"
-              value={firearmData.diaRearSight || ''}
+              value={firearmData.diaRearSight || ""}
               onChange={handleDataChange}
             />
           </Form.Group>
@@ -277,7 +314,7 @@ const SingleFirearm = () => {
               type="number"
               step="0.001"
               name="diaFrontSight"
-              value={firearmData.diaFrontSight || ''}
+              value={firearmData.diaFrontSight || ""}
               onChange={handleDataChange}
             />
           </Form.Group>
@@ -289,7 +326,7 @@ const SingleFirearm = () => {
               type="number"
               step="0.001"
               name="heightRearSight"
-              value={firearmData.heightRearSight || ''}
+              value={firearmData.heightRearSight || ""}
               onChange={handleDataChange}
             />
           </Form.Group>
@@ -301,7 +338,7 @@ const SingleFirearm = () => {
               type="number"
               step="0.001"
               name="heightFrontSight"
-              value={frontSightHeight().toFixed(3) || ''}
+              value={frontSightHeight().toFixed(3) || ""}
               onChange={handleDataChange}
             />
           </Form.Group>
@@ -313,7 +350,7 @@ const SingleFirearm = () => {
               type="number"
               step="0.001"
               name="sightRadius"
-              value={firearmData.sightRadius || ''}
+              value={firearmData.sightRadius || ""}
               onChange={handleDataChange}
             />
           </Form.Group>
@@ -333,7 +370,7 @@ const SingleFirearm = () => {
               as="textarea"
               rows="4"
               name="notes"
-              value={firearmData.notes || ''}
+              value={firearmData.notes || ""}
               onChange={handleDataChange}
             />
           </Form.Group>

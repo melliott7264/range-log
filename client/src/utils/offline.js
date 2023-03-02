@@ -1,122 +1,88 @@
 // Services to handle temporary offline storage
-import Dexie from 'dexie';
+import Dexie from "dexie";
 // used to upload firearm data
 // import { useMutation } from "@apollo/client";
 // import { ADD_FIREARM, EDIT_FIREARM, REMOVE_FIREARM, ADD_LOG_ENTRY} from "../utils/mutations";
-import {v4 as uuidv4 } from 'uuid';
-
-const dbStores = {
-    firearms: `id,
-                name,
-                ignitionType,
-                barrelLength,
-                caliber,
-                diaTouchHole,
-                distanceToTarget,
-                muzzleVelocity,
-                diaRearSight,
-                diaFrontSight,
-                heightRearSight,
-                sightRadius,
-                notes,
-                measureSystem
-                operation`,
-    logs:     `id,
-                firearmId,
-                date,
-                target,
-                shot,
-                targetType,
-                targetDistance,
-                shootingPosition,
-                measureSystem,
-                temperature,
-                humidity,
-                windSpeed,
-                windDirection,
-                scoreRing,
-                scoreX,
-                scoreOrientation,
-                projectileType,
-                prijectileDiameter,
-                projectileWeight,
-                patchMaterial,
-                patchThickness,
-                patchLube,
-                powderBrand,
-                powderGrade,
-                powderLot,
-                powderCharge,
-                notes
-                operation`
-};
+import { v4 as uuidv4 } from "uuid";
 
 class OfflineService {
-//Check if network online - returns true or false
-onlineCheck() {
+  //Check if network online - returns true or false
+  onlineCheck() {
     return navigator.onLine;
-    };
+  }
 
-//Check if offline data exists - return true or false
-async savedDataCheck(table) {
-    const db = new Dexie('rangeLogDb');
-    db.version(1).stores(dbStores);
+  //Check if offline data exists - return true or false
+  async savedDataCheck(table) {
+    const db = new Dexie("rangeLogDb");
+    db.version(1).stores({
+        firearms: "id, operation",
+        logs: "id, firearmId, date, target, shot, operation",
+      });
 
     if (table === "firearms") {
-        const firearmsOperations = await db.firearms.where("operation").anyOf("ADD", "EDIT", "DELETE");
-        return firearmsOperations;
+      const firearmsOperations = await db.firearms
+        .where("operation")
+        .anyOf("ADD", "EDIT", "DELETE");
+      return firearmsOperations;
     }
     if (table === "logs") {
-        const logsOperations = await db.logs.where("operation").anyOf("ADD", "EDIT", "DELETE");
-        return logsOperations;
+      const logsOperations = await db.logs
+        .where("operation")
+        .anyOf("ADD", "EDIT", "DELETE");
+      return logsOperations;
     }
-};
-
+  }
 
   //Save firearm data to offline storage
-async saveFirearmData(firearmData, operation, id) {
-    // Must save a field with ADD/EDIT/DELETE operation along with firearm data
+  async saveFirearmData(firearmData, operation, id) {
     try {
-        let firearmId = "";
+    // Must save a field with ADD/EDIT/DELETE operation along with firearm data
+    let firearmId = "";
     if (id) {
-        firearmId = id
+      firearmId = id;
     } else {
-        firearmId = uuidv4();
+      firearmId = uuidv4();
     }
-    const db = new Dexie('rangeLogDb');
-    db.version(1).stores(dbStores);
-    
-    const response = await db.firearms.buldAdd([{
-            id: firearmId,
-            name: firearmData.name,
-            ignitionType: firearmData.ignitionType,
-            barrelLength: firearmData.barrelLength,
-            caliber: firearmData.caliber,
-            diaTouchHole: firearmData.diaTouchHole,
-            distanceToTarget: firearmData.distanceToTarget,
-            muzzleVelocity: firearmData.muzzleVelocity,
-            diaRearSight: firearmData.diaRearSight,
-            diaFrontSight: firearmData.diaFrontSight,
-            heightRearSight: firearmData.heightRearSight,
-            sightRadius:  firearmData.sightRadius,
-            notes: firearmData.notes,
-            measureSystem: firearmData.measureSystem,
-            operation: operation
-    }]);
-} catch { Dexie.BulkError,  (e) => 
-    console.error(e);
-}
+    console.log(firearmId, firearmData.measureSystem, operation);
+    const db = new Dexie("rangeLogDb");
+
+    db.version(1).stores({
+        firearms: "id, operation",
+        logs: "id, firearmId, date, target, shot, operation",
+      });
+    const response = await db.firearms.put({
+          id: firearmId,
+          operation: operation,
+          name: firearmData.name,
+          ignitionType: firearmData.ignitionType,
+          barrelLength: firearmData.barrelLength,
+          caliber: firearmData.caliber,
+          diaTouchHole: firearmData.diaTouchHole,
+          distanceToTarget: firearmData.distanceToTarget,
+          muzzleVelocity: firearmData.muzzleVelocity,
+          diaRearSight: firearmData.diaRearSight,
+          diaFrontSight: firearmData.diaFrontSight,
+          heightRearSight: firearmData.heightRearSight,
+          sightRadius: firearmData.sightRadius,
+          notes: firearmData.notes,
+          measureSystem: firearmData.measureSystem,
+        });
+    console.log("This is a response from the database add " + response);
+  } catch (err) { console.error(err);
+  }
 };
 
-
   //Write offline firearm data to online database
-async getAddFirearmData() {
+  async getAddFirearmData() {
     // const [addFirearm] = useMutation(ADD_FIREARM);
     // const [editFirearm] = useMutation(EDIT_FIREARM);
     // const [deleteFirearm] = useMutation(REMOVE_FIREARM);
 
-    const db = new Dexie('rangeLogDb');
-    db.version(1).stores(dbStores);
+    const db = new Dexie("rangeLogDb");
+    db.version(1).stores({
+        firearms: "id, operation",
+        logs: "id, firearmId, date, target, shot, operation",
+      });
 
     const firearmsAdds = await db.firearms.where("operation").equals("ADD");
     return firearmsAdds;
@@ -141,16 +107,18 @@ async getAddFirearmData() {
     //     });
     //     }
     // }
-    
-};
+  }
 
-async getUpdateFirearmData() {
+  async getUpdateFirearmData() {
     // const [addFirearm] = useMutation(ADD_FIREARM);
     // const [editFirearm] = useMutation(EDIT_FIREARM);
     // const [deleteFirearm] = useMutation(REMOVE_FIREARM);
 
-    const db = new Dexie('rangeLogDb');
-    db.version(1).stores(dbStores);
+    const db = new Dexie("rangeLogDb");
+    db.version(1).stores({
+        firearms: "id, operation",
+        logs: "id, firearmId, date, target, shot, operation",
+      });
     const firearmsEdits = await db.firearms.where("operation").equals("EDIT");
     return firearmsEdits;
 
@@ -175,17 +143,22 @@ async getUpdateFirearmData() {
     //         },
     //     });
     //     }
-    // }    
-};
+    // }
+  }
 
-async getDeleteFirearmData() {
+  async getDeleteFirearmData() {
     // const [addFirearm] = useMutation(ADD_FIREARM);
     // const [editFirearm] = useMutation(EDIT_FIREARM);
     // const [deleteFirearm] = useMutation(REMOVE_FIREARM);
 
-    const db = new Dexie('rangeLogDb');
-    db.version(1).stores(dbStores);
-    const firearmsDeletes = await db.firearms.where("operation").equals("DELETE");
+    const db = new Dexie("rangeLogDb");
+    db.version(1).stores({
+        firearms: "id, operation",
+        logs: "id, firearmId, date, target, shot, operation",
+      });
+    const firearmsDeletes = await db.firearms
+      .where("operation")
+      .equals("DELETE");
     return firearmsDeletes;
     // if (firearmsEdits.length>=1) {
     //     for (let i=0; i<firearmsEdits.length; i++) {
@@ -195,10 +168,8 @@ async getDeleteFirearmData() {
     //         },
     //     });
     //     }
-    // }  
-
- };
-
+    // }
+  }
 }
 
 export default new OfflineService();

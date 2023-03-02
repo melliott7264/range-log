@@ -7,7 +7,7 @@ import AuthService from '../utils/auth';
 import { ADD_FIREARM } from '../utils/mutations';
 import Units from '../utils/units';
 // Services to handle offline storage
-// import OfflineService from '../utils/offline';
+import OfflineService from '../utils/offline';
 
 const Firearms = () => {
   // state to show listing of user firearms from which to select
@@ -38,9 +38,9 @@ const Firearms = () => {
     try {
       // TODO: check if network online
       // if not online, write firearm info in variables below to indexedDB(firearm)
-      // if (!OfflineService.onlineCheck()) {
-      //  OfflineService.saveFirearmData(showFirearm, "ADD");
-      // } else {
+      if (!OfflineService.onlineCheck()) {
+          OfflineService.saveFirearmData(showFirearm, "ADD");
+      } else {
       const response = await addFirearm({
         variables: {
           name: showFirearm.name,
@@ -59,7 +59,7 @@ const Firearms = () => {
         },
       });
       console.log(response);
-      // }
+      }
       window.location.replace(`/firearms`);
     } catch (err) {
       console.log(err);
