@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 import AuthService from "../utils/auth";
 import { ADD_FIREARM } from "../utils/mutations";
 import Units from "../utils/units";
+import {v4 as uuidv4} from "uuid";
 
-// import Dexie from "dexie";
+// import services for indexedDB database for offline storage
 import { db, init } from "../offline";
 
 const Firearms = () => {
@@ -42,7 +43,25 @@ const Firearms = () => {
     try {
       // TODO: check if network online
       // if not online, write firearm info in variables below to indexedDB(firearm)
-      if (!navigator.onLine) {
+      if (navigator.onLine) {
+        const response = await db.firearms.put({
+          id: uuidv4(),
+          operation: "ADD",
+          name: showFirearm.name,
+          ignitionType: showFirearm.ignitionType,
+          barrelLength: showFirearm.barrelLength,
+          caliber: showFirearm.caliber,
+          diaTouchHole: showFirearm.diaTouchHole,
+          distanceToTarget: showFirearm.distanceToTarget,
+          muzzleVelocity: showFirearm.muzzleVelocity,
+          diaRearSight: showFirearm.diaRearSight,
+          diaFrontSight: showFirearm.diaFrontSight,
+          heightRearSight: showFirearm.heightRearSight,
+          sightRadius: showFirearm.sightRadius,
+          notes: showFirearm.notes,
+          measureSystem: showFirearm.measureSystem,
+        });
+        console.log(response);
       } else {
         const response = await addFirearm({
           variables: {

@@ -7,7 +7,7 @@ import Units from "../utils/units";
 import AuthService from "../utils/auth";
 import { EDIT_FIREARM, REMOVE_FIREARM } from "../utils/mutations";
 
-// import Dexie from "dexie";
+// import services for indexedDB database for offline storage
 import { db, init } from "../offline";
 
 const SingleFirearm = () => {

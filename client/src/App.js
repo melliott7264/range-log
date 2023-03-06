@@ -27,7 +27,8 @@ import Logs from './pages/Logs';
 import Targets from './components/Targets';
 import Shots from './components/Shots';
 import SingleShot from './components/SingleShot';
-// Services to handle offline storage
+
+// import services for indexedDB database for offline storage
 import { db, init } from "./offline";
 
 //This is a test of the client side .env
