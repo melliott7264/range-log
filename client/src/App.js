@@ -66,7 +66,9 @@ const client = new ApolloClient({
 // const [editFirearm] = useMutation(EDIT_FIREARM);
 // const [deleteFirearm] = useMutation(REMOVE_FIREARM);
 // Check if online and there is saved data to upload
-init();
+if(db.tables.length === 0) {
+  init();
+}
 
 function App() {
   return (

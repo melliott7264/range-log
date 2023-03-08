@@ -20,7 +20,9 @@ const Firearms = () => {
   const [showFirearm, setShowFirearm] = useState("");
 
   // initialize the indexedDB database for offline data storage
-  init();
+  if(db.tables.length === 0) {
+    init();
+  }
 
   const loggedIn = AuthService.loggedIn();
   if (!loggedIn) {
@@ -41,10 +43,9 @@ const Firearms = () => {
   const handleAddFirearm = async (event) => {
     event.preventDefault();
     try {
-      // TODO: check if network online
-      // if not online, write firearm info in variables below to indexedDB(firearm)
-      if (navigator.onLine) {
-        const response = await db.firearms.put({
+      // TODO: write new firearm to both offline storage and online storage
+      // if (navigator.onLine) {
+        const responseOffline = await db.firearms.put({
           id: uuidv4(),
           operation: "ADD",
           name: showFirearm.name,
@@ -61,9 +62,9 @@ const Firearms = () => {
           notes: showFirearm.notes,
           measureSystem: showFirearm.measureSystem,
         });
-        console.log(response);
-      } else {
-        const response = await addFirearm({
+        console.log("Response from indexedDb  " + JSON.stringify(responseOffline));
+      // } else {
+        const responseOnline = await addFirearm({
           variables: {
             name: showFirearm.name,
             ignitionType: showFirearm.ignitionType,
@@ -80,9 +81,14 @@ const Firearms = () => {
             measureSystem: showFirearm.measureSystem,
           },
         });
-        console.log(response);
+        console.log("Response from indexedDb  " + JSON.stringify(responseOnline));
+      // }
+      if (navigator.onLine) {
+        window.location.replace(`/firearms`);
+      } else {
+        console.log("App is offline - do not reload page");
       }
-      window.location.replace(`/firearms`);
+    
     } catch (err) {
       console.log(err);
     }

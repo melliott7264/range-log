@@ -14,8 +14,10 @@ const SingleFirearm = () => {
   // id passed to component through URI parameters from Route in App.js
   const { id } = useParams();
 
-  // initialize the indexedDB database for offline data storage
-  init();
+  // initialize the indexedDB database for offline data storage if it doesn't have anything in it
+  if(db.tables.length === 0) {
+    init();
+  }
 
   const loggedIn = AuthService.loggedIn();
   if (!loggedIn) {
@@ -46,11 +48,9 @@ const SingleFirearm = () => {
     event.preventDefault();
     // console.log("Firearm Form Submit button clicked");
     try {
-      // TODO: check if network online
-      // if not online, write firearm info in variables below to indexedDB(firearm)
-      // console.log(OfflineService.onlineCheck());
-      if (navigator.onLine) {
-        const response = await db.firearms.put({
+      // TODO: write to indexedDb AND MongoDb
+      // if (navigator.onLine) {
+        const responseOffline = await db.firearms.put({
           id: id,
           operation: "EDIT",
           name: firearmData.name,
@@ -67,9 +67,9 @@ const SingleFirearm = () => {
           notes: firearmData.notes,
           measureSystem: firearmData.measureSystem,
         });
-        console.log(response);
-      } else {
-        const response = await editFirearm({
+        console.log("Response from indexedDb  " + JSON.stringify(responseOffline));
+      // } else {
+        const responseOnline = await editFirearm({
           variables: {
             _id: id,
             name: firearmData.name,
@@ -88,8 +88,8 @@ const SingleFirearm = () => {
             measureSystem: firearmData.measureSystem,
           },
         });
-        console.log(response);
-      }
+        console.log("Response from indexedDb  " + JSON.stringify(responseOnline));
+      // }
       if (navigator.onLine) {
         window.location.replace(`/firearms/single/${id}`);
       } else {
@@ -116,23 +116,27 @@ const SingleFirearm = () => {
   // routine to delete a firearm
   const handleFirearmDelete = async () => {
     try {
-      // TODO: check if network online
-      // if not online, write firearm info in variables below to indexedDB(firearm)
-      if (!navigator.onLine) {
-        const response = await db.firearms.put({
+      // TODO: write delete to offline storage as well as online storage
+      // if (!navigator.onLine) {
+        const responseOffline = await db.firearms.put({
           id: id,
           operation: "DELETE",
         });
-        console.log(response);
-      } else {
-        const response = await deleteFirearm({
+        console.log("Response from indexedDb  " + JSON.stringify(responseOffline));
+      // } else {
+        const responseOnline = await deleteFirearm({
           variables: {
             _id: id,
           },
         });
-        console.log(response);
+        console.log("Response from indexedDb  " + JSON.stringify(responseOnline));
+      // }
+      if (navigator.onLine) {
+        window.location.replace("/firearms");
+      } else {
+        console.log("App is offline - do not reload page");
       }
-      window.location.replace("/firearms");
+     
     } catch (err) {
       console.log(err);
     }
