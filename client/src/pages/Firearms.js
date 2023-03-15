@@ -19,7 +19,7 @@ const Firearms = () => {
   // state controlling added firearm
   const [showFirearm, setShowFirearm] = useState("");
 
-  // initialize the indexedDB database for offline data storage
+  // initialize the indexedDB database for offline data storage if tables do not already exist.
   if(db.tables.length === 0) {
     init();
   }
@@ -44,7 +44,7 @@ const Firearms = () => {
     event.preventDefault();
     try {
       // TODO: write new firearm to both offline storage and online storage
-      // if (navigator.onLine) {
+      // Write add firearm data to indexedDB
         const responseOffline = await db.firearms.put({
           id: uuidv4(),
           operation: "ADD",
@@ -63,7 +63,7 @@ const Firearms = () => {
           measureSystem: showFirearm.measureSystem,
         });
         console.log("Response from indexedDb  " + JSON.stringify(responseOffline));
-      // } else {
+      // Write new firearm data to MongoDB
         const responseOnline = await addFirearm({
           variables: {
             name: showFirearm.name,

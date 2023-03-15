@@ -62,10 +62,8 @@ const client = new ApolloClient({
 });
 
 //TODO: Routine to upload firearm data saved to indexedDB
-// const [addFirearm] = useMutation(ADD_FIREARM);
-// const [editFirearm] = useMutation(EDIT_FIREARM);
-// const [deleteFirearm] = useMutation(REMOVE_FIREARM);
 // Check if online and there is saved data to upload
+// First, initiallize indexedDB is no tables have been created.  Otherwise proceed with data uploadd
 if(db.tables.length === 0) {
   init();
 }

@@ -49,7 +49,6 @@ const SingleFirearm = () => {
     // console.log("Firearm Form Submit button clicked");
     try {
       // TODO: write to indexedDb AND MongoDb
-      // if (navigator.onLine) {
         const responseOffline = await db.firearms.put({
           id: id,
           operation: "EDIT",
