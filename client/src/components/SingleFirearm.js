@@ -48,7 +48,8 @@ const SingleFirearm = () => {
     event.preventDefault();
     // console.log("Firearm Form Submit button clicked");
     try {
-      // TODO: write to indexedDb AND MongoDb
+      // Write edits to indexedDB to be applied when offline
+      if (!navigator.onLine) {
       const responseOffline = await db.firearms.put({
         id: id,
         operation: "EDIT",
@@ -69,7 +70,7 @@ const SingleFirearm = () => {
       console.log(
         "Response from indexedDb  " + JSON.stringify(responseOffline)
       );
-      // } else {
+      } else {
       const responseOnline = await editFirearm({
         variables: {
           _id: id,
@@ -89,8 +90,8 @@ const SingleFirearm = () => {
           measureSystem: firearmData.measureSystem,
         },
       });
-      console.log("Response from indexedDb  " + JSON.stringify(responseOnline));
-      // }
+      console.log("Response from MongoDB  " + JSON.stringify(responseOnline));
+      }
       if (navigator.onLine) {
         window.location.replace(`/firearms/single/${id}`);
       } else {
@@ -117,8 +118,8 @@ const SingleFirearm = () => {
   // routine to delete a firearm
   const handleFirearmDelete = async () => {
     try {
-      // TODO: write delete to offline storage as well as online storage
-      // if (!navigator.onLine) {
+      if (!navigator.onLine) {
+      // Write delete to offline storage for deletion when back online
       const responseOffline = await db.firearms.put({
         id: id,
         operation: "DELETE",
@@ -126,14 +127,14 @@ const SingleFirearm = () => {
       console.log(
         "Response from indexedDb  " + JSON.stringify(responseOffline)
       );
-      // } else {
+      } else {
       const responseOnline = await deleteFirearm({
         variables: {
           _id: id,
         },
       });
       console.log("Response from indexedDb  " + JSON.stringify(responseOnline));
-      // }
+      }
       if (navigator.onLine) {
         window.location.replace("/firearms");
       } else {

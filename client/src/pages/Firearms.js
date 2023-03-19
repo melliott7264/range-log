@@ -43,8 +43,8 @@ const Firearms = () => {
   const handleAddFirearm = async (event) => {
     event.preventDefault();
     try {
-      // TODO: write new firearm to both offline storage and online storage
-      // Write add firearm data to indexedDB
+      if (!navigator.onLine) {
+      // Write add firearm data to indexedDB - uuid for unique id
       const responseOffline = await db.firearms.put({
         id: uuidv4(),
         operation: "ADD",
@@ -65,6 +65,7 @@ const Firearms = () => {
       console.log(
         "Response from indexedDb  " + JSON.stringify(responseOffline)
       );
+      } else {
       // Write new firearm data to MongoDB
       const responseOnline = await addFirearm({
         variables: {
@@ -83,8 +84,8 @@ const Firearms = () => {
           measureSystem: showFirearm.measureSystem,
         },
       });
-      console.log("Response from indexedDb  " + JSON.stringify(responseOnline));
-      // }
+      console.log("Response from MongoDB  " + JSON.stringify(responseOnline));
+      }
       if (navigator.onLine) {
         window.location.replace(`/firearms`);
       } else {
