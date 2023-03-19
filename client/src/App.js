@@ -29,7 +29,7 @@ import Shots from "./components/Shots";
 import SingleShot from "./components/SingleShot";
 
 // import services for indexedDB database for offline storage
-import { db, init } from "./utils/offline";
+// import { db, init } from "./utils/offline";
 
 //This is a test of the client side .env
 // console.log(process.env.REACT_APP_CLIENT_SIDE_TEST);
@@ -61,14 +61,17 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-//TODO: Routine to upload firearm data saved to indexedDB
-// Check if online and there is saved data to upload
-// First, initiallize indexedDB is no tables have been created.  Otherwise proceed with data uploadd
-if (db.tables.length === 0) {
-  init();
-}
-
 function App() {
+  //TODO: Routine to upload firearm data saved to indexedDB
+  // Check if online and there is saved data to upload
+  // First, initiallize indexedDB is no tables have been created.  Otherwise proceed with data uploadd
+  // if (db.tables.length === 0) {
+  //   init();
+  // } else {
+  //   const offlineFirearmAddArray = await db.firearms.where({operation: "ADD"}).toArray();
+  //   console.log(offlineFirearmAddArray);
+  // }
+
   return (
     <ApolloProvider client={client}>
       <Router forceRefresh={true}>

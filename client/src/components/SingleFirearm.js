@@ -95,7 +95,10 @@ const SingleFirearm = () => {
       if (navigator.onLine) {
         window.location.replace(`/firearms/single/${id}`);
       } else {
-        console.log("App is offline - do not reload page");
+        window.alert(
+          "Application is offline - Your additon will be uploaded to the cloud when back online"
+        );
+        window.location.replace(`/firearms/single/${id}`);
       }
     } catch (err) {
       console.log(err);
@@ -119,7 +122,7 @@ const SingleFirearm = () => {
   const handleFirearmDelete = async () => {
     try {
       if (!navigator.onLine) {
-      // Write delete to offline storage for deletion when back online
+      // When offline, write delete to offline storage for deletion when back online
       const responseOffline = await db.firearms.put({
         id: id,
         operation: "DELETE",
@@ -138,7 +141,10 @@ const SingleFirearm = () => {
       if (navigator.onLine) {
         window.location.replace("/firearms");
       } else {
-        console.log("App is offline - do not reload page");
+        window.alert(
+          "Application is offline - Your deletion will be completed when back online"
+        );
+        window.location.replace("/firearms");
       }
     } catch (err) {
       console.log(err);
