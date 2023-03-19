@@ -1,35 +1,35 @@
-import './App.css';
-import React from 'react';
+import "./App.css";
+import React from "react";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
   Redirect,
-} from 'react-router-dom';
+} from "react-router-dom";
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
   // useMutation,
-} from '@apollo/client';
+} from "@apollo/client";
 // import { ADD_FIREARM, EDIT_FIREARM, REMOVE_FIREARM } from "../utils/mutations";
-import { setContext } from '@apollo/client/link/context';
+import { setContext } from "@apollo/client/link/context";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
-import Navbar from './components/Navbar';
-import Footer from './components/Footer/Footer';
-import Main from './pages/Main';
-import Firearms from './pages/Firearms';
-import SingleFirearm from './components/SingleFirearm';
-import Logs from './pages/Logs';
-import Targets from './components/Targets';
-import Shots from './components/Shots';
-import SingleShot from './components/SingleShot';
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer/Footer";
+import Main from "./pages/Main";
+import Firearms from "./pages/Firearms";
+import SingleFirearm from "./components/SingleFirearm";
+import Logs from "./pages/Logs";
+import Targets from "./components/Targets";
+import Shots from "./components/Shots";
+import SingleShot from "./components/SingleShot";
 
 // import services for indexedDB database for offline storage
-import { db, init } from "./offline";
+import { db, init } from "./utils/offline";
 
 //This is a test of the client side .env
 // console.log(process.env.REACT_APP_CLIENT_SIDE_TEST);
@@ -38,8 +38,8 @@ const PORT = process.env.PORT || 3001;
 
 let graphqlPath = `http://localhost:${PORT}/graphql`;
 
-if (process.env.NODE_ENV === 'production') {
-  graphqlPath = '/graphql';
+if (process.env.NODE_ENV === "production") {
+  graphqlPath = "/graphql";
 }
 
 const httpLink = createHttpLink({
@@ -47,11 +47,11 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('id_token');
+  const token = localStorage.getItem("id_token");
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      authorization: token ? `Bearer ${token}` : "",
     },
   };
 });
@@ -64,7 +64,7 @@ const client = new ApolloClient({
 //TODO: Routine to upload firearm data saved to indexedDB
 // Check if online and there is saved data to upload
 // First, initiallize indexedDB is no tables have been created.  Otherwise proceed with data uploadd
-if(db.tables.length === 0) {
+if (db.tables.length === 0) {
   init();
 }
 

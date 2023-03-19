@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 import AuthService from "../utils/auth";
 import { ADD_FIREARM } from "../utils/mutations";
 import Units from "../utils/units";
-import {v4 as uuidv4} from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 // import services for indexedDB database for offline storage
-import { db, init } from "../offline";
+import { db, init } from "../utils/offline";
 
 const Firearms = () => {
   // state to show listing of user firearms from which to select
@@ -20,7 +20,7 @@ const Firearms = () => {
   const [showFirearm, setShowFirearm] = useState("");
 
   // initialize the indexedDB database for offline data storage if tables do not already exist.
-  if(db.tables.length === 0) {
+  if (db.tables.length === 0) {
     init();
   }
 
@@ -45,9 +45,29 @@ const Firearms = () => {
     try {
       // TODO: write new firearm to both offline storage and online storage
       // Write add firearm data to indexedDB
-        const responseOffline = await db.firearms.put({
-          id: uuidv4(),
-          operation: "ADD",
+      const responseOffline = await db.firearms.put({
+        id: uuidv4(),
+        operation: "ADD",
+        name: showFirearm.name,
+        ignitionType: showFirearm.ignitionType,
+        barrelLength: showFirearm.barrelLength,
+        caliber: showFirearm.caliber,
+        diaTouchHole: showFirearm.diaTouchHole,
+        distanceToTarget: showFirearm.distanceToTarget,
+        muzzleVelocity: showFirearm.muzzleVelocity,
+        diaRearSight: showFirearm.diaRearSight,
+        diaFrontSight: showFirearm.diaFrontSight,
+        heightRearSight: showFirearm.heightRearSight,
+        sightRadius: showFirearm.sightRadius,
+        notes: showFirearm.notes,
+        measureSystem: showFirearm.measureSystem,
+      });
+      console.log(
+        "Response from indexedDb  " + JSON.stringify(responseOffline)
+      );
+      // Write new firearm data to MongoDB
+      const responseOnline = await addFirearm({
+        variables: {
           name: showFirearm.name,
           ignitionType: showFirearm.ignitionType,
           barrelLength: showFirearm.barrelLength,
@@ -61,34 +81,15 @@ const Firearms = () => {
           sightRadius: showFirearm.sightRadius,
           notes: showFirearm.notes,
           measureSystem: showFirearm.measureSystem,
-        });
-        console.log("Response from indexedDb  " + JSON.stringify(responseOffline));
-      // Write new firearm data to MongoDB
-        const responseOnline = await addFirearm({
-          variables: {
-            name: showFirearm.name,
-            ignitionType: showFirearm.ignitionType,
-            barrelLength: showFirearm.barrelLength,
-            caliber: showFirearm.caliber,
-            diaTouchHole: showFirearm.diaTouchHole,
-            distanceToTarget: showFirearm.distanceToTarget,
-            muzzleVelocity: showFirearm.muzzleVelocity,
-            diaRearSight: showFirearm.diaRearSight,
-            diaFrontSight: showFirearm.diaFrontSight,
-            heightRearSight: showFirearm.heightRearSight,
-            sightRadius: showFirearm.sightRadius,
-            notes: showFirearm.notes,
-            measureSystem: showFirearm.measureSystem,
-          },
-        });
-        console.log("Response from indexedDb  " + JSON.stringify(responseOnline));
+        },
+      });
+      console.log("Response from indexedDb  " + JSON.stringify(responseOnline));
       // }
       if (navigator.onLine) {
         window.location.replace(`/firearms`);
       } else {
         console.log("App is offline - do not reload page");
       }
-    
     } catch (err) {
       console.log(err);
     }

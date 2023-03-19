@@ -8,14 +8,14 @@ import AuthService from "../utils/auth";
 import { EDIT_FIREARM, REMOVE_FIREARM } from "../utils/mutations";
 
 // import services for indexedDB database for offline storage
-import { db, init } from "../offline";
+import { db, init } from "../utils/offline";
 
 const SingleFirearm = () => {
   // id passed to component through URI parameters from Route in App.js
   const { id } = useParams();
 
   // initialize the indexedDB database for offline data storage if it doesn't have anything in it
-  if(db.tables.length === 0) {
+  if (db.tables.length === 0) {
     init();
   }
 
@@ -49,9 +49,30 @@ const SingleFirearm = () => {
     // console.log("Firearm Form Submit button clicked");
     try {
       // TODO: write to indexedDb AND MongoDb
-        const responseOffline = await db.firearms.put({
-          id: id,
-          operation: "EDIT",
+      const responseOffline = await db.firearms.put({
+        id: id,
+        operation: "EDIT",
+        name: firearmData.name,
+        ignitionType: firearmData.ignitionType,
+        barrelLength: firearmData.barrelLength,
+        caliber: firearmData.caliber,
+        diaTouchHole: firearmData.diaTouchHole,
+        distanceToTarget: firearmData.distanceToTarget,
+        muzzleVelocity: firearmData.muzzleVelocity,
+        diaRearSight: firearmData.diaRearSight,
+        diaFrontSight: firearmData.diaFrontSight,
+        heightRearSight: firearmData.heightRearSight,
+        sightRadius: firearmData.sightRadius,
+        notes: firearmData.notes,
+        measureSystem: firearmData.measureSystem,
+      });
+      console.log(
+        "Response from indexedDb  " + JSON.stringify(responseOffline)
+      );
+      // } else {
+      const responseOnline = await editFirearm({
+        variables: {
+          _id: id,
           name: firearmData.name,
           ignitionType: firearmData.ignitionType,
           barrelLength: firearmData.barrelLength,
@@ -61,33 +82,14 @@ const SingleFirearm = () => {
           muzzleVelocity: firearmData.muzzleVelocity,
           diaRearSight: firearmData.diaRearSight,
           diaFrontSight: firearmData.diaFrontSight,
+          heightFrontSight: parseFloat(frontSightHeight().toFixed(3)),
           heightRearSight: firearmData.heightRearSight,
           sightRadius: firearmData.sightRadius,
           notes: firearmData.notes,
           measureSystem: firearmData.measureSystem,
-        });
-        console.log("Response from indexedDb  " + JSON.stringify(responseOffline));
-      // } else {
-        const responseOnline = await editFirearm({
-          variables: {
-            _id: id,
-            name: firearmData.name,
-            ignitionType: firearmData.ignitionType,
-            barrelLength: firearmData.barrelLength,
-            caliber: firearmData.caliber,
-            diaTouchHole: firearmData.diaTouchHole,
-            distanceToTarget: firearmData.distanceToTarget,
-            muzzleVelocity: firearmData.muzzleVelocity,
-            diaRearSight: firearmData.diaRearSight,
-            diaFrontSight: firearmData.diaFrontSight,
-            heightFrontSight: parseFloat(frontSightHeight().toFixed(3)),
-            heightRearSight: firearmData.heightRearSight,
-            sightRadius: firearmData.sightRadius,
-            notes: firearmData.notes,
-            measureSystem: firearmData.measureSystem,
-          },
-        });
-        console.log("Response from indexedDb  " + JSON.stringify(responseOnline));
+        },
+      });
+      console.log("Response from indexedDb  " + JSON.stringify(responseOnline));
       // }
       if (navigator.onLine) {
         window.location.replace(`/firearms/single/${id}`);
@@ -117,25 +119,26 @@ const SingleFirearm = () => {
     try {
       // TODO: write delete to offline storage as well as online storage
       // if (!navigator.onLine) {
-        const responseOffline = await db.firearms.put({
-          id: id,
-          operation: "DELETE",
-        });
-        console.log("Response from indexedDb  " + JSON.stringify(responseOffline));
+      const responseOffline = await db.firearms.put({
+        id: id,
+        operation: "DELETE",
+      });
+      console.log(
+        "Response from indexedDb  " + JSON.stringify(responseOffline)
+      );
       // } else {
-        const responseOnline = await deleteFirearm({
-          variables: {
-            _id: id,
-          },
-        });
-        console.log("Response from indexedDb  " + JSON.stringify(responseOnline));
+      const responseOnline = await deleteFirearm({
+        variables: {
+          _id: id,
+        },
+      });
+      console.log("Response from indexedDb  " + JSON.stringify(responseOnline));
       // }
       if (navigator.onLine) {
         window.location.replace("/firearms");
       } else {
         console.log("App is offline - do not reload page");
       }
-     
     } catch (err) {
       console.log(err);
     }
