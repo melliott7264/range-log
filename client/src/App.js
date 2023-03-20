@@ -62,15 +62,6 @@ const client = new ApolloClient({
 });
 
 function App() {
-  //TODO: Routine to upload firearm data saved to indexedDB
-  // Check if online and there is saved data to upload
-  // First, initiallize indexedDB is no tables have been created.  Otherwise proceed with data uploadd
-  // if (db.tables.length === 0) {
-  //   init();
-  // } else {
-  //   const offlineFirearmAddArray = await db.firearms.where({operation: "ADD"}).toArray();
-  //   console.log(offlineFirearmAddArray);
-  // }
 
   return (
     <ApolloProvider client={client}>

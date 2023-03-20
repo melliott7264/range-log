@@ -26,44 +26,56 @@ const Firearms = () => {
 
   const [addFirearm] = useMutation(ADD_FIREARM);
 
-
   // initialize the indexedDB database for offline data storage if tables do not already exist.
-  const uploadOfflineData = async () => {
+  const uploadNewFirearmData = async (offlineFirearmAddArray) => {
+    
+        for (let i = 0; i < offlineFirearmAddArray.length; i++) {
+          // Write new firearm data to MongoDB
+          const responseOnline = await addFirearm({
+            variables: {
+              name: offlineFirearmAddArray[i].name,
+              ignitionType: offlineFirearmAddArray[i].ignitionType,
+              barrelLength: offlineFirearmAddArray[i].barrelLength,
+              caliber: offlineFirearmAddArray[i].caliber,
+              diaTouchHole: offlineFirearmAddArray[i].diaTouchHole,
+              distanceToTarget: offlineFirearmAddArray[i].distanceToTarget,
+              muzzleVelocity: offlineFirearmAddArray[i].muzzleVelocity,
+              diaRearSight: offlineFirearmAddArray[i].diaRearSight,
+              diaFrontSight: offlineFirearmAddArray[i].diaFrontSight,
+              heightRearSight: offlineFirearmAddArray[i].heightRearSight,
+              sightRadius: offlineFirearmAddArray[i].sightRadius,
+              notes: offlineFirearmAddArray[i].notes,
+              measureSystem: offlineFirearmAddArray[i].measureSystem,
+            },
+          });
+          console.log(
+            "Response from MongoDB  " + JSON.stringify(responseOnline)
+          );
+          const deletionResponse = await db.firearms.delete(
+            offlineFirearmAddArray[i].id
+          );
+          console.log(
+            "firearm has been added to online database and deleted locally: " +
+              deletionResponse
+          );
+        }
+  };
+
+const uploadOfflineData = async () => {
+
   if (db.tables.length === 0) {
     init();
   } else {
     const offlineFirearmAddArray = await db.firearms
       .where({ operation: "ADD" })
       .toArray();
-      console.log(offlineFirearmAddArray);
-    if (navigator.onLine && offlineFirearmAddArray.length !== 0){
-
-    for (let i = 0; i<offlineFirearmAddArray.length; i++){
-       // Write new firearm data to MongoDB
-       const responseOnline = await addFirearm({
-        variables: {
-          name: offlineFirearmAddArray[i].name,
-          ignitionType: offlineFirearmAddArray[i].ignitionType,
-          barrelLength: offlineFirearmAddArray[i].barrelLength,
-          caliber: offlineFirearmAddArray[i].caliber,
-          diaTouchHole: offlineFirearmAddArray[i].diaTouchHole,
-          distanceToTarget: offlineFirearmAddArray[i].distanceToTarget,
-          muzzleVelocity: offlineFirearmAddArray[i].muzzleVelocity,
-          diaRearSight: offlineFirearmAddArray[i].diaRearSight,
-          diaFrontSight: offlineFirearmAddArray[i].diaFrontSight,
-          heightRearSight: offlineFirearmAddArray[i].heightRearSight,
-          sightRadius: offlineFirearmAddArray[i].sightRadius,
-          notes: offlineFirearmAddArray[i].notes,
-          measureSystem: offlineFirearmAddArray[i].measureSystem,
-        },
-      });
-      console.log("Response from MongoDB  " + JSON.stringify(responseOnline));
-      const deletionResponse = await db.firearms.delete(offlineFirearmAddArray[i].id);
-      console.log("firearm has been added to online database and deleted locally: " + deletionResponse);
-      }
+    if (navigator.onLine && offlineFirearmAddArray.length !== 0) {
+      console.log(
+        "Offline Firearm add array length:  " + offlineFirearmAddArray.length
+      );
+      uploadNewFirearmData(offlineFirearmAddArray);
       window.location.replace(`/firearms`);
     }
-    
   }
 };
 
