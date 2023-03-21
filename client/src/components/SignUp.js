@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
-import { useMutation } from '@apollo/client';
+import React, { useState } from "react";
+import { Form, Button, Alert } from "react-bootstrap";
+import { useMutation } from "@apollo/client";
 
-import Auth from '../utils/auth';
-import { ADD_USER } from '../utils/mutations';
+import Auth from "../utils/auth";
+import { ADD_USER } from "../utils/mutations";
 
 const Signup = () => {
   // initial form state
   const [userFormData, setUserFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
   });
 
   const [validated] = useState(false);
@@ -42,14 +42,16 @@ const Signup = () => {
       Auth.login(data.addUser.token);
     } catch (err) {
       setShowAlert(true);
+      // following line is for debugging only.  Remove for production
+      console.error(err);
     }
 
     // empty form fields after submission
     setUserFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
     });
   };
 
@@ -126,7 +128,7 @@ const Signup = () => {
         </Form.Group>
         <div className="text-center">
           <Button
-            style={{ text: 'center' }}
+            style={{ text: "center" }}
             disabled={
               !(
                 userFormData.firstName &&
