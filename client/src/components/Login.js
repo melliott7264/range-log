@@ -37,6 +37,8 @@ const Login = () => {
     } catch (err) {
       console.error(err);
       setShowAlert(true);
+      // following line is for debugging only.   Remove for production
+      console.error(err);
     }
 
     // empty form fields after submission
