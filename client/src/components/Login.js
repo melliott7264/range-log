@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
-import { useMutation } from '@apollo/client';
+import React, { useState } from "react";
+import { Form, Button, Alert } from "react-bootstrap";
+import { useMutation } from "@apollo/client";
 
-import Auth from '../utils/auth';
-import { LOGIN_USER } from '../utils/mutations';
+import Auth from "../utils/auth";
+import { LOGIN_USER } from "../utils/mutations";
 
 const Login = () => {
   // initial form state
-  const [userFormData, setUserFormData] = useState({ email: '', password: '' });
+  const [userFormData, setUserFormData] = useState({ email: "", password: "" });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
@@ -37,15 +37,13 @@ const Login = () => {
     } catch (err) {
       console.error(err);
       setShowAlert(true);
-      // following line is for debugging only.   Remove for production
-      console.error(err);
     }
 
     // empty form fields after submission
     setUserFormData({
-      username: '',
-      email: '',
-      password: '',
+      username: "",
+      email: "",
+      password: "",
     });
   };
 

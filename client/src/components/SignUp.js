@@ -42,8 +42,6 @@ const Signup = () => {
       Auth.login(data.addUser.token);
     } catch (err) {
       setShowAlert(true);
-      // following line is for debugging only.  Remove for production
-      console.error(err);
     }
 
     // empty form fields after submission
