@@ -78,7 +78,7 @@ const uploadOfflineData = async () => {
   }
 };
 
-// uploadOfflineData();
+uploadOfflineData();
 
   // Graphql query for a listing of all firearms - using skip parameter to avoid error when not logged in
   const { data } = useQuery(GET_ALL_FIREARMS, { skip: !loggedIn });
