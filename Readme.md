@@ -15,7 +15,9 @@ If your README is long, add a table of contents to make it easy for users to fin
 
 ## Installation
 
-This project will run from Heroku at https://muzzleloader-range-log.herokuapp.com and will not initially require any installation. That may change as we move the applicaton to a PWA.
+This project will run from Heroku at https://muzzleloader-range-log.herokuapp.com and will not initially require any end-user installation. The end-user may, however, install the application locally by clicking on the download/install icon at the top right of the browser. This will install a service worker for the application that will handle offline caching of application content.
+
+When installing this application for development work or to run in production, a JWT_SECRET environment variable must be set.
 
 ## Usage
 
