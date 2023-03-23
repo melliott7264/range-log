@@ -9,7 +9,7 @@ import Units from "../utils/units";
 import { v4 as uuidv4 } from "uuid";
 
 // import services for indexedDB database for offline storage
-import { db, init } from "../utils/offline";
+import { db, init, firearmDataArray } from "../utils/offline";
 
 const Firearms = () => {
   // state to show listing of user firearms from which to select
@@ -23,6 +23,10 @@ const Firearms = () => {
   if (!loggedIn) {
     window.location.replace("/");
   }
+
+  if (db.tables.length === 0) {
+      init();
+    } 
 
   const [addFirearm] = useMutation(ADD_FIREARM);
 
@@ -52,16 +56,11 @@ const Firearms = () => {
 
   // const [offlineFirearmDataArray, setOfflineFirearmDataArray] = useState([]);
 
-
   const uploadOfflineData = async () => {
     console.log("uploadOffline triggered ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-    // if (db.tables.length === 0) {
-    //   init();
-    // } else {
-    const offlineFirearmDataArray =  await db.firearms
-      .where({ operation: "ADD" })
-      .toArray();
+    const offlineFirearmDataArray = await firearmDataArray("ADD");
+   
     if (navigator.onLine && offlineFirearmDataArray.length !== 0) {
       console.log(
         "Offline Firearm add array length:  " + offlineFirearmDataArray.length
@@ -94,23 +93,13 @@ const Firearms = () => {
     setShowFirearms(firearmsList);
 
     const getdata = async () => {
-      const offlineFirearmDataArray = await db.firearms;
-        // .where({ operation: "ADD" })
-        // .toArray();
-      // console.log(
-      //   "Checking indexedDb firearms table:  " + offlineFirearmAddArray
-      // );
-      if (
-        // offlineFirearmAddArray.length !== 0 ||
-        offlineFirearmDataArray === undefined
-      ) {
-        init();
+      const offlineFirearmDataArray = await firearmDataArray("ADD");
+      console.log(
+        "Checking indexedDb firearms table:  " + offlineFirearmDataArray
+      );
+      if ( offlineFirearmDataArray.length === 0 ) {
         setUploadNeeded(false);
       } else {
-        // if (offlineFirearmDataArray.length !== 0) {
-        //   console.log("working?");
-        //   console.log(offlineFirearmDataArray);
-        // } else setUploadNeeded(true);
         setUploadNeeded(true);
       }
     };
@@ -212,6 +201,7 @@ const Firearms = () => {
           <Row>
             <div className="text-center">
               <Button
+                className="p-1"
                 onClick={() => uploadOfflineData()}
                 style={{ display: uploadNeeded ? "block " : "none" }}
               >
