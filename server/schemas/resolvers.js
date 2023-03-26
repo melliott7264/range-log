@@ -4,8 +4,8 @@ const Firearm = require('../models/Firearm');
 const Log = require('../models/Log');
 
 const { signToken } = require('../utils/auth');
-const { find } = require('../models/User');
-const { __EnumValue } = require('graphql');
+// const { find } = require('../models/User');
+// const { __EnumValue } = require('graphql');
 
 const resolvers = {
   Query: {
