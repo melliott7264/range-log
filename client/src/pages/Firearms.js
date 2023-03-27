@@ -52,62 +52,7 @@ const Firearms = () => {
     return responseOnline;
   };
 
-  // const [uploadNeeded, setUploadNeeded] = useState(false);
-
-  // const uploadOfflineData = async () => {
-  //   const offlineFirearmDataArray = await firearmDataArray("ADD");
-   
-  //     for (let i = 0; i < offlineFirearmDataArray.length; i++) {
-  //       const offlineFirearmData = offlineFirearmDataArray[i];
-  //       const responseOnline = await uploadNewFirearmData(offlineFirearmData);
-  //       console.log("Response from MongoDB  " + JSON.stringify(responseOnline));
-  //       const deletionResponse = await db.firearms.delete(
-  //         offlineFirearmData.id
-  //       );
-  //       console.log(
-  //         "firearm has been added to online database and deleted locally: " +
-  //           deletionResponse
-  //       );
-  //     }
-  //     setUploadNeeded(false);
-  //     window.location.replace(`/firearms`);
-  // };
  
-
-  // if (navigator.onLine && uploadNeeded) {
-  //   uploadOfflineData();
-  // }
-  useEffect(() => {
-
- const getData = async ()=> {
-
- const offlineFirearmDataArray = await firearmDataArray("ADD");
-      if ( offlineFirearmDataArray.length === 0 ) {
-        // setUploadNeeded(false);
-        console.log("Upload NOT needed............");
-      } else {
-        // setUploadNeeded(true);
-        console.log("Uploaded needed.............");
-        for (let i = 0; i < offlineFirearmDataArray.length; i++) {
-          const offlineFirearmData = offlineFirearmDataArray[i];
-          const responseOnline = await uploadNewFirearmData(offlineFirearmData);
-          console.log("Response from MongoDB  " + JSON.stringify(responseOnline));
-          const deletionResponse = await db.firearms.delete(
-            offlineFirearmData.id
-          );
-          console.log(
-            "firearm has been added to online database and deleted locally: " +
-              deletionResponse
-          );
-        }
-        // setUploadNeeded(false);
-        window.location.replace(`/firearms`);
-      }
-    };
-
-    getData();
-
-  },);
 
   // Graphql query for a listing of all firearms - using skip parameter to avoid error when not logged in
   const { data } = useQuery(GET_ALL_FIREARMS, { skip: !loggedIn });
@@ -115,6 +60,34 @@ const Firearms = () => {
   useEffect(() => {
     const firearmsList = data?.firearmsByUser || [];
     setShowFirearms(firearmsList);
+
+    const getData = async ()=> {
+
+      const offlineFirearmDataArray = await firearmDataArray("ADD");
+           if ( offlineFirearmDataArray.length === 0 ) {
+             // setUploadNeeded(false);
+             console.log("Upload NOT needed............");
+           } else {
+             // setUploadNeeded(true);
+             console.log("Uploaded needed.............");
+             for (let i = 0; i < offlineFirearmDataArray.length; i++) {
+               const offlineFirearmData = offlineFirearmDataArray[i];
+               const responseOnline = await uploadNewFirearmData(offlineFirearmData);
+               console.log("Response from MongoDB  " + JSON.stringify(responseOnline));
+               const deletionResponse = await db.firearms.delete(
+                 offlineFirearmData.id
+               );
+               console.log(
+                 "firearm has been added to online database and deleted locally: " +
+                   deletionResponse
+               );
+             }
+             // setUploadNeeded(false);
+             window.location.replace(`/firearms`);
+           }
+         };
+     
+    getData();
 
   },[data]);
 
