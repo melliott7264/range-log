@@ -77,16 +77,11 @@ const Firearms = () => {
   // if (navigator.onLine && uploadNeeded) {
   //   uploadOfflineData();
   // }
-
-  // Graphql query for a listing of all firearms - using skip parameter to avoid error when not logged in
-  const { data } = useQuery(GET_ALL_FIREARMS, { skip: !loggedIn });
-
   useEffect(() => {
-    const firearmsList = data?.firearmsByUser || [];
-    setShowFirearms(firearmsList);
 
-    const getdata = async () => {
-      const offlineFirearmDataArray = await firearmDataArray("ADD");
+ const getData = async ()=> {
+
+ const offlineFirearmDataArray = await firearmDataArray("ADD");
       if ( offlineFirearmDataArray.length === 0 ) {
         // setUploadNeeded(false);
         console.log("Upload NOT needed............");
@@ -110,7 +105,17 @@ const Firearms = () => {
       }
     };
 
-    getdata();
+    getData();
+
+  },);
+
+  // Graphql query for a listing of all firearms - using skip parameter to avoid error when not logged in
+  const { data } = useQuery(GET_ALL_FIREARMS, { skip: !loggedIn });
+
+  useEffect(() => {
+    const firearmsList = data?.firearmsByUser || [];
+    setShowFirearms(firearmsList);
+
   },[data]);
 
   // routine to add a firearm
