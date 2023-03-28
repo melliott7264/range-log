@@ -15,8 +15,8 @@ export const firearmDataArray = async (operation) => {
   return await db.firearms.where({ operation: operation }).toArray();
 };
 
-export const putFirearmData = async (firearmData, operation) => {
-  const putResponse = await db.firearms.put({
+export const addFirearmData = async (firearmData, frontSightHeight, operation) => {
+  const addResponse = await db.firearms.put({
     // uuid for unique id
     id: uuidv4(),
     operation: operation,
@@ -30,9 +30,40 @@ export const putFirearmData = async (firearmData, operation) => {
     diaRearSight: firearmData.diaRearSight,
     diaFrontSight: firearmData.diaFrontSight,
     heightRearSight: firearmData.heightRearSight,
+    heightFrontSight: parseFloat(frontSightHeight.toFixed(3)),
+    sightRadius: firearmData.sightRadius,
+    notes: firearmData.notes,
+    measureSystem: firearmData.measureSystem,
+  });
+  return addResponse;
+};
+
+export const putFirearmData = async (firearmData, id, frontSightHeight, operation) => {
+  const putResponse = await db.firearms.put({
+    id: id,
+    operation: operation,
+    name: firearmData.name,
+    ignitionType: firearmData.ignitionType,
+    barrelLength: firearmData.barrelLength,
+    caliber: firearmData.caliber,
+    diaTouchHole: firearmData.diaTouchHole,
+    distanceToTarget: firearmData.distanceToTarget,
+    muzzleVelocity: firearmData.muzzleVelocity,
+    diaRearSight: firearmData.diaRearSight,
+    diaFrontSight: firearmData.diaFrontSight,
+    heightRearSight: firearmData.heightRearSight,
+    heightFrontSight: parseFloat(frontSightHeight.toFixed(3)),
     sightRadius: firearmData.sightRadius,
     notes: firearmData.notes,
     measureSystem: firearmData.measureSystem,
   });
   return putResponse;
+};
+
+export const deleteFirearmData = async (id, operation) => {
+  const deleteResponse = await db.firearms.put({
+    id: id,
+    operation: operation,
+  });
+  return deleteResponse;
 };

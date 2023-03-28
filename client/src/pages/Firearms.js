@@ -9,7 +9,7 @@ import Units from "../utils/units";
 // import { v4 as uuidv4 } from "uuid";
 
 // import services for indexedDB database for offline storage
-import { db, init, firearmDataArray, putFirearmData } from "../utils/offline";
+import { db, init, firearmDataArray, addFirearmData } from "../utils/offline";
 
 const Firearms = () => {
   // state to show listing of user firearms from which to select
@@ -97,7 +97,7 @@ const Firearms = () => {
     try {
       if (!navigator.onLine) {
         // Write add firearm data to indexedDB when application is offline 
-        const responseOffline = await putFirearmData(showFirearm, "ADD");
+        const responseOffline = await addFirearmData(showFirearm, "ADD");
         console.log(
           "Response from indexedDb  " + JSON.stringify(responseOffline)
         );

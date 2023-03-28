@@ -5,15 +5,20 @@ import { useParams } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import Units from "../utils/units";
 import AuthService from "../utils/auth";
-import { EDIT_FIREARM, REMOVE_FIREARM } from "../utils/mutations";
+import { ADD_FIREARM, EDIT_FIREARM, REMOVE_FIREARM } from "../utils/mutations";
 
 // import services for indexedDB database for offline storage
-import { db, init } from "../utils/offline";
+import {
+  db,
+  init,
+  addFirearmData,
+  putFirearmData,
+  deleteFirearmData,
+} from "../utils/offline";
 
 const SingleFirearm = () => {
   // id passed to component through URI parameters from Route in App.js
   const { id } = useParams();
-  console.log("firearm id:  " + id);
 
   // initialize the indexedDB database for offline data storage if it doesn't have anything in it
   if (db.tables.length === 0) {
@@ -36,6 +41,8 @@ const SingleFirearm = () => {
     { skip: !loggedIn }
   );
 
+  const [addFirearm] = useMutation(ADD_FIREARM);
+
   const [editFirearm] = useMutation(EDIT_FIREARM);
 
   const [deleteFirearm] = useMutation(REMOVE_FIREARM);
@@ -48,51 +55,76 @@ const SingleFirearm = () => {
   // routine to edit the selected firearm
   const handleEditFirearm = async (event) => {
     event.preventDefault();
-    // console.log("Firearm Form Submit button clicked");
+    console.log("Firearm Form Submit button clicked");
+    const newFrontSightHeight = frontSightHeight();
     try {
       // Write edits to indexedDB to be applied when offline
       if (!navigator.onLine) {
-        const responseOffline = await db.firearms.put({
-          id: id,
-          operation: "EDIT",
-          name: firearmData.name,
-          ignitionType: firearmData.ignitionType,
-          barrelLength: firearmData.barrelLength,
-          caliber: firearmData.caliber,
-          diaTouchHole: firearmData.diaTouchHole,
-          distanceToTarget: firearmData.distanceToTarget,
-          muzzleVelocity: firearmData.muzzleVelocity,
-          diaRearSight: firearmData.diaRearSight,
-          diaFrontSight: firearmData.diaFrontSight,
-          heightRearSight: firearmData.heightRearSight,
-          sightRadius: firearmData.sightRadius,
-          notes: firearmData.notes,
-          measureSystem: firearmData.measureSystem,
-        });
-        console.log(
-          "Response from indexedDb  " + JSON.stringify(responseOffline)
-        );
+        if (id !== "0") {
+          const responseOffline = await putFirearmData(
+            firearmData,
+            id,
+            frontSightHeight(),
+            "EDIT"
+          );
+          console.log(
+            "Response from indexedDb  " + JSON.stringify(responseOffline)
+          );
+        } else {
+          const responseOffline = await addFirearmData(
+            firearmData,
+            newFrontSightHeight,
+            "ADD"
+          );
+          console.log(
+            "Response from indexedDb  " + JSON.stringify(responseOffline)
+          );
+        }
       } else {
-        const responseOnline = await editFirearm({
-          variables: {
-            _id: id,
-            name: firearmData.name,
-            ignitionType: firearmData.ignitionType,
-            barrelLength: firearmData.barrelLength,
-            caliber: firearmData.caliber,
-            diaTouchHole: firearmData.diaTouchHole,
-            distanceToTarget: firearmData.distanceToTarget,
-            muzzleVelocity: firearmData.muzzleVelocity,
-            diaRearSight: firearmData.diaRearSight,
-            diaFrontSight: firearmData.diaFrontSight,
-            heightFrontSight: parseFloat(frontSightHeight().toFixed(3)),
-            heightRearSight: firearmData.heightRearSight,
-            sightRadius: firearmData.sightRadius,
-            notes: firearmData.notes,
-            measureSystem: firearmData.measureSystem,
-          },
-        });
-        console.log("Response from MongoDB  " + JSON.stringify(responseOnline));
+        if (id !== "0") {
+          const responseOnline = await editFirearm({
+            variables: {
+              _id: id,
+              name: firearmData.name,
+              ignitionType: firearmData.ignitionType,
+              barrelLength: firearmData.barrelLength,
+              caliber: firearmData.caliber,
+              diaTouchHole: firearmData.diaTouchHole,
+              distanceToTarget: firearmData.distanceToTarget,
+              muzzleVelocity: firearmData.muzzleVelocity,
+              diaRearSight: firearmData.diaRearSight,
+              diaFrontSight: firearmData.diaFrontSight,
+              heightFrontSight: parseFloat(frontSightHeight().toFixed(3)),
+              heightRearSight: firearmData.heightRearSight,
+              sightRadius: firearmData.sightRadius,
+              notes: firearmData.notes,
+              measureSystem: firearmData.measureSystem,
+            },
+          });
+          console.log(
+            "Response from MongoDB  " + JSON.stringify(responseOnline)
+          );
+        } else {
+          const responseOnline = await addFirearm({
+            variables: {
+              name: firearmData.name,
+              ignitionType: firearmData.ignitionType,
+              barrelLength: firearmData.barrelLength,
+              caliber: firearmData.caliber,
+              diaTouchHole: firearmData.diaTouchHole,
+              distanceToTarget: firearmData.distanceToTarget,
+              muzzleVelocity: firearmData.muzzleVelocity,
+              diaRearSight: firearmData.diaRearSight,
+              diaFrontSight: firearmData.diaFrontSight,
+              heightFrontSight: parseFloat(frontSightHeight().toFixed(3)),
+              heightRearSight: firearmData.heightRearSight,
+              sightRadius: firearmData.sightRadius,
+              notes: firearmData.notes,
+              measureSystem: firearmData.measureSystem,
+            },
+          });
+          return responseOnline;
+        }
       }
       if (navigator.onLine) {
         window.location.replace(`/firearms/single/${id}`);
@@ -100,7 +132,11 @@ const SingleFirearm = () => {
         window.alert(
           "Application is offline - Your additon will be uploaded to the cloud when back online"
         );
-        window.location.replace(`/firearms/single/${id}`);
+        if (id === "0") {
+          window.location.replace(`/firearms/`);
+        } else {
+          window.location.replace(`/firearms/single/${id}`);
+        }
       }
     } catch (err) {
       console.log(err);
@@ -125,10 +161,7 @@ const SingleFirearm = () => {
     try {
       if (!navigator.onLine) {
         // When offline, write delete to offline storage for deletion when back online
-        const responseOffline = await db.firearms.put({
-          id: id,
-          operation: "DELETE",
-        });
+        const responseOffline = await deleteFirearmData(id, "DELETE");
         console.log(
           "Response from indexedDb  " + JSON.stringify(responseOffline)
         );
@@ -159,7 +192,7 @@ const SingleFirearm = () => {
   Units.switchUnits(firearmData?.measureSystem);
 
   // routine to calculate the front sight height
-  const frontSightHeight = () => {
+  function frontSightHeight() {
     const distanceToTarget = firearmData.distanceToTarget;
     const muzzleVelocity = firearmData.muzzleVelocity;
     const frontSightHeight =
@@ -214,7 +247,7 @@ const SingleFirearm = () => {
 
       return correctedFrontSightHeight;
     }
-  };
+  }
 
   return (
     <div className="background-wrap">
@@ -392,15 +425,16 @@ const SingleFirearm = () => {
           <Button className="p-1 m-2" type="submit" variant="primary">
             Submit
           </Button>
-          {id !== "0" && <Button
-            className="p-1 m-2"
-            type="button"
-            variant="danger"
-            onClick={handleFirearmDelete}
-          >
-            Delete Firearm
-          </Button>
-          }
+          {id !== "0" && (
+            <Button
+              className="p-1 m-2"
+              type="button"
+              variant="danger"
+              onClick={handleFirearmDelete}
+            >
+              Delete Firearm
+            </Button>
+          )}
         </Form>
         <p className="m-2">
           * Used in calculation of front sight height. Click on Submit to save.
