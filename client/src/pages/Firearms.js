@@ -152,16 +152,9 @@ const Firearms = () => {
           </Row>
           <Row>
             <div className="text-center">
-              {/* <Button
-                className="p-1"
-                onClick={() => uploadOfflineData()}
-                style={{ display: uploadNeeded ? "block " : "none" }}
-              >
-                Upload Firearm Data
-              </Button> */}
-              <Button className="p-1" onClick={() => setShowModal(true)}>
-                Add Firearm
-              </Button>
+            <Link to={{ pathname: `/firearms/single/0` }}>
+                    <Button>Add Firearm</Button>
+                  </Link>
             </div>
           </Row>
         </Container>

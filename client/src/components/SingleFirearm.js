@@ -13,6 +13,7 @@ import { db, init } from "../utils/offline";
 const SingleFirearm = () => {
   // id passed to component through URI parameters from Route in App.js
   const { id } = useParams();
+  console.log("firearm id:  " + id);
 
   // initialize the indexedDB database for offline data storage if it doesn't have anything in it
   if (db.tables.length === 0) {
@@ -34,6 +35,7 @@ const SingleFirearm = () => {
     },
     { skip: !loggedIn }
   );
+
   const [editFirearm] = useMutation(EDIT_FIREARM);
 
   const [deleteFirearm] = useMutation(REMOVE_FIREARM);
@@ -50,30 +52,9 @@ const SingleFirearm = () => {
     try {
       // Write edits to indexedDB to be applied when offline
       if (!navigator.onLine) {
-      const responseOffline = await db.firearms.put({
-        id: id,
-        operation: "EDIT",
-        name: firearmData.name,
-        ignitionType: firearmData.ignitionType,
-        barrelLength: firearmData.barrelLength,
-        caliber: firearmData.caliber,
-        diaTouchHole: firearmData.diaTouchHole,
-        distanceToTarget: firearmData.distanceToTarget,
-        muzzleVelocity: firearmData.muzzleVelocity,
-        diaRearSight: firearmData.diaRearSight,
-        diaFrontSight: firearmData.diaFrontSight,
-        heightRearSight: firearmData.heightRearSight,
-        sightRadius: firearmData.sightRadius,
-        notes: firearmData.notes,
-        measureSystem: firearmData.measureSystem,
-      });
-      console.log(
-        "Response from indexedDb  " + JSON.stringify(responseOffline)
-      );
-      } else {
-      const responseOnline = await editFirearm({
-        variables: {
-          _id: id,
+        const responseOffline = await db.firearms.put({
+          id: id,
+          operation: "EDIT",
           name: firearmData.name,
           ignitionType: firearmData.ignitionType,
           barrelLength: firearmData.barrelLength,
@@ -83,14 +64,35 @@ const SingleFirearm = () => {
           muzzleVelocity: firearmData.muzzleVelocity,
           diaRearSight: firearmData.diaRearSight,
           diaFrontSight: firearmData.diaFrontSight,
-          heightFrontSight: parseFloat(frontSightHeight().toFixed(3)),
           heightRearSight: firearmData.heightRearSight,
           sightRadius: firearmData.sightRadius,
           notes: firearmData.notes,
           measureSystem: firearmData.measureSystem,
-        },
-      });
-      console.log("Response from MongoDB  " + JSON.stringify(responseOnline));
+        });
+        console.log(
+          "Response from indexedDb  " + JSON.stringify(responseOffline)
+        );
+      } else {
+        const responseOnline = await editFirearm({
+          variables: {
+            _id: id,
+            name: firearmData.name,
+            ignitionType: firearmData.ignitionType,
+            barrelLength: firearmData.barrelLength,
+            caliber: firearmData.caliber,
+            diaTouchHole: firearmData.diaTouchHole,
+            distanceToTarget: firearmData.distanceToTarget,
+            muzzleVelocity: firearmData.muzzleVelocity,
+            diaRearSight: firearmData.diaRearSight,
+            diaFrontSight: firearmData.diaFrontSight,
+            heightFrontSight: parseFloat(frontSightHeight().toFixed(3)),
+            heightRearSight: firearmData.heightRearSight,
+            sightRadius: firearmData.sightRadius,
+            notes: firearmData.notes,
+            measureSystem: firearmData.measureSystem,
+          },
+        });
+        console.log("Response from MongoDB  " + JSON.stringify(responseOnline));
       }
       if (navigator.onLine) {
         window.location.replace(`/firearms/single/${id}`);
@@ -122,21 +124,23 @@ const SingleFirearm = () => {
   const handleFirearmDelete = async () => {
     try {
       if (!navigator.onLine) {
-      // When offline, write delete to offline storage for deletion when back online
-      const responseOffline = await db.firearms.put({
-        id: id,
-        operation: "DELETE",
-      });
-      console.log(
-        "Response from indexedDb  " + JSON.stringify(responseOffline)
-      );
+        // When offline, write delete to offline storage for deletion when back online
+        const responseOffline = await db.firearms.put({
+          id: id,
+          operation: "DELETE",
+        });
+        console.log(
+          "Response from indexedDb  " + JSON.stringify(responseOffline)
+        );
       } else {
-      const responseOnline = await deleteFirearm({
-        variables: {
-          _id: id,
-        },
-      });
-      console.log("Response from indexedDb  " + JSON.stringify(responseOnline));
+        const responseOnline = await deleteFirearm({
+          variables: {
+            _id: id,
+          },
+        });
+        console.log(
+          "Response from indexedDb  " + JSON.stringify(responseOnline)
+        );
       }
       if (navigator.onLine) {
         window.location.replace("/firearms");
@@ -386,9 +390,9 @@ const SingleFirearm = () => {
             />
           </Form.Group>
           <Button className="p-1 m-2" type="submit" variant="primary">
-            Submit Edits
+            Submit
           </Button>
-          <Button
+          {id !== "0" && <Button
             className="p-1 m-2"
             type="button"
             variant="danger"
@@ -396,6 +400,7 @@ const SingleFirearm = () => {
           >
             Delete Firearm
           </Button>
+          }
         </Form>
         <p className="m-2">
           * Used in calculation of front sight height. Click on Submit to save.
