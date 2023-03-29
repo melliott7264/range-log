@@ -15,9 +15,9 @@ const Firearms = () => {
   // state to show listing of user firearms from which to select
   const [showFirearms, setShowFirearms] = useState([]);
   // state controlling modal to add new firearm
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   // state controlling added firearm
-  const [showFirearm, setShowFirearm] = useState("");
+  // const [showFirearm, setShowFirearm] = useState("");
 
   const loggedIn = AuthService.loggedIn();
   if (!loggedIn) {
@@ -92,49 +92,49 @@ const Firearms = () => {
   },[data]);
 
   // routine to add a firearm
-  const handleAddFirearm = async (event) => {
-    event.preventDefault();
-    try {
-      if (!navigator.onLine) {
-        // Write add firearm data to indexedDB when application is offline 
-        const responseOffline = await addFirearmData(showFirearm, "ADD");
-        console.log(
-          "Response from indexedDb  " + JSON.stringify(responseOffline)
-        );
-      } else {
-        // Write new firearm data to MongoDB
-        const responseOnline = await uploadNewFirearmData(showFirearm);
-        console.log("Response from MongoDB  " + JSON.stringify(responseOnline));
-      }
-      if (navigator.onLine) {
-        window.location.replace(`/firearms`);
-      } else {
-        window.alert(
-          "Application is offline - Your additon will be uploaded to the cloud when back online"
-        );
-        window.location.replace(`/firearms`);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const handleAddFirearm = async (event) => {
+  //   event.preventDefault();
+  //   try {
+  //     if (!navigator.onLine) {
+  //       // Write add firearm data to indexedDB when application is offline 
+  //       const responseOffline = await addFirearmData(showFirearm, "ADD");
+  //       console.log(
+  //         "Response from indexedDb  " + JSON.stringify(responseOffline)
+  //       );
+  //     } else {
+  //       // Write new firearm data to MongoDB
+  //       const responseOnline = await uploadNewFirearmData(showFirearm);
+  //       console.log("Response from MongoDB  " + JSON.stringify(responseOnline));
+  //     }
+  //     if (navigator.onLine) {
+  //       window.location.replace(`/firearms`);
+  //     } else {
+  //       window.alert(
+  //         "Application is offline - Your additon will be uploaded to the cloud when back online"
+  //       );
+  //       window.location.replace(`/firearms`);
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
-  const handleDataChange = (event) => {
-    // handling multiple input types
-    const target = event.target;
-    let value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    // The following code is necessary because Form.Control type=number actually returns a string
-    // parseFloat will also return an integer if an integer is typed as well as returning a float
-    if (target.type === "number") {
-      value = parseFloat(value);
-    }
+  // const handleDataChange = (event) => {
+  //   // handling multiple input types
+  //   const target = event.target;
+  //   let value = target.type === "checkbox" ? target.checked : target.value;
+  //   const name = target.name;
+  //   // The following code is necessary because Form.Control type=number actually returns a string
+  //   // parseFloat will also return an integer if an integer is typed as well as returning a float
+  //   if (target.type === "number") {
+  //     value = parseFloat(value);
+  //   }
 
-    setShowFirearm({ ...showFirearm, [name]: value });
-  };
+  //   setShowFirearm({ ...showFirearm, [name]: value });
+  // };
 
   // Call Units method to switch units if measureSystem is metric (true)
-  Units.switchUnits(showFirearm?.measureSystem);
+  // Units.switchUnits(showFirearm?.measureSystem);
 
   return (
     <div className="background-wrap">
@@ -173,7 +173,7 @@ const Firearms = () => {
           ))}
         </ul>
       </div>
-      <Modal
+      {/* <Modal
         size="md"
         show={showModal}
         onHide={() => setShowModal(false)}
@@ -327,7 +327,7 @@ const Firearms = () => {
             </Button>
           </Form>
         </Modal.Body>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

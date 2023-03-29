@@ -14,6 +14,7 @@ import {
   addFirearmData,
   putFirearmData,
   deleteFirearmData,
+  firearmDataArray,
 } from "../utils/offline";
 
 const SingleFirearm = () => {
@@ -33,6 +34,92 @@ const SingleFirearm = () => {
   // state controlling firearm description data
   const [firearmData, setFirearmData] = useState({});
 
+  const [addFirearm] = useMutation(ADD_FIREARM);
+
+  const [editFirearm] = useMutation(EDIT_FIREARM);
+
+  const [deleteFirearm] = useMutation(REMOVE_FIREARM);
+
+  const uploadNewFirearmData = async (firearmData) => {
+    // Write new firearm data to MongoDB
+    const responseOnline = await addFirearm({
+      variables: {
+        name: firearmData.name,
+        ignitionType: firearmData.ignitionType,
+        barrelLength: firearmData.barrelLength,
+        caliber: firearmData.caliber,
+        diaTouchHole: firearmData.diaTouchHole,
+        distanceToTarget: firearmData.distanceToTarget,
+        muzzleVelocity: firearmData.muzzleVelocity,
+        diaRearSight: firearmData.diaRearSight,
+        diaFrontSight: firearmData.diaFrontSight,
+        heightRearSight: firearmData.heightRearSight,
+        sightRadius: firearmData.sightRadius,
+        notes: firearmData.notes,
+        measureSystem: firearmData.measureSystem,
+      },
+    });
+    return responseOnline;
+  };
+
+  const uploadChangedFirearmData = async (firearmData, id) => {
+    // Write update to firearm data to MongoDB
+    const responseOnline = await editFirearm({
+      variables: {
+        _id: id,
+        name: firearmData.name,
+        ignitionType: firearmData.ignitionType,
+        barrelLength: firearmData.barrelLength,
+        caliber: firearmData.caliber,
+        diaTouchHole: firearmData.diaTouchHole,
+        distanceToTarget: firearmData.distanceToTarget,
+        muzzleVelocity: firearmData.muzzleVelocity,
+        diaRearSight: firearmData.diaRearSight,
+        diaFrontSight: firearmData.diaFrontSight,
+        heightFrontSight: parseFloat(frontSightHeight().toFixed(3)),
+        heightRearSight: firearmData.heightRearSight,
+        sightRadius: firearmData.sightRadius,
+        notes: firearmData.notes,
+        measureSystem: firearmData.measureSystem,
+      },
+    });
+    return responseOnline;
+  };
+
+  const updateDeletedFirearmData = async (id) => {
+    const responseOnline = await deleteFirearm({
+      variables: {
+        _id: id,
+      },
+    });
+    return responseOnline;
+  };
+
+  const uploadOfflineData = async () => {
+    const offlineFirearmDataArray = await firearmDataArray("ADD");
+    if (offlineFirearmDataArray.length === 0) {
+      // setUploadNeeded(false);
+      console.log("Upload NOT needed............");
+    } else {
+      // setUploadNeeded(true);
+      console.log("Uploaded needed.............");
+      for (let i = 0; i < offlineFirearmDataArray.length; i++) {
+        const offlineFirearmData = offlineFirearmDataArray[i];
+        const responseOnline = await uploadNewFirearmData(offlineFirearmData);
+        console.log("Response from MongoDB  " + JSON.stringify(responseOnline));
+        const deletionResponse = await db.firearms.delete(
+          offlineFirearmData.id
+        );
+        console.log(
+          "firearm has been added to online database and deleted locally: " +
+            deletionResponse
+        );
+      }
+      // setUploadNeeded(false);
+      window.location.replace(`/firearms`);
+    }
+  };
+
   const { data } = useQuery(
     GET_FIREARM,
     {
@@ -41,18 +128,16 @@ const SingleFirearm = () => {
     { skip: !loggedIn }
   );
 
-  const [addFirearm] = useMutation(ADD_FIREARM);
-
-  const [editFirearm] = useMutation(EDIT_FIREARM);
-
-  const [deleteFirearm] = useMutation(REMOVE_FIREARM);
-
   useEffect(() => {
+    // if (navigator.onLine) {
+    //   uploadOfflineData();
+    // }
+
     const firearm = data?.firearm[0] || {};
     setFirearmData(firearm);
   }, [data]);
 
-  // routine to edit the selected firearm
+  // routine to add/edit the selected firearm
   const handleEditFirearm = async (event) => {
     event.preventDefault();
     console.log("Firearm Form Submit button clicked");
@@ -80,62 +165,25 @@ const SingleFirearm = () => {
             "Response from indexedDb  " + JSON.stringify(responseOffline)
           );
         }
-      } else {
-        if (id !== "0") {
-          const responseOnline = await editFirearm({
-            variables: {
-              _id: id,
-              name: firearmData.name,
-              ignitionType: firearmData.ignitionType,
-              barrelLength: firearmData.barrelLength,
-              caliber: firearmData.caliber,
-              diaTouchHole: firearmData.diaTouchHole,
-              distanceToTarget: firearmData.distanceToTarget,
-              muzzleVelocity: firearmData.muzzleVelocity,
-              diaRearSight: firearmData.diaRearSight,
-              diaFrontSight: firearmData.diaFrontSight,
-              heightFrontSight: parseFloat(frontSightHeight().toFixed(3)),
-              heightRearSight: firearmData.heightRearSight,
-              sightRadius: firearmData.sightRadius,
-              notes: firearmData.notes,
-              measureSystem: firearmData.measureSystem,
-            },
-          });
-          console.log(
-            "Response from MongoDB  " + JSON.stringify(responseOnline)
-          );
-        } else {
-          const responseOnline = await addFirearm({
-            variables: {
-              name: firearmData.name,
-              ignitionType: firearmData.ignitionType,
-              barrelLength: firearmData.barrelLength,
-              caliber: firearmData.caliber,
-              diaTouchHole: firearmData.diaTouchHole,
-              distanceToTarget: firearmData.distanceToTarget,
-              muzzleVelocity: firearmData.muzzleVelocity,
-              diaRearSight: firearmData.diaRearSight,
-              diaFrontSight: firearmData.diaFrontSight,
-              heightFrontSight: parseFloat(frontSightHeight().toFixed(3)),
-              heightRearSight: firearmData.heightRearSight,
-              sightRadius: firearmData.sightRadius,
-              notes: firearmData.notes,
-              measureSystem: firearmData.measureSystem,
-            },
-          });
-          return responseOnline;
-        }
-      }
-      if (navigator.onLine) {
-        window.location.replace(`/firearms/single/${id}`);
-      } else {
         window.alert(
           "Application is offline - Your additon will be uploaded to the cloud when back online"
         );
-        if (id === "0") {
-          window.location.replace(`/firearms/`);
-        } else {
+      } else {
+        if (id !== "0") {
+          const responseOnline = await uploadChangedFirearmData(
+            firearmData,
+            id
+          );
+          console.log(
+            "Response from MongoDB  " + JSON.stringify(responseOnline)
+          );
           window.location.replace(`/firearms/single/${id}`);
+        } else {
+          const responseOnline = await uploadNewFirearmData(firearmData);
+          console.log(
+            "Response from MongoDB  " + JSON.stringify(responseOnline)
+          );
+          window.location.replace(`/firearms`);
         }
       }
     } catch (err) {
@@ -166,11 +214,7 @@ const SingleFirearm = () => {
           "Response from indexedDb  " + JSON.stringify(responseOffline)
         );
       } else {
-        const responseOnline = await deleteFirearm({
-          variables: {
-            _id: id,
-          },
-        });
+        const responseOnline = await updateDeletedFirearmData(id);
         console.log(
           "Response from indexedDb  " + JSON.stringify(responseOnline)
         );
