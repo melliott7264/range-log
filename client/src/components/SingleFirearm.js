@@ -155,6 +155,10 @@ const SingleFirearm = () => {
           console.log(
             "Response from indexedDb  " + JSON.stringify(responseOffline)
           );
+          window.alert(
+            "Application is offline - Your additon will be uploaded to the cloud when back online"
+          );
+          window.location.replace(`/firearms/single/${id}`);
         } else {
           const responseOffline = await addFirearmData(
             firearmData,
@@ -168,6 +172,7 @@ const SingleFirearm = () => {
         window.alert(
           "Application is offline - Your additon will be uploaded to the cloud when back online"
         );
+        window.location.replace(`/firearms`);
       } else {
         if (id !== "0") {
           const responseOnline = await uploadChangedFirearmData(
