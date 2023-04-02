@@ -95,31 +95,6 @@ const SingleFirearm = () => {
     return responseOnline;
   };
 
-  // const uploadOfflineData = async () => {
-  //   const offlineFirearmDataArray = await firearmDataArray("ADD");
-  //   if (offlineFirearmDataArray.length === 0) {
-  //     // setUploadNeeded(false);
-  //     console.log("Upload NOT needed............");
-  //   } else {
-  //     // setUploadNeeded(true);
-  //     console.log("Uploaded needed.............");
-  //     for (let i = 0; i < offlineFirearmDataArray.length; i++) {
-  //       const offlineFirearmData = offlineFirearmDataArray[i];
-  //       const responseOnline = await uploadNewFirearmData(offlineFirearmData);
-  //       console.log("Response from MongoDB  " + JSON.stringify(responseOnline));
-  //       const deletionResponse = await db.firearms.delete(
-  //         offlineFirearmData.id
-  //       );
-  //       console.log(
-  //         "firearm has been added to online database and deleted locally: " +
-  //           deletionResponse
-  //       );
-  //     }
-  //     // setUploadNeeded(false);
-  //     window.location.replace(`/firearms`);
-  //   }
-  // };
-
   const { data } = useQuery(
     GET_FIREARM,
     {

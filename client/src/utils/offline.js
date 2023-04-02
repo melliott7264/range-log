@@ -11,10 +11,6 @@ export const init = () => {
   });
 };
 
-// export const firearmDataArray = async (operation) => {
-//   return await db.firearms.where({ operation: operation }).toArray();
-// };
-
 export const firearmDataArray = async () => {
   return await db.firearms.toArray();
   };

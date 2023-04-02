@@ -89,12 +89,9 @@ const Firearms = () => {
   useEffect(() => {
     const getData = async () => {
       const offlineFirearmArray = await firearmDataArray();
-      console.log("Reading offline data...........");
-      console.log(offlineFirearmArray);
       if (offlineFirearmArray.lenghth !== 0) {
         for (let i = 0; i < offlineFirearmArray.length; i++) {
           if (offlineFirearmArray[i].operation === "ADD") {
-            console.log("Updating ADD..........");
             const offlineFirearmDataDocument = offlineFirearmArray[i];
             const responseOnline = await uploadNewFirearmData(
               offlineFirearmDataDocument
@@ -106,7 +103,6 @@ const Firearms = () => {
           }
 
           if (offlineFirearmArray[i].operation === "EDIT") {
-            console.log("Updating EDIT...........");
             const offlineFirearmDataDocument = offlineFirearmArray[i];
             const responseOnline = await uploadChangedFirearmData(
               offlineFirearmDataDocument,
@@ -115,10 +111,10 @@ const Firearms = () => {
             const deletionResponse = await db.firearms.delete(
               offlineFirearmDataDocument.id
             );
+            window.location.replace(`/firearms`);
           }
 
           if (offlineFirearmArray[i].operation === "DELETE") {
-            console.log("Updating DELETE..........");
             const offlineFirearmDataDocument = offlineFirearmArray[i];
             const responseOnline = await updateDeletedFirearmData(
               offlineFirearmDataDocument.id
@@ -126,6 +122,7 @@ const Firearms = () => {
             const deletionResponse = await db.firearms.delete(
               offlineFirearmDataDocument.id
             );
+            window.location.replace(`/firearms`);
           }
         }
       } else {
