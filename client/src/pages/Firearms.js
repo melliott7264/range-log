@@ -4,7 +4,7 @@ import { GET_ALL_FIREARMS } from "../utils/queries";
 import { Button, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import AuthService from "../utils/auth";
-import { ADD_FIREARM } from "../utils/mutations";
+import { ADD_FIREARM, EDIT_FIREARM, REMOVE_FIREARM } from "../utils/mutations";
 
 // import services for indexedDB database for offline storage
 import { db, init, firearmDataArray } from "../utils/offline";
@@ -26,6 +26,10 @@ const Firearms = () => {
 
   const [addFirearm] = useMutation(ADD_FIREARM);
 
+  const [editFirearm] = useMutation(EDIT_FIREARM);
+
+  const [deleteFirearm] = useMutation(REMOVE_FIREARM);
+
   const uploadNewFirearmData = async (firearmData) => {
     // Write new firearm data to MongoDB
     const responseOnline = await addFirearm({
@@ -40,6 +44,7 @@ const Firearms = () => {
         diaRearSight: firearmData.diaRearSight,
         diaFrontSight: firearmData.diaFrontSight,
         heightRearSight: firearmData.heightRearSight,
+        heightFrontSight: firearmData.heightFrontSight,
         sightRadius: firearmData.sightRadius,
         notes: firearmData.notes,
         measureSystem: firearmData.measureSystem,
@@ -48,23 +53,88 @@ const Firearms = () => {
     return responseOnline;
   };
 
+  const uploadChangedFirearmData = async (firearmData, id) => {
+    // Write update to firearm data to MongoDB
+    const responseOnline = await editFirearm({
+      variables: {
+        _id: id,
+        name: firearmData.name,
+        ignitionType: firearmData.ignitionType,
+        barrelLength: firearmData.barrelLength,
+        caliber: firearmData.caliber,
+        diaTouchHole: firearmData.diaTouchHole,
+        distanceToTarget: firearmData.distanceToTarget,
+        muzzleVelocity: firearmData.muzzleVelocity,
+        diaRearSight: firearmData.diaRearSight,
+        diaFrontSight: firearmData.diaFrontSight,
+        heightFrontSight: firearmData.heightFrontSight,
+        heightRearSight: firearmData.heightRearSight,
+        sightRadius: firearmData.sightRadius,
+        notes: firearmData.notes,
+        measureSystem: firearmData.measureSystem,
+      },
+    });
+    return responseOnline;
+  };
+
+  const updateDeletedFirearmData = async (id) => {
+    const responseOnline = await deleteFirearm({
+      variables: {
+        _id: id,
+      },
+    });
+    return responseOnline;
+  };
+
   useEffect(() => {
     const getData = async () => {
-      const offlineFirearmDataArray = await firearmDataArray("ADD");
-      if (offlineFirearmDataArray.length !== 0) {
-        for (let i = 0; i < offlineFirearmDataArray.length; i++) {
-          const offlineFirearmData = offlineFirearmDataArray[i];
-          const responseOnline = await uploadNewFirearmData(offlineFirearmData);
-          const deletionResponse = await db.firearms.delete(
-            offlineFirearmData.id
-          );
+      const offlineFirearmArray = await firearmDataArray();
+      console.log("Reading offline data...........");
+      console.log(offlineFirearmArray);
+      if (offlineFirearmArray.lenghth !== 0) {
+        for (let i = 0; i < offlineFirearmArray.length; i++) {
+          if (offlineFirearmArray[i].operation === "ADD") {
+            console.log("Updating ADD..........");
+            const offlineFirearmDataDocument = offlineFirearmArray[i];
+            const responseOnline = await uploadNewFirearmData(
+              offlineFirearmDataDocument
+            );
+            const deletionResponse = await db.firearms.delete(
+              offlineFirearmDataDocument.id
+            );
+            window.location.replace(`/firearms`);
+          }
+
+          if (offlineFirearmArray[i].operation === "EDIT") {
+            console.log("Updating EDIT...........");
+            const offlineFirearmDataDocument = offlineFirearmArray[i];
+            const responseOnline = await uploadChangedFirearmData(
+              offlineFirearmDataDocument,
+              offlineFirearmDataDocument.id
+            );
+            const deletionResponse = await db.firearms.delete(
+              offlineFirearmDataDocument.id
+            );
+          }
+
+          if (offlineFirearmArray[i].operation === "DELETE") {
+            console.log("Updating DELETE..........");
+            const offlineFirearmDataDocument = offlineFirearmArray[i];
+            const responseOnline = await updateDeletedFirearmData(
+              offlineFirearmDataDocument.id
+            );
+            const deletionResponse = await db.firearms.delete(
+              offlineFirearmDataDocument.id
+            );
+          }
         }
-        window.location.replace(`/firearms`);
-      } else {setUpdateRequired(!updateRequired);}
+      } else {
+        setUpdateRequired(!updateRequired);
+      }
     };
 
     getData();
-  }, [updateRequired] );
+  }, [updateRequired]);
 
   // Graphql query for a listing of all firearms - using skip parameter to avoid error when not logged in
   const { data } = useQuery(GET_ALL_FIREARMS, { skip: !loggedIn });
