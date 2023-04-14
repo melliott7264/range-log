@@ -14,7 +14,6 @@ import {
   addFirearmData,
   putFirearmData,
   deleteFirearmData,
-  firearmDataArray,
 } from "../utils/offline";
 
 const SingleFirearm = () => {
@@ -53,6 +52,7 @@ const SingleFirearm = () => {
         muzzleVelocity: firearmData.muzzleVelocity,
         diaRearSight: firearmData.diaRearSight,
         diaFrontSight: firearmData.diaFrontSight,
+        heightFrontSight: parseFloat(frontSightHeight().toFixed(3)),
         heightRearSight: firearmData.heightRearSight,
         sightRadius: firearmData.sightRadius,
         notes: firearmData.notes,
