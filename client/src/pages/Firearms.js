@@ -101,8 +101,10 @@ const Firearms = () => {
             const deletionResponse = await db.firearms.delete(
               offlineFirearmDataDocument.id
             );
-            console.log("Response from deletion of indexedDB record");
-            console.log(deletionResponse);
+            if (deletionResponse) {
+              console.log("There was a problem deleting an IdexedDB record");
+              console.log(deletionResponse);
+            }
             window.location.replace("/firearms");
           }
 
@@ -119,8 +121,10 @@ const Firearms = () => {
             const deletionResponse = await db.firearms.delete(
               offlineFirearmDataDocument.id
             );
-            console.log("Response from deletion of indexedDB record");
-            console.log(deletionResponse);
+            if (deletionResponse) {
+              console.log("There was a problem deleting an IdexedDB record");
+              console.log(deletionResponse);
+            }
             window.location.replace("/firearms");
           }
 
@@ -136,8 +140,10 @@ const Firearms = () => {
             const deletionResponse = await db.firearms.delete(
               offlineFirearmDataDocument.id
             );
-            console.log("Response from deletion of indexedDB record");
-            console.log(deletionResponse);
+            if (deletionResponse) {
+              console.log("There was a problem deleting an IdexedDB record");
+              console.log(deletionResponse);
+            }
             window.location.replace("/firearms");
           }
         }
