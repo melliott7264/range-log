@@ -96,10 +96,14 @@ const Firearms = () => {
             const responseOnline = await uploadNewFirearmData(
               offlineFirearmDataDocument
             );
+            console.log("Response from database update of new firearm data");
+            console.log(JSON.stringify(responseOnline));
             const deletionResponse = await db.firearms.delete(
               offlineFirearmDataDocument.id
             );
-            window.location.replace(`/firearms`);
+            console.log("Response from deletion of indexedDB record");
+            console.log(deletionResponse);
+            window.location.replace("/firearms");
           }
 
           if (offlineFirearmArray[i].operation === "EDIT") {
@@ -108,10 +112,16 @@ const Firearms = () => {
               offlineFirearmDataDocument,
               offlineFirearmDataDocument.id
             );
+            console.log(
+              "Response from database update of changed firearm data"
+            );
+            console.log(JSON.stringify(responseOnline));
             const deletionResponse = await db.firearms.delete(
               offlineFirearmDataDocument.id
             );
-            window.location.replace(`/firearms`);
+            console.log("Response from deletion of indexedDB record");
+            console.log(deletionResponse);
+            window.location.replace("/firearms");
           }
 
           if (offlineFirearmArray[i].operation === "DELETE") {
@@ -119,10 +129,16 @@ const Firearms = () => {
             const responseOnline = await updateDeletedFirearmData(
               offlineFirearmDataDocument.id
             );
+            console.log(
+              "Response from database update of deleted firearm data"
+            );
+            console.log(JSON.stringify(responseOnline));
             const deletionResponse = await db.firearms.delete(
               offlineFirearmDataDocument.id
             );
-            window.location.replace(`/firearms`);
+            console.log("Response from deletion of indexedDB record");
+            console.log(deletionResponse);
+            window.location.replace("/firearms");
           }
         }
       } else {

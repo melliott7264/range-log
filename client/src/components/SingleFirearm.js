@@ -95,6 +95,7 @@ const SingleFirearm = () => {
     return responseOnline;
   };
 
+  // The following useQuery and useEffect get single firearm data to display
   const { data } = useQuery(
     GET_FIREARM,
     {
@@ -104,7 +105,6 @@ const SingleFirearm = () => {
   );
 
   useEffect(() => {
-
     const firearm = data?.firearm[0] || {};
     setFirearmData(firearm);
   }, [data]);
@@ -130,7 +130,7 @@ const SingleFirearm = () => {
           window.alert(
             "Application is offline - Your additon will be uploaded to the cloud when back online"
           );
-          window.location.replace(`/firearms/single/${id}`);
+          window.location.replace("/firearms");
         } else {
           const responseOffline = await addFirearmData(
             firearmData,
@@ -144,7 +144,7 @@ const SingleFirearm = () => {
         window.alert(
           "Application is offline - Your additon will be uploaded to the cloud when back online"
         );
-        window.location.replace(`/firearms`);
+        window.location.replace("/firearms");
       } else {
         if (id !== "0") {
           const responseOnline = await uploadChangedFirearmData(
@@ -160,7 +160,7 @@ const SingleFirearm = () => {
           console.log(
             "Response from MongoDB  " + JSON.stringify(responseOnline)
           );
-          window.location.replace(`/firearms`);
+          window.location.replace("/firearms");
         }
       }
     } catch (err) {
